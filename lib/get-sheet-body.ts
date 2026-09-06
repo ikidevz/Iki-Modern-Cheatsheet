@@ -1,10 +1,14 @@
 import { readFile } from "fs/promises";
 import path from "path";
 
-export async function getSheetBody(id: string): Promise<string | null> {
-	const file = path.join(process.cwd(), "content", "sheets", `${id}.md`);
+export async function getSheetBody(
+	file: string | undefined,
+): Promise<string | null> {
+	if (file === undefined) return null;
+
 	try {
-		return await readFile(file, "utf8");
+		const filePath = path.join(process.cwd(), "content", "sheets", file);
+		return await readFile(filePath, "utf8");
 	} catch {
 		return null;
 	}

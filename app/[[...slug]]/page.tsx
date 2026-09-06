@@ -9,41 +9,41 @@ import { SubcategoryView } from "@/components/subcategory-view";
 import { ItemView } from "@/components/item-view";
 
 export function generateStaticParams() {
-  const categoryPaths = DATA.map((group) => ({
-    slug: [isNested(group) ? group.slug : group.key],
-  }));
-  const entryPaths = ALL_ENTRIES.map((e) => ({
-    slug: e.urlPath.replace(/^\//, "").split("/"),
-  }));
-  return [{ slug: [] }, ...categoryPaths, ...entryPaths];
+	const categoryPaths = DATA.map((group) => ({
+		slug: [isNested(group) ? group.slug : group.key],
+	}));
+	const entryPaths = ALL_ENTRIES.map((e) => ({
+		slug: e.urlPath.replace(/^\//, "").split("/"),
+	}));
+	return [{ slug: [] }, ...categoryPaths, ...entryPaths];
 }
 
 export default async function Page({
-  params,
+	params,
 }: {
-  params: Promise<{ slug?: string[] }>;
+	params: Promise<{ slug?: string[] }>;
 }) {
-  const { slug } = await params;
-  const result = resolvePath(slug ?? []);
-  if (!result) notFound();
+	const { slug } = await params;
+	const result = resolvePath(slug ?? []);
+	if (!result) notFound();
 
-  switch (result.type) {
-    case "overview":
-      return <Overview />;
-    case "category":
-      return <CategoryView category={result.category} />;
-    case "subcategory":
-      return <SubcategoryView category={result.category} sub={result.sub} />;
-    case "item": {
-      const body = await getSheetBody(result.item.id);
-      return (
-        <ItemView
-          category={result.category}
-          sub={result.sub}
-          item={result.item}
-          body={body}
-        />
-      );
-    }
-  }
+	switch (result.type) {
+		case "overview":
+			return <Overview />;
+		case "category":
+			return <CategoryView category={result.category} />;
+		case "subcategory":
+			return <SubcategoryView category={result.category} sub={result.sub} />;
+		case "item": {
+			const body = await getSheetBody(result.item.file);
+			return (
+				<ItemView
+					category={result.category}
+					sub={result.sub}
+					item={result.item}
+					body={body}
+				/>
+			);
+		}
+	}
 }

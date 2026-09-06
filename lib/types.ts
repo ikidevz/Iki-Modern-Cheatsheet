@@ -1,7 +1,9 @@
 export type Status = "solid" | "flagged" | "planned";
+export type ThemeType = "light" | "dark";
 
 export type Theme = {
 	key: string;
+	themeType: ThemeType;
 	label: string;
 	swatch: string;
 	vars: Record<string, string>;
@@ -12,6 +14,7 @@ export type Sheet = {
 	name: string;
 	file?: string;
 	slug?: string;
+	customizedComponent: boolean;
 	status: Status;
 	tagline: string;
 	covers: string;

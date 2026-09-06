@@ -9,6 +9,7 @@ import {
 	type Subcategory,
 } from "@/lib/types";
 import { MarkdownContent } from "@/components/markdown-content";
+import { CUSTOMIZED_COMPONENTS } from "@/content/customize";
 
 export function ItemView({
 	category,
@@ -27,6 +28,9 @@ export function ItemView({
 		? `/${"slug" in category ? category.slug : category.key}${sub ? `/${sub.slug}` : ""}/${item.slug}`
 		: item.file;
 	const categorySlug = "slug" in category ? category.slug : category.key;
+	const CustomizedComponent = item.customizedComponent
+		? CUSTOMIZED_COMPONENTS[item.id]
+		: undefined;
 
 	return (
 		<div>
@@ -76,7 +80,9 @@ export function ItemView({
 				{item.tagline}
 			</p>
 
-			{body ? (
+			{CustomizedComponent ? (
+				<CustomizedComponent item={item} body={body} />
+			) : body ? (
 				<MarkdownContent source={body} />
 			) : (
 				<PlannedSections item={item} isPlanned={isPlanned} />

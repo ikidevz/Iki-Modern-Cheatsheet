@@ -3,6 +3,7 @@ import type { Theme } from "@/lib/types";
 export const THEMES: Theme[] = [
 	{
 		key: "paper",
+		themeType: "light",
 		label: "Paper",
 		swatch: "oklch(0.4985 0.0682 195.2236)",
 		vars: {
@@ -53,6 +54,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "fjord",
+		themeType: "light",
 		label: "Fjord",
 		swatch: "oklch(0.5064 0.0789 223.9377)",
 		vars: {
@@ -103,6 +105,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "meridian",
+		themeType: "light",
 		label: "Meridian",
 		swatch: "oklch(0.5572 0.0938 230.4481)",
 		vars: {
@@ -153,6 +156,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "contrast",
+		themeType: "light",
 		label: "Contrast",
 		swatch: "oklch(0.4331 0.1737 259.6746)",
 		vars: {
@@ -203,6 +207,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "meadow",
+		themeType: "light",
 		label: "Meadow",
 		swatch: "oklch(0.5024 0.0982 153.2102)",
 		vars: {
@@ -253,6 +258,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "terracotta",
+		themeType: "light",
 		label: "Terracotta",
 		swatch: "oklch(0.5701 0.1387 39.8595)",
 		vars: {
@@ -303,6 +309,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "slate",
+		themeType: "dark",
 		label: "Slate",
 		swatch: "oklch(0.767 0.0968 188.1441)",
 		vars: {
@@ -353,6 +360,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "ember",
+		themeType: "dark",
 		label: "Ember",
 		swatch: "oklch(0.7289 0.1293 63.1421)",
 		vars: {
@@ -403,6 +411,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "nocturne",
+		themeType: "dark",
 		label: "Nocturne",
 		swatch: "oklch(0.7209 0.1434 300.5113)",
 		vars: {
@@ -453,6 +462,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "harbor",
+		themeType: "dark",
 		label: "Harbor",
 		swatch: "oklch(0.7286 0.126 255.5987)",
 		vars: {
@@ -503,6 +513,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "phosphor",
+		themeType: "dark",
 		label: "Phosphor",
 		swatch: "oklch(0.7494 0.126 132.8852)",
 		vars: {
@@ -553,6 +564,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "blueprint",
+		themeType: "dark",
 		label: "Blueprint",
 		swatch: "oklch(0.8215 0.097 203.303)",
 		vars: {
@@ -603,6 +615,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "obsidian",
+		themeType: "dark",
 		label: "Obsidian",
 		swatch: "oklch(0.6249 0.1849 262.4037)",
 		vars: {
@@ -653,6 +666,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "aurora",
+		themeType: "dark",
 		label: "Aurora",
 		swatch: "oklch(0.7959 0.1469 170.8682)",
 		vars: {
@@ -703,6 +717,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "volt",
+		themeType: "dark",
 		label: "Volt",
 		swatch: "oklch(0.8596 0.1895 120.7547)",
 		vars: {
@@ -753,6 +768,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "saffron",
+		themeType: "light",
 		label: "Saffron",
 		swatch: "oklch(0.575 0.1222 72)",
 		vars: {
@@ -803,6 +819,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "mist",
+		themeType: "light",
 		label: "Mist",
 		swatch: "oklch(0.5 0.045 222)",
 		vars: {
@@ -853,6 +870,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "iris",
+		themeType: "light",
 		label: "Iris",
 		swatch: "oklch(0.52 0.15 300)",
 		vars: {
@@ -903,6 +921,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "blush",
+		themeType: "light",
 		label: "Blush",
 		swatch: "oklch(0.555 0.135 350)",
 		vars: {
@@ -953,6 +972,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "crimson",
+		themeType: "dark",
 		label: "Crimson",
 		swatch: "oklch(0.68 0.16 12)",
 		vars: {
@@ -1003,6 +1023,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "rosewood",
+		themeType: "dark",
 		label: "Rosewood",
 		swatch: "oklch(0.72 0.135 350)",
 		vars: {
@@ -1053,6 +1074,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "amber",
+		themeType: "dark",
 		label: "Amber",
 		swatch: "oklch(0.76 0.15 85)",
 		vars: {
@@ -1103,6 +1125,7 @@ export const THEMES: Theme[] = [
 	},
 	{
 		key: "indigo",
+		themeType: "dark",
 		label: "Indigo",
 		swatch: "oklch(0.735 0.1409 285)",
 		vars: {
@@ -1152,19 +1175,3 @@ export const THEMES: Theme[] = [
 		},
 	},
 ];
-
-export const DARK_THEMES = new Set([
-	"slate",
-	"ember",
-	"nocturne",
-	"harbor",
-	"phosphor",
-	"blueprint",
-	"obsidian",
-	"aurora",
-	"volt",
-	"crimson",
-	"rosewood",
-	"amber",
-	"indigo",
-]);

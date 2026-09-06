@@ -3,6 +3,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@media (prefers-reduced-motion: no-preference) {
+	html,
+	main {
+		scroll-behavior: smooth;
+	}
+}
+
 :root {
 	--mobile-bar-h: calc(3.5rem + env(safe-area-inset-top));
 	--radius: 0.5rem;

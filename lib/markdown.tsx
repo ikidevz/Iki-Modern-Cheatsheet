@@ -44,6 +44,31 @@ type CodeProps = BaseProps & {
 	"data-language"?: string;
 };
 
+type HastNode = {
+	type?: string;
+	tagName?: string;
+	properties?: Record<string, unknown>;
+	children?: HastNode[];
+};
+
+function normalizeHeadingIds() {
+	return (tree: HastNode) => {
+		function visit(node: HastNode) {
+			if (
+				node.type === "element" &&
+				/^h[1-6]$/.test(node.tagName ?? "") &&
+				typeof node.properties?.id === "string"
+			) {
+				node.properties.id = node.properties.id.replace(/^-+/, "");
+			}
+
+			for (const child of node.children ?? []) visit(child);
+		}
+
+		visit(tree);
+	};
+}
+
 const components = {
 	h1: (props: React.ComponentPropsWithoutRef<"h1">) => (
 		<h1
@@ -220,6 +245,7 @@ export async function renderMarkdown(
 		.use(remarkGfm)
 		.use(remarkRehype)
 		.use(rehypeSlug)
+		.use(normalizeHeadingIds)
 		.use(rehypeAutolinkHeadings, anchorLinkProps)
 		.use(rehypePrettyCode, {
 			theme: {

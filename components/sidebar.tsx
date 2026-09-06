@@ -5,10 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, Search, X } from "lucide-react";
 import { DATA } from "@/content/data";
-import { isNested, CAT_CLASS, statusDotClass } from "@/lib/types";
+import {
+	isNested,
+	CAT_CLASS,
+	statusDotClass,
+	type ThemeType,
+} from "@/lib/types";
 import { slugOf } from "@/lib/content";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { cn } from "@/lib/utils";
+import { THEMES } from "@/lib/themes";
 
 function textMatch(q: string, ...fields: (string | undefined)[]) {
 	if (!q) return true;
@@ -21,6 +27,19 @@ export function Sidebar() {
 	const [query, setQuery] = useState("");
 	const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
 	const [drawerOpen, setDrawerOpen] = useState(false);
+	const [themeType, setThemeType] = useState<ThemeType>("light");
+
+	useEffect(() => {
+		const key = document.documentElement.dataset.theme ?? THEMES[0].key;
+		setThemeType(
+			THEMES.find((theme) => theme.key === key)?.themeType ?? "light",
+		);
+	}, []);
+
+	const logoSrc =
+		themeType === "light"
+			? "/assets/img/header_logo_dark.png"
+			: "/assets/img/header_logo_light.png";
 
 	const q = query.trim();
 
@@ -77,8 +96,8 @@ export function Sidebar() {
 		[q],
 	);
 
-	const anyVisible = nav.some((g) =>
-		g.kind === "flat" ? g.visible.length > 0 : g.subs.length > 0,
+	const anyVisible = nav.some((group) =>
+		group.kind === "flat" ? group.visible.length > 0 : group.subs.length > 0,
 	);
 
 	return (
@@ -90,7 +109,12 @@ export function Sidebar() {
 					paddingTop: "env(safe-area-inset-top)",
 					height: "var(--mobile-bar-h)",
 				}}>
-				<span className='text-[15px] font-semibold'>Cheatsheets</span>
+				<Link
+					href='/'
+					className='group flex h-10 w-25 items-center overflow-hidden transition-opacity hover:opacity-90'>
+					{/* Logo */}
+					<img src={logoSrc} alt='Logo' className='w-full h-full' />
+				</Link>
 				<button
 					type='button'
 					onClick={() => setDrawerOpen(true)}
@@ -123,12 +147,12 @@ export function Sidebar() {
 				<div className='px-5 pt-6 pb-4 border-b border-border'>
 					<div className='flex items-center justify-between'>
 						<div>
-							<div className='text-[15px] font-semibold tracking-tight'>
-								Cheatsheets
-							</div>
-							<div className='text-xs text-foreground-faint mt-1'>
-								65 pages, built and planned
-							</div>
+							<Link
+								href='/'
+								className='group flex h-30 w-full items-center overflow-hidden transition-opacity hover:opacity-90'>
+								{/* Logo */}
+								<img src={logoSrc} alt='Logo' className='object-contain' />
+							</Link>
 						</div>
 						<button
 							type='button'
@@ -140,7 +164,7 @@ export function Sidebar() {
 					</div>
 
 					<div className='mt-3.5'>
-						<ThemeSwitcher />
+						<ThemeSwitcher onThemeTypeChange={setThemeType} />
 					</div>
 
 					<div className='relative mt-3'>
