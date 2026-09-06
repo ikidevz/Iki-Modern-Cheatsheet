@@ -162,7 +162,7 @@ export const DATA: Category[] = [
 				customizedComponent: false,
 				name: "Kafka",
 				file: "kafka.md",
-				status: "planned",
+				status: "solid",
 				tagline: "Deep and code-heavy, but styled differently from the rest",
 				covers:
 					"Producers, consumers, config tuning, a CDC/replication example, troubleshooting, and a glossary — genuinely deep content.",
@@ -245,10 +245,10 @@ export const DATA: Category[] = [
 		items: [
 			{
 				id: "abtesting",
-				customizedComponent: true,
+				customizedComponent: false,
 				name: "A/B Testing — 50 Problems",
 				file: "AB_Testing_50_Problems.md",
-				status: "planned",
+				status: "solid",
 				tagline: "50 worked scenarios across a wide range of industries",
 				covers:
 					"Each scenario carries a hypothesis, correct test selection with rationale, runnable sample data, and a lesson that usually includes a real caveat — confounds, SRM, holdout limitations. The strongest file in the set relative to its stated goal.",
@@ -262,10 +262,10 @@ export const DATA: Category[] = [
 			},
 			{
 				id: "clustering",
-				customizedComponent: true,
+				customizedComponent: false,
 				name: "Clustering Problems",
 				file: "clustering_100_problems.md",
-				status: "planned",
+				status: "solid",
 				tagline:
 					"75 self-contained scikit-learn problems, Beginner \u2192 Advanced",
 				covers:
@@ -299,8 +299,8 @@ export const DATA: Category[] = [
 			{
 				id: "charts",
 				customizedComponent: false,
-				name: "Data Visualization — 103 Charts",
-				file: "100_Plus_Chart_Types_Cheatsheet.md",
+				name: "Data Visualization",
+				file: "Data_Visualization_Master_Cheatsheet.md",
 				status: "solid",
 				tagline: "103 chart types across matplotlib, seaborn & plotly",
 				covers:
