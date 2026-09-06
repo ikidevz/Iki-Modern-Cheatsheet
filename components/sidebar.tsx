@@ -136,7 +136,7 @@ export function Sidebar() {
 			<aside
 				className={cn(
 					"fixed bottom-0 left-0 z-40 w-75 transition-transform duration-200 motion-reduce:transition-none",
-					"border-r border-border bg-card overflow-y-auto flex flex-col",
+					"sidebar-scrollbar border-r border-border bg-card overflow-y-auto flex flex-col",
 					"md:static md:top-0! md:bottom-auto md:left-auto md:z-auto md:w-75 md:translate-x-0 md:transition-none md:shrink-0",
 					drawerOpen ? "translate-x-0" : "-translate-x-full",
 				)}

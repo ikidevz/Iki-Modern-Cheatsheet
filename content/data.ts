@@ -336,6 +336,21 @@ export const DATA: Category[] = [
 				],
 			},
 			{
+				id: "eda",
+				customizedComponent: true,
+				name: "Exploratory Data Analysis (EDA)",
+				status: "solid",
+				tagline: "A structured workflow for understanding data before modeling",
+				covers:
+					"A complete EDA workflow covering data overview, missing values, descriptive statistics, distributions, relationships, correlation, outliers, target analysis, domain-specific questions, and a pre-modeling checklist, with pandas and Plotly examples.",
+				fixes: [],
+				extend: [
+					"Add a project-specific dataset and connect the examples to a live profiling runtime",
+					"Add automated data-quality thresholds and report export",
+					"Add time-series decomposition and drift analysis",
+				],
+			},
+			{
 				id: "featureeng",
 				customizedComponent: true,
 				name: "Feature Engineering",

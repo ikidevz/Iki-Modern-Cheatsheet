@@ -10,6 +10,29 @@
 	}
 }
 
+.sidebar-scrollbar {
+	scrollbar-color: var(--sidebar-primary) var(--sidebar);
+	scrollbar-width: thin;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar {
+	width: 10px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-track {
+	background: var(--sidebar);
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb {
+	background: var(--sidebar-primary);
+	border: 3px solid var(--sidebar);
+	border-radius: 999px;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
+	background: var(--sidebar-accent);
+}
+
 :root {
 	--mobile-bar-h: calc(3.5rem + env(safe-area-inset-top));
 	--radius: 0.5rem;
