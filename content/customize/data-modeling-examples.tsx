@@ -1,4 +1,4 @@
-import { MarkdownContent } from "@/components/markdown-content";
+import { DataModelingExampleSelector } from "@/components/data-modeling-example-selector";
 import { getSheetBody } from "@/lib/get-sheet-body";
 
 const EXAMPLE_FILES = Array.from(
@@ -77,27 +77,7 @@ export async function DataModelingExamples() {
 				</p>
 			</div>
 
-			<div className='border-y border-border py-4 mb-8'>
-				<p className='text-sm font-medium mb-3'>Choose an example</p>
-				<div className='space-y-2' aria-live='polite'>
-					{examples.map((example, index) => (
-						<details key={example.id} open={index === 0} className='group'>
-							<summary className='cursor-pointer list-none rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted [&::-webkit-details-marker]:hidden'>
-								{String(index + 1).padStart(2, "0")} - {example.title}
-							</summary>
-							<div className='px-3 pt-4'>
-								{example.content ? (
-									<MarkdownContent source={example.content} />
-								) : (
-									<p className='text-muted-foreground'>
-										Example content is unavailable.
-									</p>
-								)}
-							</div>
-						</details>
-					))}
-				</div>
-			</div>
+			<DataModelingExampleSelector examples={examples} />
 		</div>
 	);
 }
