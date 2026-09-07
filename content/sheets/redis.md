@@ -24,6 +24,10 @@
   - [5. Gaming Leaderboard](#5-gaming-leaderboard)
   - [6. Shopping Cart (Hash)](#6-shopping-cart-hash)
   - [7. Message Queue (List)](#7-message-queue-list)
+- [Streams and Consumer Groups](#streams-and-consumer-groups)
+- [Pub/Sub vs Streams](#pubsub-vs-streams)
+- [Transactions and Optimistic Locking](#transactions-and-optimistic-locking)
+- [Sentinel and Redis Cluster](#sentinel-and-redis-cluster)
 - [Performance Optimization](#performance-optimization)
   - [Memory Optimization](#memory-optimization)
   - [Connection Optimization](#connection-optimization)
@@ -81,33 +85,33 @@ Redis (Remote Dictionary Server) is an in-memory data structure store used as a 
 
 **Data types at a glance**
 
-| Type | Think of it as | Typical use cases | Notes |
-|---|---|---|---|
-| String | A single value (text, number, or binary) | Sessions, caches, counters, locks | O(1) get/set, up to 512MB |
-| Hash | An object / dict of field→value | User profiles, shopping carts | O(1) per field, cheaper than many separate string keys |
-| List | A linked list | Queues, timelines, recent-items feeds | O(1) push/pop at head or tail, O(n) to access the middle |
-| Set | An unordered unique collection | Tags, membership checks, dedup | O(1) membership check, supports union/intersect/diff |
-| Sorted Set (ZSet) | A set ordered by a numeric score | Leaderboards, ranked feeds, priority queues | O(log n) insert/update, range queries by rank or score |
-| Bitmap | A string treated as a bit array | Feature flags, daily-active-user tracking | Extremely memory-efficient for boolean-per-ID data |
+| Type              | Think of it as                           | Typical use cases                           | Notes                                                    |
+| ----------------- | ---------------------------------------- | ------------------------------------------- | -------------------------------------------------------- |
+| String            | A single value (text, number, or binary) | Sessions, caches, counters, locks           | O(1) get/set, up to 512MB                                |
+| Hash              | An object / dict of field→value          | User profiles, shopping carts               | O(1) per field, cheaper than many separate string keys   |
+| List              | A linked list                            | Queues, timelines, recent-items feeds       | O(1) push/pop at head or tail, O(n) to access the middle |
+| Set               | An unordered unique collection           | Tags, membership checks, dedup              | O(1) membership check, supports union/intersect/diff     |
+| Sorted Set (ZSet) | A set ordered by a numeric score         | Leaderboards, ranked feeds, priority queues | O(log n) insert/update, range queries by rank or score   |
+| Bitmap            | A string treated as a bit array          | Feature flags, daily-active-user tracking   | Extremely memory-efficient for boolean-per-ID data       |
 
-**Generic key commands** *(apply to keys of any type — missing from the original guide)*
+**Generic key commands** _(apply to keys of any type — missing from the original guide)_
 
-| Command | Purpose |
-|---|---|
-| `EXISTS key` | Check whether a key exists |
-| `DEL key [key ...]` | Delete one or more keys |
-| `TYPE key` | Get the data type stored at a key |
-| `EXPIRE key seconds` | Set a TTL on a key |
-| `TTL key` / `PTTL key` | Time-to-live in seconds / ms (`-1` = no TTL, `-2` = key doesn't exist) |
-| `PERSIST key` | Remove a key's TTL, making it permanent |
-| `RENAME key newkey` | Rename a key |
-| `COPY source destination` | Copy a key's value to a new key |
-| `KEYS pattern` | Find keys matching a glob pattern — ⚠️ blocks the server, avoid in production |
+| Command                                 | Purpose                                                                              |
+| --------------------------------------- | ------------------------------------------------------------------------------------ |
+| `EXISTS key`                            | Check whether a key exists                                                           |
+| `DEL key [key ...]`                     | Delete one or more keys                                                              |
+| `TYPE key`                              | Get the data type stored at a key                                                    |
+| `EXPIRE key seconds`                    | Set a TTL on a key                                                                   |
+| `TTL key` / `PTTL key`                  | Time-to-live in seconds / ms (`-1` = no TTL, `-2` = key doesn't exist)               |
+| `PERSIST key`                           | Remove a key's TTL, making it permanent                                              |
+| `RENAME key newkey`                     | Rename a key                                                                         |
+| `COPY source destination`               | Copy a key's value to a new key                                                      |
+| `KEYS pattern`                          | Find keys matching a glob pattern — ⚠️ blocks the server, avoid in production        |
 | `SCAN cursor [MATCH pattern] [COUNT n]` | Non-blocking, cursor-based key iteration — the production-safe alternative to `KEYS` |
-| `RANDOMKEY` | Return a random key from the current database |
-| `DBSIZE` | Number of keys in the current database |
-| `FLUSHDB` / `FLUSHALL` | Delete all keys in the current / all databases — ⚠️ destructive |
-| `OBJECT ENCODING key` | Inspect the internal encoding Redis chose for a key (useful for memory tuning) |
+| `RANDOMKEY`                             | Return a random key from the current database                                        |
+| `DBSIZE`                                | Number of keys in the current database                                               |
+| `FLUSHDB` / `FLUSHALL`                  | Delete all keys in the current / all databases — ⚠️ destructive                      |
+| `OBJECT ENCODING key`                   | Inspect the internal encoding Redis chose for a key (useful for memory tuning)       |
 
 **Per-type command quick reference**
 
@@ -2285,6 +2289,215 @@ def send_email(to, subject, body): pass
 
 ---
 
+## Streams and Consumer Groups
+
+Redis Streams are append-only logs for event processing. Unlike Pub/Sub, entries remain available after they are written, so consumers can replay history, acknowledge work, and recover messages after a worker failure.
+
+### Core Stream Commands
+
+```redis
+# Add an event; Redis assigns a time-sortable ID.
+XADD events * type order.created order_id 9001
+
+# Read a range of entries.
+XRANGE events - + COUNT 10
+
+# Create a consumer group and read new entries as a named consumer.
+XGROUP CREATE events order-workers $ MKSTREAM
+XREADGROUP GROUP order-workers worker-1 COUNT 10 BLOCK 5000 STREAMS events >
+
+# Acknowledge successful processing and inspect abandoned work.
+XACK events order-workers 1710000000000-0
+XPENDING events order-workers
+XAUTOCLAIM events order-workers worker-2 60000 0-0 COUNT 100
+
+# Trim old entries to control memory.
+XTRIM events MAXLEN ~ 100000
+```
+
+The `>` ID means “entries never delivered to this group.” A consumer that reads an entry but does not acknowledge it leaves that entry pending. Use `XAUTOCLAIM` after a visibility timeout to move abandoned work to a healthy consumer.
+
+### Python Consumer Group
+
+```python
+import redis
+
+client = redis.Redis(host="localhost", port=6379, decode_responses=True)
+stream = "events"
+group = "order-workers"
+consumer = "worker-1"
+
+try:
+    client.xgroup_create(stream, group, id="$", mkstream=True)
+except redis.ResponseError as error:
+    if "BUSYGROUP" not in str(error):
+        raise
+
+while True:
+    batches = client.xreadgroup(
+        groupname=group,
+        consumername=consumer,
+        streams={stream: ">"},
+        count=10,
+        block=5_000,
+    )
+
+    for _, entries in batches:
+        for entry_id, fields in entries:
+            try:
+                process_order_event(fields)
+                client.xack(stream, group, entry_id)
+            except Exception:
+                # Leave the entry pending so another worker can reclaim it.
+                print(f"Failed to process {entry_id}: {fields}")
+```
+
+**Stream design rules:**
+
+1. Make handlers idempotent because a reclaimed event can be delivered more than once.
+2. Store a stable event ID in the business record when deduplication is required.
+3. Monitor pending counts and consumer idle time, not only stream length.
+4. Trim streams by age or approximate length after confirming replay requirements.
+5. Use one consumer group per independent processing workflow.
+
+---
+
+## Pub/Sub vs Streams
+
+Both features distribute events, but their delivery guarantees are different:
+
+| Requirement               | Pub/Sub                | Streams                   |
+| ------------------------- | ---------------------- | ------------------------- |
+| Subscriber must be online | Yes                    | No                        |
+| Replay missed messages    | No                     | Yes                       |
+| Consumer acknowledgements | No                     | Yes, with consumer groups |
+| Simple live notifications | Excellent              | Possible, but more setup  |
+| Durable background work   | Not suitable alone     | Good fit                  |
+| Ordering                  | Per connection/channel | Ordered by stream ID      |
+
+```python
+# Pub/Sub is useful for transient UI notifications.
+client.publish("notifications", '{"type":"toast","text":"Saved"}')
+
+# Streams are useful for work that must be processed later.
+client.xadd("jobs", {"type": "resize-image", "image_id": "img-42"})
+```
+
+Do not treat a successful `PUBLISH` return value as proof that an event was durably handled. For notifications that cannot be lost, write to a stream or another durable event system first.
+
+---
+
+## Transactions and Optimistic Locking
+
+`MULTI` and `EXEC` queue several commands and execute them together. They prevent other clients from interleaving commands, but they do not automatically roll back commands if one command later fails. Use `WATCH` when the operation depends on the current value of a key.
+
+```redis
+WATCH account:123:balance
+GET account:123:balance
+MULTI
+DECRBY account:123:balance 25
+LPUSH account:123:ledger "-25"
+EXEC
+```
+
+If another client changes the watched key, `EXEC` returns a null result and none of the queued commands run. Reload the value, re-check the business rule, and retry with a limit.
+
+```python
+def withdraw(account_id: str, amount: int, attempts: int = 3) -> bool:
+    balance_key = f"account:{account_id}:balance"
+    ledger_key = f"account:{account_id}:ledger"
+
+    for _ in range(attempts):
+        try:
+            with client.pipeline() as pipe:
+                pipe.watch(balance_key)
+                balance = int(pipe.get(balance_key) or 0)
+                if balance < amount:
+                    pipe.unwatch()
+                    return False
+
+                pipe.multi()
+                pipe.decrby(balance_key, amount)
+                pipe.lpush(ledger_key, str(-amount))
+                pipe.execute()
+                return True
+        except redis.WatchError:
+            continue
+
+    raise RuntimeError("Account changed too frequently; retry later")
+```
+
+Use a Lua script instead when the invariant involves several reads and writes that must be evaluated atomically on the server. Keep scripts short, deterministic, and free of slow external work.
+
+---
+
+## Sentinel and Redis Cluster
+
+Sentinel and Redis Cluster solve different scaling problems:
+
+| Mode     | Main purpose                             | Data placement                             |
+| -------- | ---------------------------------------- | ------------------------------------------ |
+| Sentinel | Automatic primary failover and discovery | One primary dataset replicated to replicas |
+| Cluster  | Horizontal sharding and failover         | Keys distributed across 16,384 hash slots  |
+
+### Sentinel Client Configuration
+
+```python
+from redis.sentinel import Sentinel
+
+sentinel = Sentinel(
+    [("sentinel-1", 26379), ("sentinel-2", 26379), ("sentinel-3", 26379)],
+    socket_timeout=0.5,
+)
+
+primary = sentinel.master_for(
+    "mymaster",
+    socket_timeout=0.5,
+    password="strong-password",
+    decode_responses=True,
+)
+primary.set("healthcheck", "ok", ex=60)
+```
+
+Sentinel provides discovery, not sharding. Applications should configure timeouts and retry policies because a failover briefly interrupts connections. Do not assume a replica is immediately consistent with the primary when reading newly written data.
+
+### Cluster Commands and Hash Tags
+
+```bash
+# Create three primaries with one replica for each.
+redis-cli --cluster create \\
+  10.0.0.11:6379 10.0.0.12:6379 10.0.0.13:6379 \\
+  10.0.0.21:6379 10.0.0.22:6379 10.0.0.23:6379 \\
+  --cluster-replicas 1
+
+redis-cli --cluster check 10.0.0.11:6379
+redis-cli --cluster rebalance 10.0.0.11:6379
+```
+
+Multi-key commands work only when all keys belong to the same slot. Hash tags force related keys into one slot:
+
+```text
+cart:{user-123}:items
+cart:{user-123}:coupons
+```
+
+The text inside `{}` is hashed, so both keys share a slot. Use hash tags sparingly: putting a very large customer or tenant into one slot can create a hot shard.
+
+### Redis Stack: JSON and Search
+
+If Redis Stack modules are enabled, RedisJSON stores structured documents and RediSearch indexes them. This is useful when serialized JSON needs server-side filtering, but it adds module-specific operational and compatibility requirements.
+
+```redis
+JSON.SET user:123 $ '{"name":"Ada","roles":["admin"],"active":true}'
+JSON.GET user:123 $.roles
+FT.CREATE users-idx ON JSON PREFIX 1 user: SCHEMA $.name AS name TEXT $.active AS active TAG
+FT.SEARCH users-idx '@active:{true}'
+```
+
+Use ordinary hashes and sets when simple field access is enough. Choose JSON/Search when document queries, secondary indexes, or nested structures justify the added complexity.
+
+---
+
 ## Performance Optimization
 
 ### Memory Optimization
@@ -2808,12 +3021,8 @@ Redis is a powerful tool that can dramatically improve application performance w
 
 ## Additional Resources
 
-- **Official Documentation:** https://redis.io/documentation
-- **Redis Commands:** https://redis.io/commands
-- **Redis Python Client:** https://redis-py.readthedocs.io/
-- **Redis Best Practices:** https://redis.io/topics/best-practices
-- **Redis University:** https://university.redis.com/
-
----
-
-_Last Updated: January 2025_
+- **Official Documentation**
+- **Redis Commands**
+- **Redis Python Client**
+- **Redis Best Practices**
+- **Redis University**

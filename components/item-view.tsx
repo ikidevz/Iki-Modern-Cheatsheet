@@ -9,9 +9,12 @@ import {
 	type Subcategory,
 } from "@/lib/types";
 import { MarkdownContent } from "@/components/markdown-content";
-import { CUSTOMIZED_COMPONENTS } from "@/content/customize";
+import {
+	ASYNC_CUSTOMIZED_COMPONENTS,
+	CUSTOMIZED_COMPONENTS,
+} from "@/content/customize";
 
-export function ItemView({
+export async function ItemView({
 	category,
 	sub,
 	item,
@@ -30,6 +33,9 @@ export function ItemView({
 	const categorySlug = "slug" in category ? category.slug : category.key;
 	const CustomizedComponent = item.customizedComponent
 		? CUSTOMIZED_COMPONENTS[item.id]
+		: undefined;
+	const AsyncCustomizedComponent = item.customizedComponent
+		? ASYNC_CUSTOMIZED_COMPONENTS[item.id]
 		: undefined;
 
 	return (
@@ -80,7 +86,9 @@ export function ItemView({
 				{item.tagline}
 			</p>
 
-			{CustomizedComponent ? (
+			{AsyncCustomizedComponent ? (
+				await AsyncCustomizedComponent({ item, body })
+			) : CustomizedComponent ? (
 				<CustomizedComponent item={item} body={body} />
 			) : body ? (
 				<MarkdownContent source={body} />

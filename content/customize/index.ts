@@ -1,7 +1,8 @@
-import type { ComponentType } from "react";
+import type { ReactNode } from "react";
 import type { Sheet } from "@/lib/types";
 import { AbTesting } from "./abtesting";
 import { Clustering } from "./clustering";
+import { DataModelingExamples } from "./data-modeling-examples";
 import { DataEngineeringPatterns } from "./depatterns";
 import { ExploratoryDataAnalysis } from "./eda";
 import { FeatureEngineering } from "./featureeng";
@@ -12,14 +13,26 @@ export type CustomizedComponentProps = {
 	body: string | null;
 };
 
-export const CUSTOMIZED_COMPONENTS: Record<
-	string,
-	ComponentType<CustomizedComponentProps>
-> = {
+export type CustomizedComponent = (
+	props: CustomizedComponentProps,
+) => ReactNode;
+
+export type AsyncCustomizedComponent = (
+	props: CustomizedComponentProps,
+) => Promise<ReactNode>;
+
+export const CUSTOMIZED_COMPONENTS: Record<string, CustomizedComponent> = {
 	abtesting: AbTesting,
 	clustering: Clustering,
 	depatterns: DataEngineeringPatterns,
 	eda: ExploratoryDataAnalysis,
 	featureeng: FeatureEngineering,
 	mathstats: MathStats,
+};
+
+export const ASYNC_CUSTOMIZED_COMPONENTS: Record<
+	string,
+	AsyncCustomizedComponent
+> = {
+	"data-modeling-examples": DataModelingExamples,
 };

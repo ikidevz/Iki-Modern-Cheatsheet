@@ -300,7 +300,7 @@ export const DATA: Category[] = [
 				id: "charts",
 				customizedComponent: false,
 				name: "Data Visualization",
-				file: "Data_Visualization_Master_Cheatsheet.md",
+				file: "Data Visualization/Master_Cheatsheet.md",
 				status: "solid",
 				tagline: "103 chart types across matplotlib, seaborn & plotly",
 				covers:
@@ -382,8 +382,8 @@ export const DATA: Category[] = [
 				id: "dsa-time-space",
 				customizedComponent: false,
 				name: "Time & Space Complexity",
-				file: "DSA_Time_Space_Complexity.md",
-				status: "planned",
+				file: "Data Structure and Algo/Time_Space_Complexity.md",
+				status: "solid",
 				tagline:
 					"Big-O and the complexity classes every other topic here assumes",
 				covers:
@@ -402,8 +402,8 @@ export const DATA: Category[] = [
 				id: "dsa-hashmaps",
 				customizedComponent: false,
 				name: "Hashmaps / Sets",
-				file: "DSA_Hashmaps_Sets.md",
-				status: "planned",
+				file: "Data Structure and Algo/Hashmaps_Sets.md",
+				status: "solid",
 				tagline: "Hash-based lookup — trading space for O(1) average time",
 				covers:
 					"How Python\u2019s dict and set actually work under the hood, and the pattern — trade space for time via O(1) average lookup — that solves more interview and real-world problems than any other single trick.",
@@ -421,8 +421,8 @@ export const DATA: Category[] = [
 				id: "dsa-two-pointers",
 				customizedComponent: false,
 				name: "Two Pointers",
-				file: "DSA_Two_Pointers.md",
-				status: "planned",
+				file: "Data Structure and Algo/Two_Pointers.md",
+				status: "solid",
 				tagline: "Two indices moving through a sequence to avoid nested loops",
 				covers:
 					"Collapsing an O(n\u00b2) nested-loop scan into O(n) by moving two pointers through sorted or structured data — one of the most common ways an interview question\u2019s brute force gets optimized.",
@@ -439,8 +439,8 @@ export const DATA: Category[] = [
 				id: "dsa-stacks",
 				customizedComponent: false,
 				name: "Stacks",
-				file: "DSA_Stacks.md",
-				status: "planned",
+				file: "Data Structure and Algo/Stacks.md",
+				status: "solid",
 				tagline:
 					"LIFO structure for matching, backtracking state, and monotonic sequences",
 				covers:
@@ -458,8 +458,8 @@ export const DATA: Category[] = [
 				id: "dsa-linked-list",
 				customizedComponent: false,
 				name: "Linked List",
-				file: "DSA_Linked_List.md",
-				status: "planned",
+				file: "Data Structure and Algo/Linked_List.md",
+				status: "solid",
 				tagline: "Pointer-based sequences — reversal, cycle detection, merging",
 				covers:
 					"Singly and doubly linked lists in Python (there\u2019s no built-in — you\u2019re always implementing the node class yourself), and the pointer-manipulation patterns that show up constantly: reversal, cycle detection, merging.",
@@ -477,8 +477,8 @@ export const DATA: Category[] = [
 				id: "dsa-binary-search",
 				customizedComponent: false,
 				name: "Binary Search",
-				file: "DSA_Binary_Search.md",
-				status: "planned",
+				file: "Data Structure and Algo/Binary_Search.md",
+				status: "solid",
 				tagline:
 					'O(log n) search, and the problem shapes that aren\u2019t obviously "search a sorted array"',
 				covers:
@@ -496,8 +496,8 @@ export const DATA: Category[] = [
 				id: "dsa-sliding-window",
 				customizedComponent: false,
 				name: "Sliding Window",
-				file: "DSA_Sliding_Window.md",
-				status: "planned",
+				file: "Data Structure and Algo/Sliding_Window.md",
+				status: "solid",
 				tagline:
 					"A contiguous window that grows and shrinks to avoid re-scanning",
 				covers:
@@ -515,8 +515,8 @@ export const DATA: Category[] = [
 				id: "dsa-trees",
 				customizedComponent: false,
 				name: "Trees",
-				file: "DSA_Trees.md",
-				status: "planned",
+				file: "Data Structure and Algo/Trees.md",
+				status: "solid",
 				tagline:
 					"Hierarchical structures — traversal orders, BSTs, and the recursion template behind both",
 				covers:
@@ -535,8 +535,8 @@ export const DATA: Category[] = [
 				id: "dsa-heaps",
 				customizedComponent: false,
 				name: "Heaps",
-				file: "DSA_Heaps.md",
-				status: "planned",
+				file: "Data Structure and Algo/Heaps.md",
+				status: "solid",
 				tagline:
 					"Priority queues — always-O(log n) access to the min or max element",
 				covers:
@@ -555,8 +555,8 @@ export const DATA: Category[] = [
 				id: "dsa-backtracking",
 				customizedComponent: false,
 				name: "Recursive Backtracking",
-				file: "DSA_Recursive_Backtracking.md",
-				status: "planned",
+				file: "Data Structure and Algo/Recursive_Backtracking.md",
+				status: "solid",
 				tagline:
 					"Choose, explore, undo — for permutations, combinations, and constraint search",
 				covers:
@@ -574,8 +574,8 @@ export const DATA: Category[] = [
 				id: "dsa-graphs",
 				customizedComponent: false,
 				name: "Graphs",
-				file: "DSA_Graphs.md",
-				status: "planned",
+				file: "Data Structure and Algo/Graphs.md",
+				status: "solid",
 				tagline: "Traversal, shortest paths, and topological ordering",
 				covers:
 					"Graph representations (adjacency list vs. matrix), the two core traversals (BFS/DFS) and what each is suited for, and topological sort — the algorithm underneath every DAG-based orchestrator already covered elsewhere in this index.",
@@ -600,7 +600,7 @@ export const DATA: Category[] = [
 				customizedComponent: true,
 				name: "Data Engineering Patterns",
 				file: "Data_Engineering_Patterns.md",
-				status: "planned",
+				status: "solid",
 				tagline:
 					"Architectural and pipeline-design patterns, independent of any specific tool",
 				covers:
@@ -645,7 +645,7 @@ export const DATA: Category[] = [
 				customizedComponent: false,
 				name: "FastAPI",
 				file: "FastAPI_Cheatsheet.md",
-				status: "planned",
+				status: "solid",
 				tagline:
 					"Modern Python APIs with async endpoints, validation, and dependency injection",
 				covers:
@@ -666,8 +666,8 @@ export const DATA: Category[] = [
 				id: "regex",
 				customizedComponent: false,
 				name: "Regex",
-				file: "Regex.md",
-				status: "planned",
+				file: "regex.md",
+				status: "solid",
 				tagline:
 					"Pattern syntax for text parsing, validation, and log/data cleaning",
 				covers:
@@ -684,27 +684,201 @@ export const DATA: Category[] = [
 					'A "test before you ship" note pointing at a regex tester, since silent partial-matches are the most common regex bug',
 				],
 			},
+		],
+	},
+	{
+		key: "modeling",
+		label: "Data Modeling",
+		items: [
 			{
-				id: "datamodeling",
+				id: "modeling-fundamentals",
 				customizedComponent: false,
-				name: "Data Modeling",
-				file: "Data_Modeling.md",
-				status: "planned",
-				tagline:
-					"Star schema, fact/dimension design, and SCDs as their own reference",
+				name: "Fundamentals",
+				file: "Data Modeling/01-fundamentals.md",
+				status: "solid",
+				tagline: "The foundations, vocabulary, and goals of data modeling",
 				covers:
-					"Dimensional modeling as a first-class topic rather than something scattered across the warehouse-specific sheets: when to use a star vs. snowflake schema, how to actually design fact and dimension tables, and grain — the single most-skipped step that causes the most downstream pain.",
+					"Core concepts and terminology needed to design data models, including entities, attributes, relationships, keys, constraints, and the role of a model in a data system.",
 				fixes: [],
 				extend: [
-					"Star schema vs. snowflake schema — tradeoffs, not just diagrams",
-					"Fact table types: transaction, periodic snapshot, accumulating snapshot",
-					"Dimension design: conformed dimensions, junk dimensions, degenerate dimensions",
-					"Grain — defining it explicitly before building anything, and the symptoms of getting it wrong",
-					"Slowly changing dimensions (Type 0\u20136) with concrete before/after row examples, not just the theory already in Data Engineering Patterns",
-					"Bridge tables for many-to-many relationships",
-					"Kimball vs. Inmon vs. Data Vault — a short honest comparison, not a religious war",
-					"Naming conventions and a checklist for reviewing a new model before it ships",
+					"Entities, attributes, relationships, keys, and constraints",
+					"Grain, scope, and business rules",
+					"Conceptual, logical, and physical model boundaries",
+					"Choosing a model based on access patterns and business requirements",
 				],
+			},
+			{
+				id: "modeling-conceptual",
+				customizedComponent: false,
+				name: "Conceptual Data Modeling",
+				file: "Data Modeling/02-conceptual-modeling.md",
+				status: "solid",
+				tagline:
+					"Represent business concepts and relationships without implementation details",
+				covers:
+					"Business-focused modeling with entities, relationships, cardinality, and subject areas before choosing tables or database types.",
+				fixes: [],
+				extend: [
+					"Entity-relationship diagrams",
+					"Cardinality and optionality",
+					"Generalization and specialization",
+					"Stakeholder validation and scope control",
+				],
+			},
+			{
+				id: "modeling-logical",
+				customizedComponent: false,
+				name: "Logical Data Modeling",
+				file: "Data Modeling/03-logical-modeling.md",
+				status: "solid",
+				tagline:
+					"Define precise attributes, keys, and rules independent of a database engine",
+				covers:
+					"Detailed, technology-agnostic structures that turn business concepts into entities, attributes, identifiers, relationships, and enforceable rules.",
+				fixes: [],
+				extend: [
+					"Natural and surrogate keys",
+					"Optionality and relationship rules",
+					"Domain definitions",
+					"Logical-to-physical mapping",
+				],
+			},
+			{
+				id: "modeling-normalization",
+				customizedComponent: false,
+				name: "Normalization & Denormalization",
+				file: "Data Modeling/04-normalization-denormalization.md",
+				status: "solid",
+				tagline:
+					"Balance data integrity, storage efficiency, and query performance",
+				covers:
+					"Normalization forms and deliberate denormalization techniques for reducing anomalies while keeping analytical and operational workloads practical.",
+				fixes: [],
+				extend: [
+					"1NF, 2NF, 3NF, and BCNF",
+					"Insert, update, and delete anomalies",
+					"When denormalization is justified",
+					"Tradeoffs for OLTP and OLAP",
+				],
+			},
+			{
+				id: "modeling-physical",
+				customizedComponent: false,
+				name: "Physical Data Modeling",
+				file: "Data Modeling/05-physical-modeling.md",
+				status: "solid",
+				tagline:
+					"Translate a logical model into an efficient database implementation",
+				covers:
+					"Engine-specific decisions for data types, indexes, partitions, storage, naming, and performance while preserving the logical design intent.",
+				fixes: [],
+				extend: [
+					"Data types and precision",
+					"Indexes and access paths",
+					"Partitioning and clustering",
+					"Constraints and storage layouts",
+				],
+			},
+			{
+				id: "modeling-relational",
+				customizedComponent: false,
+				name: "Relational Modeling",
+				file: "Data Modeling/06-relational-modeling.md",
+				status: "solid",
+				tagline:
+					"Design tables and relationships for relational database systems",
+				covers:
+					"Relational schemas, primary and foreign keys, joins, constraints, associative entities, and practical table design for transactional systems.",
+				fixes: [],
+				extend: [
+					"One-to-one, one-to-many, and many-to-many relationships",
+					"Junction tables",
+					"Referential integrity",
+					"Views and schema evolution",
+				],
+			},
+			{
+				id: "modeling-dimensional",
+				customizedComponent: false,
+				name: "Dimensional Modeling",
+				file: "Data Modeling/07-dimensional-modeling.md",
+				status: "solid",
+				tagline: "Model analytical data for reporting and warehouse workloads",
+				covers:
+					"Fact and dimension design, grain, star and snowflake schemas, slowly changing dimensions, and the patterns that make warehouse queries useful and predictable.",
+				fixes: [],
+				extend: [
+					"Transaction and snapshot facts",
+					"Conformed, junk, and degenerate dimensions",
+					"Slowly changing dimensions",
+					"Kimball and Data Vault comparisons",
+				],
+			},
+			{
+				id: "modeling-nosql",
+				customizedComponent: false,
+				name: "NoSQL Data Modeling",
+				file: "Data Modeling/08-nosql-modeling.md",
+				status: "solid",
+				tagline:
+					"Design around access patterns in document, key-value, wide-column, and graph stores",
+				covers:
+					"NoSQL modeling choices, denormalization, partition keys, document boundaries, consistency, and selecting a model based on query and scale requirements.",
+				fixes: [],
+				extend: [
+					"Document and aggregate design",
+					"Partition and sort keys",
+					"Consistency and duplication tradeoffs",
+					"Graph relationships and traversal patterns",
+				],
+			},
+			{
+				id: "modeling-notations-tools",
+				customizedComponent: false,
+				name: "Notations & Tools",
+				file: "Data Modeling/09-notations-tools.md",
+				status: "solid",
+				tagline:
+					"Communicate and maintain models with the right diagrams and tooling",
+				covers:
+					"ERD and modeling notations, diagramming conventions, catalog tools, version control, and collaborative review practices.",
+				fixes: [],
+				extend: [
+					"Crow's Foot and Chen notation",
+					"UML and relational diagrams",
+					"Modeling and catalog tools",
+					"Documentation and version control workflows",
+				],
+			},
+			{
+				id: "modeling-best-practices",
+				customizedComponent: false,
+				name: "Best Practices & Anti-patterns",
+				file: "Data Modeling/10-best-practices-antipatterns.md",
+				status: "solid",
+				tagline:
+					"Review models for clarity, correctness, maintainability, and operational fit",
+				covers:
+					"Practical modeling principles, review checklists, common anti-patterns, and the tradeoffs that affect long-term data quality and usability.",
+				fixes: [],
+				extend: [
+					"Explicit grain and ownership",
+					"Naming and consistency standards",
+					"Avoiding over-modeling and under-modeling",
+					"Model review and evolution checklists",
+				],
+			},
+			{
+				id: "data-modeling-examples",
+				customizedComponent: true,
+				name: "Examples",
+				status: "planned",
+				tagline:
+					"Real-world data modeling examples for different domains and use cases",
+				covers:
+					"Practical examples of data models for various industries, including e-commerce, healthcare, finance, and social media, demonstrating the application of modeling principles and best practices.",
+				fixes: [],
+				extend: [],
 			},
 		],
 	},
@@ -727,8 +901,9 @@ export const DATA: Category[] = [
 						id: "dp-singleton",
 						customizedComponent: false,
 						name: "Singleton",
+						file: "Design Patterns/singleton.md",
 						slug: "singleton",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Ensure a class has only one instance, with global access to it",
 						covers:
@@ -745,9 +920,10 @@ export const DATA: Category[] = [
 					{
 						id: "dp-factory-method",
 						customizedComponent: false,
-						name: "Factory Method",
-						slug: "factory-method",
-						status: "planned",
+						name: "Factory",
+						file: "Design Patterns/factory.md",
+						slug: "factory",
+						status: "solid",
 						tagline: "Defer object instantiation to subclasses",
 						covers:
 							"Lets a base class define the shape of creation while subclasses decide what gets created — the pattern behind picking the right loader class based on file type or source system.",
@@ -763,8 +939,9 @@ export const DATA: Category[] = [
 						id: "dp-abstract-factory",
 						customizedComponent: false,
 						name: "Abstract Factory",
+						file: "Design Patterns/abstract-factory.md",
 						slug: "abstract-factory",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Produce families of related objects without specifying concrete classes",
 						covers:
@@ -781,8 +958,9 @@ export const DATA: Category[] = [
 						id: "dp-builder",
 						customizedComponent: false,
 						name: "Builder",
+						file: "Design Patterns/builder.md",
 						slug: "builder",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Separate the construction of a complex object from its representation",
 						covers:
@@ -799,8 +977,9 @@ export const DATA: Category[] = [
 						id: "dp-prototype",
 						customizedComponent: false,
 						name: "Prototype",
+						file: "Design Patterns/prototype.md",
 						slug: "prototype",
-						status: "planned",
+						status: "solid",
 						tagline: "Create new objects by copying an existing instance",
 						covers:
 							"Cloning an existing, pre-configured object instead of building from scratch — useful for spinning up variations of an expensive-to-construct config object.",
@@ -828,8 +1007,9 @@ export const DATA: Category[] = [
 						id: "dp-adapter",
 						customizedComponent: false,
 						name: "Adapter",
+						file: "Design Patterns/adapter.md",
 						slug: "adapter",
-						status: "planned",
+						status: "solid",
 						tagline: "Convert one interface into another that a client expects",
 						covers:
 							"The pattern data engineers use constantly without naming it — wrapping an inconsistent vendor SDK or legacy API behind a uniform interface your pipeline code actually wants to call.",
@@ -845,8 +1025,9 @@ export const DATA: Category[] = [
 						id: "dp-bridge",
 						customizedComponent: false,
 						name: "Bridge",
+						file: "Design Patterns/bridge.md",
 						slug: "bridge",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Decouple an abstraction from its implementation so both can vary independently",
 						covers:
@@ -863,8 +1044,9 @@ export const DATA: Category[] = [
 						id: "dp-composite",
 						customizedComponent: false,
 						name: "Composite",
+						file: "Design Patterns/composite.md",
 						slug: "composite",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Compose objects into tree structures and treat individual objects and compositions uniformly",
 						covers:
@@ -881,8 +1063,9 @@ export const DATA: Category[] = [
 						id: "dp-decorator",
 						customizedComponent: false,
 						name: "Decorator",
+						file: "Design Patterns/decorator.md",
 						slug: "decorator",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Attach additional responsibilities to an object dynamically",
 						covers:
@@ -899,8 +1082,9 @@ export const DATA: Category[] = [
 						id: "dp-facade",
 						customizedComponent: false,
 						name: "Facade",
+						file: "Design Patterns/facade.md",
 						slug: "facade",
-						status: "planned",
+						status: "solid",
 						tagline: "Provide a simplified interface to a complex subsystem",
 						covers:
 							"One clean entry point in front of a multi-step process — hiding the extract/validate/transform/load orchestration behind a single run_pipeline() call.",
@@ -916,8 +1100,9 @@ export const DATA: Category[] = [
 						id: "dp-flyweight",
 						customizedComponent: false,
 						name: "Flyweight",
+						file: "Design Patterns/flyweight.md",
 						slug: "flyweight",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Share common state across many objects to reduce memory footprint",
 						covers:
@@ -934,8 +1119,9 @@ export const DATA: Category[] = [
 						id: "dp-proxy",
 						customizedComponent: false,
 						name: "Proxy",
+						file: "Design Patterns/proxy.md",
 						slug: "proxy",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Provide a stand-in for another object to control access to it",
 						covers:
@@ -964,8 +1150,9 @@ export const DATA: Category[] = [
 						id: "dp-chain-of-responsibility",
 						customizedComponent: false,
 						name: "Chain of Responsibility",
+						file: "Design Patterns/chain-of-responsibility.md",
 						slug: "chain-of-responsibility",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Pass a request along a chain of handlers until one handles it",
 						covers:
@@ -982,8 +1169,9 @@ export const DATA: Category[] = [
 						id: "dp-command",
 						customizedComponent: false,
 						name: "Command",
+						file: "Design Patterns/command.md",
 						slug: "command",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Encapsulate a request as an object, allowing queuing, logging, and undo",
 						covers:
@@ -1000,8 +1188,9 @@ export const DATA: Category[] = [
 						id: "dp-interpreter",
 						customizedComponent: false,
 						name: "Interpreter",
+						file: "Design Patterns/interpreter.md",
 						slug: "interpreter",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Define a grammar and an interpreter for a simple language",
 						covers:
@@ -1018,8 +1207,9 @@ export const DATA: Category[] = [
 						id: "dp-iterator",
 						customizedComponent: false,
 						name: "Iterator",
+						file: "Design Patterns/iterator.md",
 						slug: "iterator",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Access elements of a collection sequentially without exposing its structure",
 						covers:
@@ -1036,8 +1226,9 @@ export const DATA: Category[] = [
 						id: "dp-mediator",
 						customizedComponent: false,
 						name: "Mediator",
+						file: "Design Patterns/mediator.md",
 						slug: "mediator",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Define an object that encapsulates how a set of objects interact",
 						covers:
@@ -1054,8 +1245,9 @@ export const DATA: Category[] = [
 						id: "dp-memento",
 						customizedComponent: false,
 						name: "Memento",
+						file: "Design Patterns/memento.md",
 						slug: "memento",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Capture and externalize an object\u2019s internal state to restore it later",
 						covers:
@@ -1072,8 +1264,9 @@ export const DATA: Category[] = [
 						id: "dp-observer",
 						customizedComponent: false,
 						name: "Observer",
+						file: "Design Patterns/observer.md",
 						slug: "observer",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Notify dependents automatically when one object changes state",
 						covers:
@@ -1090,8 +1283,9 @@ export const DATA: Category[] = [
 						id: "dp-state",
 						customizedComponent: false,
 						name: "State",
+						file: "Design Patterns/state.md",
 						slug: "state",
-						status: "planned",
+						status: "solid",
 						tagline:
 							"Let an object alter its behavior when its internal state changes",
 						covers:
@@ -1116,8 +1310,8 @@ export const DATA: Category[] = [
 				id: "s3",
 				customizedComponent: false,
 				name: "Amazon S3",
-				file: "AWS_S3.md",
-				status: "planned",
+				file: "AWS/S3.md",
+				status: "solid",
 				tagline: "Object storage as the data lake foundation",
 				covers:
 					"S3 as the landing zone and data lake backbone: bucket/prefix conventions for a lake, storage classes and lifecycle transitions, event notifications for triggering downstream jobs, and the access-pattern gotchas that affect cost and performance at scale.",
@@ -1136,8 +1330,8 @@ export const DATA: Category[] = [
 				id: "glue",
 				customizedComponent: false,
 				name: "AWS Glue",
-				file: "AWS_Glue.md",
-				status: "planned",
+				file: "AWS/Glue.md",
+				status: "solid",
 				tagline: "Serverless ETL, Data Catalog, and crawlers",
 				covers:
 					"Glue as both a Spark-based ETL runtime and the shared Data Catalog that Athena, Redshift Spectrum, and EMR all read from — job types, crawler behavior and its rough edges, and when Glue is the right choice versus a self-managed Spark cluster.",
@@ -1156,8 +1350,8 @@ export const DATA: Category[] = [
 				id: "redshift",
 				customizedComponent: false,
 				name: "Amazon Redshift",
-				file: "AWS_Redshift.md",
-				status: "planned",
+				file: "AWS/Redshift.md",
+				status: "solid",
 				tagline:
 					"The AWS data warehouse — distribution styles, sort keys, Spectrum",
 				covers:
@@ -1177,8 +1371,8 @@ export const DATA: Category[] = [
 				id: "emr",
 				customizedComponent: false,
 				name: "Amazon EMR",
-				file: "AWS_EMR.md",
-				status: "planned",
+				file: "AWS/EMR.md",
+				status: "solid",
 				tagline:
 					"Managed Hadoop/Spark clusters for when Glue\u2019s limits don\u2019t fit",
 				covers:
@@ -1198,8 +1392,8 @@ export const DATA: Category[] = [
 				id: "athena",
 				customizedComponent: false,
 				name: "Amazon Athena",
-				file: "AWS_Athena.md",
-				status: "planned",
+				file: "AWS/Athena.md",
+				status: "solid",
 				tagline: "Serverless SQL over S3, no infrastructure to manage",
 				covers:
 					"Athena as a pay-per-query engine over data already in S3: how partitioning and file format choice directly control your bill, when CTAS beats a view, and the Athena-specific gotchas around small files and result caching.",
@@ -1218,8 +1412,8 @@ export const DATA: Category[] = [
 				id: "lambda",
 				customizedComponent: false,
 				name: "AWS Lambda",
-				file: "AWS_Lambda.md",
-				status: "planned",
+				file: "AWS/Lambda.md",
+				status: "solid",
 				tagline:
 					"Event-driven compute for glue code, triggers, and lightweight transforms",
 				covers:
@@ -1239,8 +1433,8 @@ export const DATA: Category[] = [
 				id: "kinesis",
 				customizedComponent: false,
 				name: "Amazon Kinesis",
-				file: "AWS_Kinesis.md",
-				status: "planned",
+				file: "AWS/Kinesis.md",
+				status: "solid",
 				tagline:
 					"Managed streaming — Data Streams, Firehose, and Analytics compared",
 				covers:
@@ -1260,8 +1454,8 @@ export const DATA: Category[] = [
 				id: "stepfunctions",
 				customizedComponent: false,
 				name: "AWS Step Functions",
-				file: "AWS_Step_Functions.md",
-				status: "planned",
+				file: "AWS/Step Functions.md",
+				status: "solid",
 				tagline:
 					"Serverless orchestration — state machines for pipeline coordination",
 				covers:
@@ -1281,8 +1475,8 @@ export const DATA: Category[] = [
 				id: "mwaa",
 				customizedComponent: false,
 				name: "Amazon MWAA (Managed Airflow)",
-				file: "AWS_MWAA.md",
-				status: "planned",
+				file: "AWS/MWAA.md",
+				status: "solid",
 				tagline: "Managed Apache Airflow, without running your own scheduler",
 				covers:
 					"MWAA as Airflow without the operational overhead: environment sizing, the plugin/dependency install model that differs from self-hosted Airflow, and the patterns for triggering AWS services from a DAG.",

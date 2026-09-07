@@ -59,7 +59,9 @@ function normalizeHeadingIds() {
 				/^h[1-6]$/.test(node.tagName ?? "") &&
 				typeof node.properties?.id === "string"
 			) {
-				node.properties.id = node.properties.id.replace(/^-+/, "");
+				node.properties.id = node.properties.id
+					.replace(/^-+/, "")
+					.replace(/---/g, "--");
 			}
 
 			for (const child of node.children ?? []) visit(child);

@@ -59,6 +59,7 @@ export const CAT_CLASS: Record<string, { dot: string; border: string }> = {
 	infra: { dot: "bg-cat-infra", border: "border-cat-infra" },
 	ds: { dot: "bg-cat-ds", border: "border-cat-ds" },
 	eng: { dot: "bg-cat-eng", border: "border-cat-eng" },
+	modeling: { dot: "bg-cat-eng", border: "border-cat-eng" },
 	aws: { dot: "bg-cat-aws", border: "border-cat-aws" },
 	dsa: { dot: "bg-cat-dsa", border: "border-cat-dsa" },
 	designpatterns: { dot: "bg-cat-eng", border: "border-cat-eng" },

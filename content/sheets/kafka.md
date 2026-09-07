@@ -228,30 +228,24 @@ producer = KafkaProducer(
 **Configuration Parameters Explained:**
 
 - **acks** (Acknowledgment Level):
-
   - `0`: No acknowledgment (fastest, least safe)
   - `1`: Leader broker acknowledges (balanced)
   - `'all'`: All replicas acknowledge (slowest, most safe)
   - **Purpose**: Controls durability vs. speed trade-off
 
 - **retries**: Number of retry attempts for failed sends
-
   - **Purpose**: Handles transient network failures
 
 - **batch_size**: Maximum bytes to batch before sending (default: 16384)
-
   - **Purpose**: Improves throughput by grouping messages
 
 - **linger_ms**: Time to wait before sending batch (default: 0)
-
   - **Purpose**: Allows more messages to accumulate in batch
 
 - **buffer_memory**: Total memory for buffering (default: 33554432 = 32MB)
-
   - **Purpose**: Prevents OutOfMemory when producers are faster than network
 
 - **compression_type**: Compress messages to reduce network bandwidth
-
   - `'gzip'`: Best compression, slower
   - `'snappy'`: Balanced compression/speed
   - `'lz4'`: Fast compression
@@ -281,24 +275,19 @@ consumer = KafkaConsumer(
 **Configuration Parameters Explained:**
 
 - **group_id**: Consumer group identifier
-
   - **Purpose**: Enables load balancing and fault tolerance
   - Consumers in same group share partition consumption
 
 - **auto_commit_interval_ms**: Frequency of automatic offset commits (default: 5000)
-
   - **Purpose**: Controls commit frequency vs. duplicate processing risk
 
 - **max_poll_records**: Maximum records returned per poll() call (default: 500)
-
   - **Purpose**: Controls memory usage and processing batch size
 
 - **max_poll_interval_ms**: Maximum time between poll() calls (default: 300000 = 5 min)
-
   - **Purpose**: Prevents consumer being marked as dead during slow processing
 
 - **session_timeout_ms**: Maximum time between heartbeats (default: 10000 = 10 sec)
-
   - **Purpose**: Controls failure detection speed
   - Lower = faster detection, but more sensitive to GC pauses
 
@@ -604,32 +593,26 @@ producer = KafkaProducer(
 ### Optimization Strategies
 
 1. **Use batch sending for producers with appropriate `linger_ms` and `batch_size`**
-
    - **Purpose**: Reduce network overhead by grouping messages
    - **Recommendation**: Set `linger_ms=10-50` and `batch_size=16384-131072`
 
 2. **Enable compression (`gzip`, `snappy`, `lz4`, or `zstd`)**
-
    - **Purpose**: Reduce network bandwidth and broker storage
    - **Recommendation**: Use `snappy` for balanced performance, `zstd` for best compression
 
 3. **Adjust `max_poll_records` for consumers based on processing speed**
-
    - **Purpose**: Prevent consumer timeout from slow processing
    - **Recommendation**: Lower for slow processing, higher for fast processing
 
 4. **Use appropriate `acks` setting (0 for speed, 'all' for durability)**
-
    - **Purpose**: Balance throughput vs. data safety
    - **Recommendation**: Use `acks='all'` with `min.insync.replicas=2` for critical data
 
 5. **Partition your topics for parallelism**
-
    - **Purpose**: Enable horizontal scaling of consumers
    - **Recommendation**: Partitions = number of parallel consumers needed
 
 6. **Use consumer groups for load distribution**
-
    - **Purpose**: Distribute partition consumption across multiple consumers
    - **Recommendation**: Max consumers = number of partitions
 
@@ -2074,9 +2057,9 @@ threads = replicator.start_all_replicators()
 
 ## Additional Resources
 
-- **Official Documentation**: https://kafka.apache.org/documentation/
-- **kafka-python Docs**: https://kafka-python.readthedocs.io/
-- **Confluent Platform**: https://docs.confluent.io/
-- **Best Practices**: https://kafka.apache.org/documentation/#bestpractices
+- **Official Documentation**
+- **kafka-python Docs**
+- **Confluent Platform**
+- **Best Practices**
 
 ---
