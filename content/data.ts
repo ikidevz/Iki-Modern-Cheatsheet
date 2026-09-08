@@ -9,7 +9,7 @@ export const DATA: Category[] = [
 				id: "snowflake",
 				customizedComponent: false,
 				name: "Snowflake",
-				file: "Snowflake_Cheatsheet.md",
+				file: "Databases/Snowflake_Cheatsheet.md",
 				status: "solid",
 				tagline: "Warehouses, loading, Time Travel, Streams & Tasks, RBAC",
 				covers:
@@ -27,7 +27,7 @@ export const DATA: Category[] = [
 				id: "postgres",
 				customizedComponent: false,
 				name: "PostgreSQL",
-				file: "PostgreSQL_Cheatsheet.md",
+				file: "Databases/PostgreSQL_Cheatsheet.md",
 				status: "solid",
 				tagline: "psql, window functions, JSON/JSONB, arrays, indexing",
 				covers:
@@ -44,7 +44,7 @@ export const DATA: Category[] = [
 				id: "mysql",
 				customizedComponent: false,
 				name: "MySQL",
-				file: "MySQL_Cheatsheet.md",
+				file: "Databases/MySQL_Cheatsheet.md",
 				status: "solid",
 				tagline: "CRUD, joins, window functions, JSON, RFM, cohort/YoY",
 				covers:
@@ -60,7 +60,7 @@ export const DATA: Category[] = [
 				id: "sqlalchemy",
 				customizedComponent: false,
 				name: "SQLAlchemy",
-				file: "SQLAlchemy.md",
+				file: "Databases/SQLAlchemy.md",
 				status: "solid",
 				tagline: "The thinnest file in the set, written entirely in 1.x style",
 				covers:
@@ -78,8 +78,8 @@ export const DATA: Category[] = [
 				id: "bigquery",
 				customizedComponent: false,
 				name: "Google BigQuery",
-				file: "BigQuery_Cheatsheet.md",
-				status: "planned",
+				file: "Databases/BigQuery_Cheatsheet.md",
+				status: "solid",
 				tagline:
 					"GCP's serverless warehouse — partitioning, clustering, slots, cost control",
 				covers:
@@ -1940,6 +1940,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Amazon S3",
 						file: "AWS/S3.md",
+						slug: "s3",
 						status: "solid",
 						tagline: "Object storage as the data lake foundation",
 						covers:
@@ -1960,6 +1961,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "AWS Glue",
 						file: "AWS/Glue.md",
+						slug: "glue",
 						status: "solid",
 						tagline: "Serverless ETL, Data Catalog, and crawlers",
 						covers:
@@ -1980,6 +1982,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Amazon Redshift",
 						file: "AWS/Redshift.md",
+						slug: "redshift",
 						status: "solid",
 						tagline:
 							"The AWS data warehouse — distribution styles, sort keys, Spectrum",
@@ -2001,6 +2004,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Amazon EMR",
 						file: "AWS/EMR.md",
+						slug: "emr",
 						status: "solid",
 						tagline:
 							"Managed Hadoop/Spark clusters for when Glue\u2019s limits don\u2019t fit",
@@ -2022,6 +2026,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Amazon Athena",
 						file: "AWS/Athena.md",
+						slug: "athena",
 						status: "solid",
 						tagline: "Serverless SQL over S3, no infrastructure to manage",
 						covers:
@@ -2042,6 +2047,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "AWS Lambda",
 						file: "AWS/Lambda.md",
+						slug: "lambda",
 						status: "solid",
 						tagline:
 							"Event-driven compute for glue code, triggers, and lightweight transforms",
@@ -2063,6 +2069,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Amazon Kinesis",
 						file: "AWS/Kinesis.md",
+						slug: "kinesis",
 						status: "solid",
 						tagline:
 							"Managed streaming — Data Streams, Firehose, and Analytics compared",
@@ -2084,6 +2091,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "AWS Step Functions",
 						file: "AWS/Step Functions.md",
+						slug: "step-functions",
 						status: "solid",
 						tagline:
 							"Serverless orchestration — state machines for pipeline coordination",
@@ -2105,6 +2113,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Amazon MWAA (Managed Airflow)",
 						file: "AWS/MWAA.md",
+						slug: "mwaa",
 						status: "solid",
 						tagline:
 							"Managed Apache Airflow, without running your own scheduler",
@@ -2138,6 +2147,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Google BigQuery",
 						file: "GCP/BigQuery.md",
+						slug: "bigquery",
 						status: "planned",
 						tagline: "Serverless warehouse — partitioning, clustering, slots",
 						covers:
