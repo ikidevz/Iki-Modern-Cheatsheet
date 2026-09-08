@@ -10,9 +10,11 @@ export function Overview() {
 
 	return (
 		<div>
-			<h1 className='text-2xl md:text-[27px] font-semibold tracking-tight mb-2.5'>
-				Cheatsheet Index
-			</h1>
+			<img
+				src='/assets/img/header_logo_dark.png'
+				alt='Logo'
+				className='w-full h-100 object-cover mb-6'
+			/>
 			<p className='text-base text-muted-foreground mb-6'>
 				A self-hosted, searchable index for a personal library of
 				data-engineering cheatsheets — built with Next.js. It doesn't just link
