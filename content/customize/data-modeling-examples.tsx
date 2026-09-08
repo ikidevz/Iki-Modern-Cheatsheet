@@ -1,5 +1,6 @@
 import { DataModelingExampleSelector } from "@/components/data-modeling-example-selector";
 import { getSheetBody } from "@/lib/get-sheet-body";
+import { renderMarkdown } from "@/lib/markdown";
 
 const EXAMPLE_FILES = Array.from(
 	{ length: 20 },
@@ -61,6 +62,12 @@ export async function DataModelingExamples() {
 			content: await getSheetBody(`Data Modeling/examples/${file}`),
 		})),
 	);
+	const renderedExamples = await Promise.all(
+		examples.map(async (example) => ({
+			...example,
+			content: example.content ? await renderMarkdown(example.content) : null,
+		})),
+	);
 
 	return (
 		<div>
@@ -77,7 +84,7 @@ export async function DataModelingExamples() {
 				</p>
 			</div>
 
-			<DataModelingExampleSelector examples={examples} />
+			<DataModelingExampleSelector examples={renderedExamples} />
 		</div>
 	);
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { MarkdownContent } from "@/components/markdown-content";
 import {
 	Select,
 	SelectContent,
@@ -13,7 +12,7 @@ import {
 type Example = {
 	id: string;
 	title: string;
-	content: string | null;
+	content: React.ReactNode;
 };
 
 export function DataModelingExampleSelector({
@@ -32,23 +31,25 @@ export function DataModelingExampleSelector({
 				htmlFor='data-modeling-example'>
 				Choose an example
 			</label>
-			<Select
-				value={selectedExample?.id}
-				onValueChange={(value) => value && setSelectedId(value)}>
-				<SelectTrigger id='data-modeling-example' className='w-full max-w-md'>
-					<SelectValue />
-				</SelectTrigger>
-				<SelectContent>
-					{examples.map((example, index) => (
-						<SelectItem key={example.id} value={example.id}>
-							{String(index + 1).padStart(2, "0")} - {example.title}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
+			<div className='w-full'>
+				<Select
+					value={selectedExample?.id}
+					onValueChange={(value) => value && setSelectedId(value)}>
+					<SelectTrigger id='data-modeling-example' className='w-full'>
+						<SelectValue />
+					</SelectTrigger>
+					<SelectContent className='w-full'>
+						{examples.map((example, index) => (
+							<SelectItem key={example.id} value={example.id}>
+								{String(index + 1).padStart(2, "0")} - {example.title}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			</div>
 			<div className='px-3 pt-4' aria-live='polite'>
 				{selectedExample?.content ? (
-					<MarkdownContent source={selectedExample.content} />
+					selectedExample.content
 				) : (
 					<p className='text-muted-foreground'>
 						Example content is unavailable.
