@@ -1,17 +1,44 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { DATA } from "@/content/data";
-import { isNested, CAT_CLASS } from "@/lib/types";
+import { CAT_CLASS, isNested, type ThemeType } from "@/lib/types";
 import { ALL_ENTRIES, slugOf } from "@/lib/content";
 import { SheetRow } from "@/components/sheet-row";
+import { THEMES } from "@/lib/themes";
 
 export function Overview() {
+	const [themeType, setThemeType] = useState<ThemeType>("light");
 	const solid = ALL_ENTRIES.filter((e) => e.status === "solid").length;
 	const flagged = ALL_ENTRIES.filter((e) => e.status === "flagged").length;
 	const planned = ALL_ENTRIES.filter((e) => e.status === "planned").length;
 
+	useEffect(() => {
+		function updateTheme() {
+			const key = document.documentElement.dataset.theme ?? THEMES[0].key;
+			setThemeType(
+				THEMES.find((theme) => theme.key === key)?.themeType ?? "light",
+			);
+		}
+
+		updateTheme();
+		const observer = new MutationObserver(updateTheme);
+		observer.observe(document.documentElement, {
+			attributeFilter: ["data-theme"],
+			attributes: true,
+		});
+		return () => observer.disconnect();
+	}, []);
+
+	const logoSrc =
+		themeType === "light"
+			? "/assets/img/header_logo_dark.png"
+			: "/assets/img/header_logo_light.png";
+
 	return (
 		<div>
 			<img
-				src='/assets/img/header_logo_dark.png'
+				src={logoSrc}
 				alt='Logo'
 				className='w-full h-100 object-cover mb-6'
 			/>
