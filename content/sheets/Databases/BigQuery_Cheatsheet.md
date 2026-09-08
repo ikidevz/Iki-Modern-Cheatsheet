@@ -1060,7 +1060,3 @@ FROM sessionized
 GROUP BY user_id, session_id
 ORDER BY user_id, session_start;
 ```
-
----
-
-That's it! Master these essentials and you'll handle the large majority of day-to-day BigQuery data-analysis work. 🎯

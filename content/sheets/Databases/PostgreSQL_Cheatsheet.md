@@ -1214,7 +1214,3 @@ SELECT
     ROUND(100.0 * step_4_purchased / NULLIF(step_1_viewed, 0), 2) as overall_conversion_rate
 FROM funnel_steps;
 ```
-
----
-
-That's it! Master these essentials and you'll handle the large majority of day-to-day PostgreSQL data-analysis work. 🎯

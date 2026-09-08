@@ -98,7 +98,7 @@ export const DATA: Category[] = [
 				id: "lakehouse-formats",
 				customizedComponent: false,
 				name: "Delta Lake / Apache Iceberg / Hudi",
-				file: "Lakehouse_Table_Formats.md",
+				file: "Databases/Lakehouse_Table_Formats.md",
 				status: "planned",
 				tagline: "Lakehouse table formats — ACID on top of object storage",
 				covers:
