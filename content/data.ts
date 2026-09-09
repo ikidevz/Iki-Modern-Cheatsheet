@@ -124,7 +124,7 @@ export const DATA: Category[] = [
 				id: "pandas",
 				customizedComponent: false,
 				name: "Pandas",
-				file: "Pandas_Cheatsheet.md",
+				file: "Python Data Libraries/Pandas_Cheatsheet.md",
 				status: "solid",
 				tagline: "I/O, profiling, cleaning, reshaping, joins, ETL patterns",
 				covers:
@@ -142,7 +142,7 @@ export const DATA: Category[] = [
 				id: "polars",
 				customizedComponent: false,
 				name: "Polars",
-				file: "Polars_Cheat_Sheet.md",
+				file: "Python Data Libraries/Polars_Cheat_Sheet.md",
 				status: "solid",
 				tagline: "Eager vs lazy, SQL context, expressions, window functions",
 				covers:
@@ -160,7 +160,7 @@ export const DATA: Category[] = [
 				id: "pyspark",
 				customizedComponent: false,
 				name: "PySpark",
-				file: "PySpark_Cheatsheet.md",
+				file: "Python Data Libraries/PySpark_Cheatsheet.md",
 				status: "solid",
 				tagline: "Lazy evaluation, UDFs, broadcast/accumulators, skew handling",
 				covers:
@@ -177,8 +177,8 @@ export const DATA: Category[] = [
 			{
 				id: "jupyter",
 				customizedComponent: false,
-				name: "Jupyter Notebook Power Tips",
-				file: "Jupyter_Notebook_Power_Tips.md",
+				name: "Jupyter Notebook",
+				file: "Python Data Libraries/Jupyter_Notebook_Power_Tips.md",
 				status: "planned",
 				tagline: "Magic commands, extensions, reproducibility habits",
 				covers:
