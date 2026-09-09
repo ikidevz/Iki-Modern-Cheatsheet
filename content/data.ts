@@ -1903,8 +1903,9 @@ export const DATA: Category[] = [
 						id: "databricks",
 						customizedComponent: false,
 						name: "Databricks Overview",
-						file: "Databricks_Cheatsheet.md",
+						file: "Databricks/Databricks_Cheatsheet.md",
 						status: "planned",
+						slug: "overview",
 						tagline: "Notebooks, clusters, Delta Live Tables, Unity Catalog",
 						covers:
 							"The Databricks-specific layer on top of Spark, covering clusters, declarative pipelines, governance, workflows, and cost-aware compute.",
@@ -1917,6 +1918,7 @@ export const DATA: Category[] = [
 						name: "Spark Architecture & Runtime",
 						file: "Databricks/Spark_Architecture_Runtime.md",
 						status: "planned",
+						slug: "spark-architecture-runtime",
 						tagline: "Spark internals, AQE, Photon, shuffles, joins",
 						covers:
 							"Spark execution architecture and Databricks runtime behavior, including adaptive query execution, Photon, shuffles, and joins.",
@@ -1929,6 +1931,7 @@ export const DATA: Category[] = [
 						name: "Delta Table Deep Dive",
 						file: "Databricks/Delta_Table_Deep_Dive.md",
 						status: "planned",
+						slug: "delta-table-deep-dive",
 						tagline:
 							"Format internals, constraints, CDF, cloning, liquid clustering",
 						covers:
@@ -1942,6 +1945,7 @@ export const DATA: Category[] = [
 						name: "Ingestion, ETL & DLT",
 						file: "Databricks/Ingestion_ETL_DLT.md",
 						status: "planned",
+						slug: "ingestion-etl-dlt",
 						tagline: "Auto Loader, DLT/Lakeflow, medallion architecture",
 						covers:
 							"Databricks ingestion and transformation patterns using Auto Loader, DLT/Lakeflow pipelines, and medallion architecture.",
@@ -1954,6 +1958,7 @@ export const DATA: Category[] = [
 						name: "Unity Catalog & Governance",
 						file: "Databricks/Unity_Catalog_Governance.md",
 						status: "planned",
+						slug: "unity-catalog-governance",
 						tagline:
 							"Metastore, RBAC, lineage, row/column security, Delta Sharing",
 						covers:
@@ -1967,6 +1972,7 @@ export const DATA: Category[] = [
 						name: "Orchestration & Workflows",
 						file: "Databricks/Orchestration_Workflows.md",
 						status: "planned",
+						slug: "orchestration-workflows",
 						tagline:
 							"Jobs, dependencies, triggers, alerting, multi-task orchestration",
 						covers:
@@ -1980,6 +1986,7 @@ export const DATA: Category[] = [
 						name: "Performance Tuning & Optimization",
 						file: "Databricks/Performance_Tuning_Optimization.md",
 						status: "planned",
+						slug: "performance-tuning-optimization",
 						tagline:
 							"Query optimization, skew, caching, file sizing, broadcast joins",
 						covers:
@@ -1993,6 +2000,7 @@ export const DATA: Category[] = [
 						name: "Cluster & Compute Management",
 						file: "Databricks/Cluster_Compute_Management.md",
 						status: "planned",
+						slug: "cluster-compute-management",
 						tagline: "Policies, pools, autoscaling, instance types",
 						covers:
 							"Databricks cluster policies, instance pools, autoscaling, and compute selection.",
@@ -2005,6 +2013,7 @@ export const DATA: Category[] = [
 						name: "DevOps & CI/CD",
 						file: "Databricks/DevOps_CICD.md",
 						status: "planned",
+						slug: "devops-cicd",
 						tagline: "CLI, Asset Bundles, Repos, Terraform",
 						covers:
 							"Databricks delivery workflows using the CLI, Asset Bundles, Repos, and Terraform.",
@@ -2017,6 +2026,7 @@ export const DATA: Category[] = [
 						name: "Cost, Governance & Troubleshooting",
 						file: "Databricks/Databricks_Cost_Governance_Troubleshooting.md",
 						status: "planned",
+						slug: "cost-governance-troubleshooting",
 						tagline: "System tables, debugging, credit and DBU tracking",
 						covers:
 							"Databricks cost governance and production troubleshooting using system tables, debugging workflows, and DBU tracking.",
@@ -2029,6 +2039,7 @@ export const DATA: Category[] = [
 						name: "MLflow & ML",
 						file: "Databricks/MLflow_ML.md",
 						status: "planned",
+						slug: "mlflow-ml",
 						tagline: "Experiment tracking, registry, serving",
 						covers:
 							"MLflow experiment tracking, model registry, and model serving in Databricks.",
@@ -2053,6 +2064,7 @@ export const DATA: Category[] = [
 						name: "Snowflake Cheatsheet",
 						file: "Databases/Snowflake_Cheatsheet.md",
 						status: "solid",
+						slug: "cheatsheet",
 						tagline: "Warehouses, loading, Time Travel, Streams & Tasks, RBAC",
 						covers:
 							"Warehouses, stages, Snowpipe, semi-structured data, Time Travel, cloning, Streams, Tasks, RBAC, performance, and cost management.",
@@ -2065,6 +2077,7 @@ export const DATA: Category[] = [
 						name: "Snowflake Architecture & Runtime",
 						file: "Snowflake/Snowflake_Architecture_Runtime.md",
 						status: "planned",
+						slug: "architecture-runtime",
 						tagline: "Micro-partitions, query compiler, caching layers",
 						covers:
 							"Snowflake architecture and runtime behavior, including micro-partitions, query compilation, and caching layers.",
@@ -2077,6 +2090,7 @@ export const DATA: Category[] = [
 						name: "Tables, Micro-Partitions & Time Travel",
 						file: "Snowflake/Table_MicroPartitions_TimeTravel.md",
 						status: "planned",
+						slug: "table-micro-partitions-time-travel",
 						tagline: "Clustering keys, Time Travel, Streams, zero-copy cloning",
 						covers:
 							"Snowflake table storage and history features, including clustering keys, Time Travel, Streams, and zero-copy cloning.",
@@ -2089,6 +2103,7 @@ export const DATA: Category[] = [
 						name: "Ingestion, CDC & Orchestration",
 						file: "Snowflake/Ingestion_CDC_Orchestration.md",
 						status: "planned",
+						slug: "ingestion-cdc-orchestration",
 						tagline: "Snowpipe, Snowpipe Streaming, COPY INTO, Streams & Tasks",
 						covers:
 							"Snowflake ingestion and change-data-capture patterns using Snowpipe, Snowpipe Streaming, COPY INTO, Streams, Tasks, and DAGs.",
@@ -2101,6 +2116,7 @@ export const DATA: Category[] = [
 						name: "Data Sharing, Security & Governance",
 						file: "Snowflake/Data_Sharing_Security_Governance.md",
 						status: "planned",
+						slug: "data-sharing-security-governance",
 						tagline:
 							"RBAC, masking and row-access policies, tags, Secure Data Sharing",
 						covers:
@@ -2114,6 +2130,7 @@ export const DATA: Category[] = [
 						name: "Performance Tuning & Optimization",
 						file: "Snowflake/Performance_Tuning_Optimization.md",
 						status: "planned",
+						slug: "performance-tuning-optimization",
 						tagline:
 							"Query profile, clustering strategy, caching, warehouse sizing",
 						covers:
@@ -2127,6 +2144,7 @@ export const DATA: Category[] = [
 						name: "Warehouse & Compute Management",
 						file: "Snowflake/Warehouse_Compute_Management.md",
 						status: "planned",
+						slug: "warehouse-compute-management",
 						tagline:
 							"Virtual warehouses, multi-cluster scaling, resource monitors",
 						covers:
@@ -2140,6 +2158,7 @@ export const DATA: Category[] = [
 						name: "DevOps & CI/CD",
 						file: "Snowflake/DevOps_CICD.md",
 						status: "planned",
+						slug: "devops-cicd",
 						tagline:
 							"SnowSQL/CLI, schemachange, Terraform, dbt, Git integration",
 						covers:
@@ -2153,6 +2172,7 @@ export const DATA: Category[] = [
 						name: "Cost, Governance & Troubleshooting",
 						file: "Snowflake/Snowflake_Cost_Governance_Troubleshooting.md",
 						status: "planned",
+						slug: "cost-governance-troubleshooting",
 						tagline: "ACCOUNT_USAGE, query profile, credit consumption",
 						covers:
 							"Snowflake cost governance and troubleshooting using ACCOUNT_USAGE views, query profiles, and credit consumption analysis.",
@@ -2165,6 +2185,7 @@ export const DATA: Category[] = [
 						name: "Snowpark, Cortex & ML",
 						file: "Snowflake/Snowpark_Cortex_ML.md",
 						status: "planned",
+						slug: "snowpark-cortex-ml",
 						tagline: "Snowpark ML, Cortex functions, Model Registry",
 						covers:
 							"Snowpark ML, Cortex functions, and Snowflake Model Registry for machine learning workloads.",
@@ -2415,6 +2436,7 @@ export const DATA: Category[] = [
 						name: "Dataflow",
 						file: "GCP/Dataflow.md",
 						status: "planned",
+						slug: "dataflow",
 						tagline: "Managed Apache Beam — batch & streaming pipelines",
 						covers:
 							"Google's managed Apache Beam runner for unified batch and streaming pipelines — the Beam programming model, windowing for streaming aggregations, and where Dataflow fits versus Dataproc or a self-managed Spark cluster.",
@@ -2433,6 +2455,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Pub/Sub",
 						file: "GCP/PubSub.md",
+						slug: "pubsub",
 						status: "planned",
 						tagline:
 							"Managed messaging for event-driven and streaming architectures",
@@ -2452,6 +2475,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Dataproc",
 						file: "GCP/Dataproc.md",
+						slug: "dataproc",
 						status: "planned",
 						tagline: "Managed Hadoop/Spark clusters, GCP's answer to EMR",
 						covers:
@@ -2470,6 +2494,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Cloud Composer",
 						file: "GCP/Cloud_Composer.md",
+						slug: "cloud-composer",
 						status: "planned",
 						tagline: "Managed Airflow on GCP",
 						covers:
@@ -2500,6 +2525,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Azure Data Factory",
 						file: "Azure/Data_Factory.md",
+						slug: "azure-data-factory",
 						status: "planned",
 						tagline: "Cloud ETL/orchestration, pipelines and data flows",
 						covers:
@@ -2520,6 +2546,7 @@ export const DATA: Category[] = [
 						name: "Azure Synapse Analytics",
 						file: "Azure/Synapse_Analytics.md",
 						status: "planned",
+						slug: "azure-synapse",
 						tagline: "Unified warehouse + big data analytics",
 						covers:
 							"Synapse as Microsoft's unified analytics platform — dedicated SQL pools for warehousing, serverless SQL for ad-hoc queries over the lake, and integrated Spark pools, all under one workspace.",
@@ -2538,6 +2565,7 @@ export const DATA: Category[] = [
 						name: "Azure Databricks",
 						file: "Azure/Databricks.md",
 						status: "planned",
+						slug: "azure-databricks",
 						tagline: "Managed Spark/Databricks on Azure",
 						covers:
 							"Databricks as a first-party Azure service — how the Azure integration (AAD auth, VNet injection, native ADLS access) differs from running Databricks on AWS or GCP.",
