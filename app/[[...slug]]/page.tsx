@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DATA } from "@/content/data";
 import { isNested } from "@/lib/types";
@@ -16,6 +17,42 @@ export function generateStaticParams() {
 		slug: e.urlPath.replace(/^\//, "").split("/"),
 	}));
 	return [{ slug: [] }, ...categoryPaths, ...entryPaths];
+}
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ slug?: string[] }>;
+}): Promise<Metadata> {
+	const { slug } = await params;
+	const result = resolvePath(slug ?? []);
+	const siteTitle = "Iki's Modern Data Cheatsheets";
+
+	if (!result || result.type === "overview") {
+		return {
+			title: siteTitle,
+			description: "A working index of reference sheets for data work.",
+		};
+	}
+
+	if (result.type === "category") {
+		return {
+			title: `${result.category.label} | ${siteTitle}`,
+			description: `Reference sheets for ${result.category.label.toLowerCase()}.`,
+		};
+	}
+
+	if (result.type === "subcategory") {
+		return {
+			title: `${result.sub.label} | ${siteTitle}`,
+			description: result.sub.tagline,
+		};
+	}
+
+	return {
+		title: `${result.item.name} | ${siteTitle}`,
+		description: `${result.item.tagline}. ${result.item.covers}`,
+	};
 }
 
 export default async function Page({

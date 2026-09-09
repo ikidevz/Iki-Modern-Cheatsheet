@@ -6,24 +6,6 @@ export const DATA: Category[] = [
 		label: "Data warehouses & databases",
 		items: [
 			{
-				id: "snowflake",
-				customizedComponent: false,
-				name: "Snowflake",
-				file: "Databases/Snowflake_Cheatsheet.md",
-				status: "solid",
-				tagline: "Warehouses, loading, Time Travel, Streams & Tasks, RBAC",
-				covers:
-					"Covers the full lifecycle: warehouse sizing, stage and Snowpipe loading, VARIANT and semi-structured data, Time Travel and cloning, Streams and Tasks, RBAC, performance and cost management, and UDFs/stored procedures, closing with a sharp gotchas list.",
-				fixes: [],
-				extend: [
-					"Snowpark DataFrame API beyond the single stored-proc example",
-					"Iceberg tables",
-					"External functions",
-					"Data Sharing / Marketplace",
-					"Dynamic tables — replaces a lot of the manual stream+task pattern",
-				],
-			},
-			{
 				id: "postgres",
 				customizedComponent: false,
 				name: "PostgreSQL",
@@ -99,7 +81,7 @@ export const DATA: Category[] = [
 				customizedComponent: false,
 				name: "Delta Lake / Apache Iceberg / Hudi",
 				file: "Databases/Lakehouse_Table_Formats.md",
-				status: "planned",
+				status: "solid",
 				tagline: "Lakehouse table formats — ACID on top of object storage",
 				covers:
 					"The three major open table formats that bring ACID transactions, schema evolution, and time travel to files sitting in S3/GCS/ADLS — what each format actually is, where they overlap, and the criteria that decide between them.",
@@ -179,7 +161,7 @@ export const DATA: Category[] = [
 				customizedComponent: false,
 				name: "Jupyter Notebook",
 				file: "Python Data Libraries/Jupyter_Notebook_Power_Tips.md",
-				status: "planned",
+				status: "solid",
 				tagline: "Magic commands, extensions, reproducibility habits",
 				covers:
 					"The notebook habits that separate a throwaway exploration from reproducible analysis work — magic commands, useful extensions, and structuring notebooks so they still make sense (and still run) weeks later.",
@@ -203,7 +185,7 @@ export const DATA: Category[] = [
 				id: "dbt",
 				customizedComponent: false,
 				name: "dbt",
-				file: "dbt_Cheatsheet.md",
+				file: "Infrastructure/dbt_Cheatsheet.md",
 				status: "solid",
 				tagline: "Project structure, materializations, snapshots, tests",
 				covers:
@@ -220,7 +202,7 @@ export const DATA: Category[] = [
 				id: "kafka",
 				customizedComponent: false,
 				name: "Kafka",
-				file: "kafka.md",
+				file: "Infrastructure/kafka.md",
 				status: "solid",
 				tagline: "Deep and code-heavy, but styled differently from the rest",
 				covers:
@@ -239,7 +221,7 @@ export const DATA: Category[] = [
 				id: "redis",
 				customizedComponent: false,
 				name: "Redis",
-				file: "redis.md",
+				file: "Infrastructure/redis.md",
 				status: "solid",
 				tagline: "2,800+ lines — data types, production patterns, tuning",
 				covers:
@@ -257,7 +239,7 @@ export const DATA: Category[] = [
 				id: "terraform",
 				customizedComponent: false,
 				name: "Terraform",
-				file: "Terraform.md",
+				file: "Infrastructure/Terraform.md",
 				status: "solid",
 				tagline: "Infrastructure as code for provisioning the data stack",
 				covers:
@@ -278,7 +260,7 @@ export const DATA: Category[] = [
 				id: "docker",
 				customizedComponent: false,
 				name: "Docker",
-				file: "docker.md",
+				file: "Infrastructure/docker.md",
 				status: "solid",
 				tagline:
 					"Containerizing pipelines, notebooks, and the tools already in this index",
@@ -300,8 +282,8 @@ export const DATA: Category[] = [
 				id: "airflow",
 				customizedComponent: false,
 				name: "Apache Airflow",
-				file: "Airflow_Cheatsheet.md",
-				status: "planned",
+				file: "Infrastructure/Airflow.md",
+				status: "solid",
 				tagline:
 					"DAGs, operators, sensors, XComs — tool-specific companion to your ETL orchestration concepts",
 				covers:
@@ -321,8 +303,8 @@ export const DATA: Category[] = [
 				id: "kubernetes",
 				customizedComponent: false,
 				name: "Kubernetes",
-				file: "Kubernetes_Cheatsheet.md",
-				status: "planned",
+				file: "Infrastructure/Kubernetes.md",
+				status: "solid",
 				tagline:
 					"Complements Docker; how production pipelines actually get run at scale",
 				covers:
@@ -339,30 +321,11 @@ export const DATA: Category[] = [
 				],
 			},
 			{
-				id: "databricks",
-				customizedComponent: false,
-				name: "Databricks",
-				file: "Databricks_Cheatsheet.md",
-				status: "planned",
-				tagline: "Notebooks, clusters, Delta Live Tables, Unity Catalog",
-				covers:
-					"The Databricks-specific layer on top of Spark: cluster types and autoscaling, Delta Live Tables for declarative pipelines, Unity Catalog for governance, and the workflow/job scheduling that replaces a lot of hand-rolled orchestration.",
-				fixes: [],
-				extend: [
-					"Cluster types: all-purpose vs. job clusters, autoscaling and spot instance policies",
-					"Delta Live Tables: declarative pipeline definitions, expectations for data quality",
-					"Unity Catalog: three-level namespace, data lineage, access control",
-					"Workflows for job scheduling and multi-task orchestration",
-					"Notebook-based development vs. CI/CD with Databricks Asset Bundles",
-					"Photon engine and cluster sizing for cost control",
-				],
-			},
-			{
 				id: "great-expectations",
 				customizedComponent: false,
 				name: "Great Expectations",
-				file: "Great_Expectations_Cheatsheet.md",
-				status: "planned",
+				file: "Infrastructure/Great_Expectations.md",
+				status: "solid",
 				tagline:
 					'Tool-specific data quality/validation, companion to ETL "Data Quality & Testing"',
 				covers:
@@ -381,8 +344,8 @@ export const DATA: Category[] = [
 				id: "git-github",
 				customizedComponent: false,
 				name: "Git & GitHub",
-				file: "Git_and_GitHub_Cheatsheet.md",
-				status: "planned",
+				file: "Infrastructure/git.md",
+				status: "solid",
 				tagline: "Branching, PR workflows, conflict resolution",
 				covers:
 					"Core Git mechanics and GitHub workflow habits that data teams rely on daily — branching strategies, resolving conflicts in code and notebooks, and the PR review conventions that keep a shared dbt/Airflow repo maintainable.",
@@ -400,8 +363,8 @@ export const DATA: Category[] = [
 				id: "cicd-data-pipelines",
 				customizedComponent: false,
 				name: "CI/CD for Data Pipelines",
-				file: "CICD_for_Data_Pipelines.md",
-				status: "planned",
+				file: "Infrastructure/CICD_for_Data_Pipelines.md",
+				status: "solid",
 				tagline:
 					"GitHub Actions/GitLab CI — testing & deploying dbt/Airflow projects",
 				covers:
@@ -1083,8 +1046,8 @@ export const DATA: Category[] = [
 				id: "etl-fundamentals",
 				customizedComponent: false,
 				name: "Fundamentals & Core Concepts",
-				file: "01-fundamentals.md",
-				status: "planned",
+				file: "ETLxELT/01-fundamentals.md",
+				status: "solid",
 				tagline: "The foundations of reliable data movement",
 				covers:
 					"ETL vs ELT, batch and streaming, OLTP and OLAP, warehouses, lakes, lakehouses, and push versus pull processing.",
@@ -1099,8 +1062,8 @@ export const DATA: Category[] = [
 				id: "etl-extract",
 				customizedComponent: false,
 				name: "Extract",
-				file: "02-extract.md",
-				status: "planned",
+				file: "ETLxELT/02-extract.md",
+				status: "solid",
 				tagline: "Getting trustworthy data out of source systems",
 				covers:
 					"Source types, extraction patterns, change data capture, schema drift, pagination, and rate limiting.",
@@ -1115,8 +1078,8 @@ export const DATA: Category[] = [
 				id: "etl-transform",
 				customizedComponent: false,
 				name: "Transform",
-				file: "03-transform.md",
-				status: "planned",
+				file: "ETLxELT/03-transform.md",
+				status: "solid",
 				tagline: "Cleaning, modeling, and shaping data for use",
 				covers:
 					"Data cleaning, modeling, slowly changing dimensions, deduplication, aggregations, and transformation ordering.",
@@ -1131,8 +1094,8 @@ export const DATA: Category[] = [
 				id: "etl-load",
 				customizedComponent: false,
 				name: "Load",
-				file: "04-load.md",
-				status: "planned",
+				file: "ETLxELT/04-load.md",
+				status: "solid",
 				tagline: "Writing data safely into its destination",
 				covers:
 					"Load strategies, partitioning, idempotency, upserts, append-only designs, and backfilling.",
@@ -1147,8 +1110,8 @@ export const DATA: Category[] = [
 				id: "etl-orchestration",
 				customizedComponent: false,
 				name: "Orchestration & Scheduling",
-				file: "05-orchestration.md",
-				status: "planned",
+				file: "ETLxELT/05-orchestration.md",
+				status: "solid",
 				tagline: "Coordinating dependencies, retries, and reruns",
 				covers:
 					"DAGs, scheduling patterns, retries, backfills, reruns, dependency management, and operational recovery.",
@@ -1163,8 +1126,8 @@ export const DATA: Category[] = [
 				id: "etl-streaming",
 				customizedComponent: false,
 				name: "Streaming & Real-Time Processing",
-				file: "06-streaming.md",
-				status: "planned",
+				file: "ETLxELT/06-streaming.md",
+				status: "solid",
 				tagline: "Processing events continuously and reliably",
 				covers:
 					"Stream concepts, windowing, delivery guarantees, event time, late data, and Lambda versus Kappa architectures.",
@@ -1179,8 +1142,8 @@ export const DATA: Category[] = [
 				id: "etl-data-quality",
 				customizedComponent: false,
 				name: "Data Quality & Testing",
-				file: "07-data-quality.md",
-				status: "planned",
+				file: "ETLxELT/07-data-quality.md",
+				status: "solid",
 				tagline: "Proving pipeline outputs are trustworthy",
 				covers:
 					"Validation rules, data contracts, testing frameworks, anomaly detection, and quality gates across pipeline stages.",
@@ -1195,8 +1158,8 @@ export const DATA: Category[] = [
 				id: "etl-architecture-patterns",
 				customizedComponent: false,
 				name: "Architecture & Design Patterns",
-				file: "08-architecture-patterns.md",
-				status: "planned",
+				file: "ETLxELT/08-architecture-patterns.md",
+				status: "solid",
 				tagline: "Structuring data platforms for scale and change",
 				covers:
 					"Medallion architecture, Kimball versus Inmon, Data Mesh, layered systems, and pipeline anti-patterns.",
@@ -1211,8 +1174,8 @@ export const DATA: Category[] = [
 				id: "etl-performance",
 				customizedComponent: false,
 				name: "Performance & Optimization",
-				file: "09-performance.md",
-				status: "planned",
+				file: "ETLxELT/09-performance.md",
+				status: "solid",
 				tagline: "Making pipelines faster and more economical",
 				covers:
 					"Partitioning, indexing, query optimization, parallelism, caching, file sizing, and workload tuning.",
@@ -1227,8 +1190,8 @@ export const DATA: Category[] = [
 				id: "etl-monitoring-observability",
 				customizedComponent: false,
 				name: "Monitoring, Observability & Lineage",
-				file: "10-monitoring-observability.md",
-				status: "planned",
+				file: "ETLxELT/10-monitoring-observability.md",
+				status: "solid",
 				tagline: "Seeing pipeline health before users report it",
 				covers:
 					"Logging, alerting, lineage, SLAs, freshness, run metadata, and operational dashboards.",
@@ -1243,8 +1206,8 @@ export const DATA: Category[] = [
 				id: "etl-security-governance",
 				customizedComponent: false,
 				name: "Security & Governance",
-				file: "11-security-governance.md",
-				status: "planned",
+				file: "ETLxELT/11-security-governance.md",
+				status: "solid",
 				tagline: "Protecting data and controlling how it is used",
 				covers:
 					"RBAC, PII handling, compliance, encryption, secrets, retention, and governance controls for data pipelines.",
@@ -1259,8 +1222,8 @@ export const DATA: Category[] = [
 				id: "etl-tools-landscape",
 				customizedComponent: false,
 				name: "Tools & Platforms Landscape",
-				file: "12-tools-landscape.md",
-				status: "planned",
+				file: "ETLxELT/12-tools-landscape.md",
+				status: "solid",
 				tagline: "Comparing the building blocks of a modern data stack",
 				covers:
 					"Ingestion, transformation, warehouse, orchestration, and streaming tool comparisons with practical selection criteria.",
@@ -1275,8 +1238,8 @@ export const DATA: Category[] = [
 				id: "etl-quick-reference",
 				customizedComponent: false,
 				name: "Quick Reference",
-				file: "13-quick-reference.md",
-				status: "planned",
+				file: "ETLxELT/13-quick-reference.md",
+				status: "solid",
 				tagline: "Fast lookup for common ETL/ELT decisions and commands",
 				covers:
 					"SQL and CLI snippet index, glossary, and tool decision tables for common pipeline tasks.",
@@ -1289,9 +1252,10 @@ export const DATA: Category[] = [
 			},
 			{
 				id: "etl-worked-examples",
-				customizedComponent: false,
+				customizedComponent: true,
 				name: "Worked Examples",
-				status: "planned",
+				file: "ETLxELT/14-worked-examples.md",
+				status: "solid",
 				tagline: "Production-grade scenarios that combine the full reference",
 				covers:
 					"Ten end-to-end scenarios, each combining concepts from the fundamentals, pipeline stages, architecture, quality, performance, observability, and governance sheets.",
@@ -1490,7 +1454,7 @@ export const DATA: Category[] = [
 				id: "data-modeling-examples",
 				customizedComponent: true,
 				name: "Examples",
-				status: "planned",
+				status: "solid",
 				tagline:
 					"Real-world data modeling examples for different domains and use cases",
 				covers:
@@ -1509,7 +1473,7 @@ export const DATA: Category[] = [
 				key: "creational",
 				label: "Creational",
 				slug: "creational",
-				status: "planned",
+				status: "solid",
 				tagline:
 					"Patterns for object creation — decoupling instantiation from usage",
 				covers:
@@ -1615,7 +1579,7 @@ export const DATA: Category[] = [
 				key: "structural",
 				label: "Structural",
 				slug: "structural",
-				status: "planned",
+				status: "solid",
 				tagline:
 					"Patterns for composing objects and classes into larger structures",
 				covers:
@@ -1758,7 +1722,7 @@ export const DATA: Category[] = [
 				key: "behavioural",
 				label: "Behavioural",
 				slug: "behavioural",
-				status: "planned",
+				status: "solid",
 				tagline:
 					"Patterns for communication and responsibility between objects",
 				covers:
@@ -1925,6 +1889,290 @@ export const DATA: Category[] = [
 		label: "Cloud Platforms for Data Engineering",
 		slug: "cloud-platforms",
 		subcategories: [
+			{
+				key: "databricks",
+				label: "Databricks",
+				slug: "databricks",
+				status: "planned",
+				tagline:
+					"Spark, Delta Lake, Lakeflow, Unity Catalog, and platform operations",
+				covers:
+					"A Databricks-focused path from Spark runtime internals and Delta tables through ingestion, governance, orchestration, performance, compute, CI/CD, cost management, and MLflow.",
+				items: [
+					{
+						id: "databricks",
+						customizedComponent: false,
+						name: "Databricks Overview",
+						file: "Databricks_Cheatsheet.md",
+						status: "planned",
+						tagline: "Notebooks, clusters, Delta Live Tables, Unity Catalog",
+						covers:
+							"The Databricks-specific layer on top of Spark, covering clusters, declarative pipelines, governance, workflows, and cost-aware compute.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-spark-architecture-runtime",
+						customizedComponent: false,
+						name: "Spark Architecture & Runtime",
+						file: "Databricks/Spark_Architecture_Runtime.md",
+						status: "planned",
+						tagline: "Spark internals, AQE, Photon, shuffles, joins",
+						covers:
+							"Spark execution architecture and Databricks runtime behavior, including adaptive query execution, Photon, shuffles, and joins.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-delta-table-deep-dive",
+						customizedComponent: false,
+						name: "Delta Table Deep Dive",
+						file: "Databricks/Delta_Table_Deep_Dive.md",
+						status: "planned",
+						tagline:
+							"Format internals, constraints, CDF, cloning, liquid clustering",
+						covers:
+							"Delta table internals and advanced capabilities, including constraints, change data feed, cloning, and liquid clustering.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-ingestion-etl-dlt",
+						customizedComponent: false,
+						name: "Ingestion, ETL & DLT",
+						file: "Databricks/Ingestion_ETL_DLT.md",
+						status: "planned",
+						tagline: "Auto Loader, DLT/Lakeflow, medallion architecture",
+						covers:
+							"Databricks ingestion and transformation patterns using Auto Loader, DLT/Lakeflow pipelines, and medallion architecture.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-unity-catalog-governance",
+						customizedComponent: false,
+						name: "Unity Catalog & Governance",
+						file: "Databricks/Unity_Catalog_Governance.md",
+						status: "planned",
+						tagline:
+							"Metastore, RBAC, lineage, row/column security, Delta Sharing",
+						covers:
+							"Unity Catalog governance, access control, lineage, row and column security, and Delta Sharing.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-orchestration-workflows",
+						customizedComponent: false,
+						name: "Orchestration & Workflows",
+						file: "Databricks/Orchestration_Workflows.md",
+						status: "planned",
+						tagline:
+							"Jobs, dependencies, triggers, alerting, multi-task orchestration",
+						covers:
+							"Databricks Jobs and workflow orchestration, including dependencies, triggers, alerting, and multi-task runs.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-performance-tuning-optimization",
+						customizedComponent: false,
+						name: "Performance Tuning & Optimization",
+						file: "Databricks/Performance_Tuning_Optimization.md",
+						status: "planned",
+						tagline:
+							"Query optimization, skew, caching, file sizing, broadcast joins",
+						covers:
+							"Databricks performance tuning for skew, caching, file sizing, query optimization, and broadcast joins.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-cluster-compute-management",
+						customizedComponent: false,
+						name: "Cluster & Compute Management",
+						file: "Databricks/Cluster_Compute_Management.md",
+						status: "planned",
+						tagline: "Policies, pools, autoscaling, instance types",
+						covers:
+							"Databricks cluster policies, instance pools, autoscaling, and compute selection.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-devops-cicd",
+						customizedComponent: false,
+						name: "DevOps & CI/CD",
+						file: "Databricks/DevOps_CICD.md",
+						status: "planned",
+						tagline: "CLI, Asset Bundles, Repos, Terraform",
+						covers:
+							"Databricks delivery workflows using the CLI, Asset Bundles, Repos, and Terraform.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-cost-governance-troubleshooting",
+						customizedComponent: false,
+						name: "Cost, Governance & Troubleshooting",
+						file: "Databricks/Databricks_Cost_Governance_Troubleshooting.md",
+						status: "planned",
+						tagline: "System tables, debugging, credit and DBU tracking",
+						covers:
+							"Databricks cost governance and production troubleshooting using system tables, debugging workflows, and DBU tracking.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "databricks-mlflow-ml",
+						customizedComponent: false,
+						name: "MLflow & ML",
+						file: "Databricks/MLflow_ML.md",
+						status: "planned",
+						tagline: "Experiment tracking, registry, serving",
+						covers:
+							"MLflow experiment tracking, model registry, and model serving in Databricks.",
+						fixes: [],
+						extend: [],
+					},
+				],
+			},
+			{
+				key: "snowflake",
+				label: "Snowflake",
+				slug: "snowflake",
+				status: "planned",
+				tagline:
+					"Architecture, micro-partitions, ingestion, governance, and cost control",
+				covers:
+					"A Snowflake-focused path from architecture and table internals through ingestion, sharing, security, performance, warehouse management, CI/CD, cost governance, and Snowpark.",
+				items: [
+					{
+						id: "snowflake",
+						customizedComponent: false,
+						name: "Snowflake Cheatsheet",
+						file: "Databases/Snowflake_Cheatsheet.md",
+						status: "solid",
+						tagline: "Warehouses, loading, Time Travel, Streams & Tasks, RBAC",
+						covers:
+							"Warehouses, stages, Snowpipe, semi-structured data, Time Travel, cloning, Streams, Tasks, RBAC, performance, and cost management.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "snowflake-architecture-runtime",
+						customizedComponent: false,
+						name: "Snowflake Architecture & Runtime",
+						file: "Snowflake/Snowflake_Architecture_Runtime.md",
+						status: "planned",
+						tagline: "Micro-partitions, query compiler, caching layers",
+						covers:
+							"Snowflake architecture and runtime behavior, including micro-partitions, query compilation, and caching layers.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "snowflake-table-micro-partitions-timetravel",
+						customizedComponent: false,
+						name: "Tables, Micro-Partitions & Time Travel",
+						file: "Snowflake/Table_MicroPartitions_TimeTravel.md",
+						status: "planned",
+						tagline: "Clustering keys, Time Travel, Streams, zero-copy cloning",
+						covers:
+							"Snowflake table storage and history features, including clustering keys, Time Travel, Streams, and zero-copy cloning.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "snowflake-ingestion-cdc-orchestration",
+						customizedComponent: false,
+						name: "Ingestion, CDC & Orchestration",
+						file: "Snowflake/Ingestion_CDC_Orchestration.md",
+						status: "planned",
+						tagline: "Snowpipe, Snowpipe Streaming, COPY INTO, Streams & Tasks",
+						covers:
+							"Snowflake ingestion and change-data-capture patterns using Snowpipe, Snowpipe Streaming, COPY INTO, Streams, Tasks, and DAGs.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "snowflake-data-sharing-security-governance",
+						customizedComponent: false,
+						name: "Data Sharing, Security & Governance",
+						file: "Snowflake/Data_Sharing_Security_Governance.md",
+						status: "planned",
+						tagline:
+							"RBAC, masking and row-access policies, tags, Secure Data Sharing",
+						covers:
+							"Snowflake access control and governance, including RBAC, masking and row-access policies, tags, Secure Data Sharing, and Marketplace.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "snowflake-performance-tuning-optimization",
+						customizedComponent: false,
+						name: "Performance Tuning & Optimization",
+						file: "Snowflake/Performance_Tuning_Optimization.md",
+						status: "planned",
+						tagline:
+							"Query profile, clustering strategy, caching, warehouse sizing",
+						covers:
+							"Snowflake performance tuning using query profiles, clustering strategy, caching behavior, and warehouse sizing.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "snowflake-warehouse-compute-management",
+						customizedComponent: false,
+						name: "Warehouse & Compute Management",
+						file: "Snowflake/Warehouse_Compute_Management.md",
+						status: "planned",
+						tagline:
+							"Virtual warehouses, multi-cluster scaling, resource monitors",
+						covers:
+							"Snowflake virtual warehouse sizing, multi-cluster scaling, and resource monitor management.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "snowflake-devops-cicd",
+						customizedComponent: false,
+						name: "DevOps & CI/CD",
+						file: "Snowflake/DevOps_CICD.md",
+						status: "planned",
+						tagline:
+							"SnowSQL/CLI, schemachange, Terraform, dbt, Git integration",
+						covers:
+							"Snowflake development and deployment workflows with SnowSQL/CLI, schemachange, Terraform, dbt, and Git integration.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "snowflake-cost-governance-troubleshooting",
+						customizedComponent: false,
+						name: "Cost, Governance & Troubleshooting",
+						file: "Snowflake/Snowflake_Cost_Governance_Troubleshooting.md",
+						status: "planned",
+						tagline: "ACCOUNT_USAGE, query profile, credit consumption",
+						covers:
+							"Snowflake cost governance and troubleshooting using ACCOUNT_USAGE views, query profiles, and credit consumption analysis.",
+						fixes: [],
+						extend: [],
+					},
+					{
+						id: "snowflake-snowpark-cortex-ml",
+						customizedComponent: false,
+						name: "Snowpark, Cortex & ML",
+						file: "Snowflake/Snowpark_Cortex_ML.md",
+						status: "planned",
+						tagline: "Snowpark ML, Cortex functions, Model Registry",
+						covers:
+							"Snowpark ML, Cortex functions, and Snowflake Model Registry for machine learning workloads.",
+						fixes: [],
+						extend: [],
+					},
+				],
+			},
 			{
 				key: "aws",
 				label: "AWS",

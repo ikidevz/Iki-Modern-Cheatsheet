@@ -5,6 +5,7 @@ import { Clustering } from "./clustering";
 import { DataModelingExamples } from "./data-modeling-examples";
 import { DataEngineeringPatterns } from "./depatterns";
 import { ExploratoryDataAnalysis } from "./eda";
+import { ETLWorkedExamples } from "./etl-worked-examples";
 import { FeatureEngineering } from "./featureeng";
 import { MathStats } from "./mathstats";
 
@@ -35,4 +36,5 @@ export const ASYNC_CUSTOMIZED_COMPONENTS: Record<
 	AsyncCustomizedComponent
 > = {
 	"data-modeling-examples": DataModelingExamples,
+	"etl-worked-examples": ETLWorkedExamples,
 };

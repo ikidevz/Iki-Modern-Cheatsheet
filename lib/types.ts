@@ -59,11 +59,29 @@ export const CAT_CLASS: Record<string, { dot: string; border: string }> = {
 	infra: { dot: "bg-cat-infra", border: "border-cat-infra" },
 	ds: { dot: "bg-cat-ds", border: "border-cat-ds" },
 	eng: { dot: "bg-cat-eng", border: "border-cat-eng" },
-	etl: { dot: "bg-cat-eng", border: "border-cat-eng" },
-	modeling: { dot: "bg-cat-eng", border: "border-cat-eng" },
+	etl: { dot: "bg-cat-etl", border: "border-cat-etl" },
+	modeling: { dot: "bg-cat-modeling", border: "border-cat-modeling" },
+	cloud: { dot: "bg-cat-cloud", border: "border-cat-cloud" },
 	aws: { dot: "bg-cat-aws", border: "border-cat-aws" },
 	dsa: { dot: "bg-cat-dsa", border: "border-cat-dsa" },
-	designpatterns: { dot: "bg-cat-eng", border: "border-cat-eng" },
+	designpatterns: {
+		dot: "bg-cat-designpatterns",
+		border: "border-cat-designpatterns",
+	},
+	bi: { dot: "bg-cat-bi", border: "border-cat-bi" },
+	"analytics-eng": {
+		dot: "bg-cat-analytics-eng",
+		border: "border-cat-analytics-eng",
+	},
+	"data-architect": {
+		dot: "bg-cat-data-architect",
+		border: "border-cat-data-architect",
+	},
+	dba: { dot: "bg-cat-dba", border: "border-cat-dba" },
+	"bi-developer": {
+		dot: "bg-cat-bi-developer",
+		border: "border-cat-bi-developer",
+	},
 };
 
 export function statusDotClass(status: Status): string {

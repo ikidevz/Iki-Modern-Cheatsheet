@@ -947,6 +947,15 @@
 	--color-cat-eng: var(--cat-eng);
 	--color-cat-aws: var(--cat-aws);
 	--color-cat-dsa: var(--cat-dsa);
+	--color-cat-etl: oklch(from var(--cat-eng) l c calc(h + 45));
+	--color-cat-modeling: oklch(from var(--cat-eng) l c calc(h + 100));
+	--color-cat-cloud: oklch(from var(--cat-infra) l c calc(h + 55));
+	--color-cat-designpatterns: oklch(from var(--cat-eng) l c calc(h + 155));
+	--color-cat-bi: oklch(from var(--cat-eng) l c calc(h + 210));
+	--color-cat-analytics-eng: oklch(from var(--cat-eng) l c calc(h + 260));
+	--color-cat-data-architect: oklch(from var(--cat-infra) l c calc(h + 185));
+	--color-cat-dba: oklch(from var(--cat-db) l c calc(h + 65));
+	--color-cat-bi-developer: oklch(from var(--cat-eng) l c calc(h + 315));
 
 	--color-status-solid: var(--status-solid);
 	--color-status-flag: var(--status-flag);
