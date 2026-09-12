@@ -1,88 +1,88 @@
-# Linux / Bash / Shell Scripting Cheatsheet for Data & Analytics Engineers
+# Linux / Bash / Shell Scripting Cheatsheet
 
 > A structured Bash/Linux reference for data & analytics engineering — shell navigation and file operations through text processing (grep/sed/awk), scripting constructs, process management, and system administration. Every non-trivial snippet in this file (parameter expansion, arrays, traps, getopts, process substitution, `awk`/`sed` pipelines, background jobs) was actually executed in a live Bash 5.2 shell, not just syntax-checked — including the classic `set -e` + `((i++))` interaction documented in the gotchas section below.
 
-## 📑 Table of Contents
+## Table of Contents
 
-1. [🚀 Shell Basics & Navigation](#shell-basics-navigation)
-2. [📁 File & Directory Operations](#file-directory-operations)
-3. [🔐 Permissions & Ownership](#permissions-ownership)
-4. [🔎 Finding Files & Searching](#finding-files-searching)
+1. [🚀 Shell Basics](#shell-basics-navigation)
+2. [📁 File Directory Operations](#file-directory-operations)
+3. [🔐 Permissions Ownership](#permissions-ownership)
+4. [🔎 Finding Files Searching](#finding-files-searching)
 5. [✂️ Text Processing Basics](#text-processing-basics)
-6. [🐍 grep & Regular Expressions](#grep-regular-expressions)
+6. [🐍 grep Regular Expressions](#grep-regular-expressions)
 7. [🪄 sed — Stream Editor](#sed-stream-editor)
 8. [📊 awk — Text Processing Language](#awk-text-processing-language)
-9. [🔀 Redirection, Pipes & Process Substitution](#redirection-pipes-process-substitution)
-10. [⚙️ Variables & Environment](#variables-environment)
-11. [🏗️ Shell Script Structure & Exit Codes](#shell-script-structure-exit-codes)
+9. [🔀 Redirection, Pipes Process Substitution](#redirection-pipes-process-substitution)
+10. [⚙️ Variables Environment](#variables-environment)
+11. [🏗️ Shell Script Structure Exit Codes](#shell-script-structure-exit-codes)
 12. [🔢 Arithmetic Operations](#arithmetic-operations)
-13. [🧵 String Manipulation & Parameter Expansion](#string-manipulation-parameter-expansion)
+13. [🧵 String Manipulation Parameter Expansion](#string-manipulation-parameter-expansion)
 14. [📦 Arrays](#arrays)
-15. [🔀 Conditionals & Test Operators](#conditionals-test-operators)
+15. [🔀 Conditionals Test Operators](#conditionals-test-operators)
 16. [🔁 Loops](#loops)
 17. [🧩 Functions](#functions)
-18. [📥 Input/Output & User Interaction](#input-output-user-interaction)
-19. [🎛️ Command-Line Arguments & getopts](#command-line-arguments-getopts)
-20. [⚡ Process Management & Job Control](#process-management-job-control)
-21. [🌐 Networking & Remote Operations](#networking-remote-operations)
-22. [📅 Cron, Scheduling & System Admin](#cron-scheduling-system-admin)
-23. [🗜️ Archiving & Compression](#archiving-compression)
-24. [🛡️ Error Handling, Debugging & Traps](#error-handling-debugging-traps)
+18. [📥 Input/Output User Interaction](#input-output-user-interaction)
+19. [🎛️ Command-Line Arguments getopts](#command-line-arguments-getopts)
+20. [⚡ Process Management Job Control](#process-management-job-control)
+21. [🌐 Networking Remote Operations](#networking-remote-operations)
+22. [📅 Cron, Scheduling System Admin](#cron-scheduling-system-admin)
+23. [🗜️ Archiving Compression](#archiving-compression)
+24. [🛡️ Error Handling, Debugging Traps](#error-handling-debugging-traps)
 25. [⚠️ Common Gotchas](#common-gotchas)
 26. [🎯 Best Practices](#best-practices)
-27. [📚 Idioms, Performance & Memory Tips](#idioms-performance-memory-tips)
+27. [📚 Idioms, Performance Memory Tips](#idioms-performance-memory-tips)
 28. [💡 Pro Tips](#pro-tips)
 
 ## ⚡ Quick Reference
 
 **Syntax cheatsheet**
 
-| Task                  | Syntax                                                                                     |
-| --------------------- | ------------------------------------------------------------------------------------------- |
-| Navigate              | `cd path`, `cd -` (previous dir), `pwd`, `pushd`/`popd`                                    |
-| List / inspect        | `ls -la`, `ls -lh`, `tree -L 2`, `stat file`, `file file`                                  |
-| Search text           | `grep -RniE 'pattern' .`                                                                    |
-| Search files          | `find . -name '*.log' -mtime -1`, `fd pattern` (if installed)                               |
-| Edit stream           | `sed 's/old/new/g' file`, `sed -i 's/old/new/g' file`                                       |
-| Columnar processing   | `awk -F',' '{print $1,$3}' file`                                                             |
-| Sort / dedupe         | `sort -t',' -k2 -n file`, `sort file \| uniq -c \| sort -rn`                                |
-| Redirect              | `cmd > out.txt` (overwrite), `cmd >> out.txt` (append), `cmd 2>&1` (merge stderr)            |
-| Pipe                  | `cmd1 \| cmd2 \| cmd3`                                                                       |
-| Variables             | `name="value"`, `readonly name`, `export NAME=value`, `${name:-default}`                    |
-| Arithmetic            | `$((a + b))`, `(( a += 1 ))`, `let "a = a + 1"`                                              |
-| Arrays                | `arr=(a b c)`, `${arr[@]}`, `${#arr[@]}`, `declare -A map`                                  |
-| Condition             | `if [[ cond ]]; then ... elif [[ cond ]]; then ... else ... fi`                              |
-| Loop                  | `for x in list; do ...; done`, `while [[ cond ]]; do ...; done`                              |
-| Function              | `name() { local x="$1"; ...; return 0; }`                                                    |
-| Script safety header  | `#!/usr/bin/env bash` + `set -euo pipefail`                                                  |
-| Process info          | `ps aux`, `top`/`htop`, `kill -TERM pid`, `jobs`, `bg`/`fg`                                  |
-| Permissions           | `chmod 755 file`, `chmod u+x file`, `chown user:group file`                                  |
-| Compress              | `tar -czf archive.tar.gz dir/`, `tar -xzf archive.tar.gz`                                    |
-| Remote                | `ssh user@host`, `scp file user@host:/path`, `rsync -avz src/ dest/`                         |
+| Task                 | Syntax                                                                            |
+| -------------------- | --------------------------------------------------------------------------------- |
+| Navigate             | `cd path`, `cd -` (previous dir), `pwd`, `pushd`/`popd`                           |
+| List / inspect       | `ls -la`, `ls -lh`, `tree -L 2`, `stat file`, `file file`                         |
+| Search text          | `grep -RniE 'pattern' .`                                                          |
+| Search files         | `find . -name '*.log' -mtime -1`, `fd pattern` (if installed)                     |
+| Edit stream          | `sed 's/old/new/g' file`, `sed -i 's/old/new/g' file`                             |
+| Columnar processing  | `awk -F',' '{print $1,$3}' file`                                                  |
+| Sort / dedupe        | `sort -t',' -k2 -n file`, `sort file \| uniq -c \| sort -rn`                      |
+| Redirect             | `cmd > out.txt` (overwrite), `cmd >> out.txt` (append), `cmd 2>&1` (merge stderr) |
+| Pipe                 | `cmd1 \| cmd2 \| cmd3`                                                            |
+| Variables            | `name="value"`, `readonly name`, `export NAME=value`, `${name:-default}`          |
+| Arithmetic           | `$((a + b))`, `(( a += 1 ))`, `let "a = a + 1"`                                   |
+| Arrays               | `arr=(a b c)`, `${arr[@]}`, `${#arr[@]}`, `declare -A map`                        |
+| Condition            | `if [[ cond ]]; then ... elif [[ cond ]]; then ... else ... fi`                   |
+| Loop                 | `for x in list; do ...; done`, `while [[ cond ]]; do ...; done`                   |
+| Function             | `name() { local x="$1"; ...; return 0; }`                                         |
+| Script safety header | `#!/usr/bin/env bash` + `set -euo pipefail`                                       |
+| Process info         | `ps aux`, `top`/`htop`, `kill -TERM pid`, `jobs`, `bg`/`fg`                       |
+| Permissions          | `chmod 755 file`, `chmod u+x file`, `chown user:group file`                       |
+| Compress             | `tar -czf archive.tar.gz dir/`, `tar -xzf archive.tar.gz`                         |
+| Remote               | `ssh user@host`, `scp file user@host:/path`, `rsync -avz src/ dest/`              |
 
 **File permission cheat sheet**
 
-| Symbolic     | Octal | Meaning                                  |
-| ------------ | ----- | ----------------------------------------- |
-| `-rwxr-xr-x` | `755` | Owner: full; group/other: read + execute  |
-| `-rw-r--r--` | `644` | Owner: read/write; group/other: read only |
-| `-rwx------` | `700` | Owner-only full access (private scripts)  |
-| `-rw-------` | `600` | Owner-only read/write (secrets, keys)     |
+| Symbolic     | Octal | Meaning                                     |
+| ------------ | ----- | ------------------------------------------- |
+| `-rwxr-xr-x` | `755` | Owner: full; group/other: read + execute    |
+| `-rw-r--r--` | `644` | Owner: read/write; group/other: read only   |
+| `-rwx------` | `700` | Owner-only full access (private scripts)    |
+| `-rw-------` | `600` | Owner-only read/write (secrets, keys)       |
 | `-rwxrwxrwx` | `777` | Everyone: full access (avoid — see gotchas) |
 
 **Test operator cheat sheet (`[[ ]]`)**
 
-| Test           | Meaning                        | Test           | Meaning                     |
-| -------------- | ------------------------------- | -------------- | ---------------------------- |
-| `-e file`      | exists                          | `-f file`      | is a regular file             |
-| `-d file`      | is a directory                  | `-L file`      | is a symlink                  |
-| `-s file`      | exists and size > 0             | `-x file`      | is executable                 |
-| `-z string`    | string is empty                 | `-n string`    | string is non-empty           |
-| `str1 == str2` | string equality                 | `str =~ regex` | regex match (extended regex)  |
-| `-eq -ne`      | numeric equal / not equal       | `-lt -gt`      | numeric less-than / greater-than |
-| `-a` / `&&`    | logical AND                     | `-o` / `\|\|`  | logical OR                    |
+| Test           | Meaning                   | Test           | Meaning                          |
+| -------------- | ------------------------- | -------------- | -------------------------------- |
+| `-e file`      | exists                    | `-f file`      | is a regular file                |
+| `-d file`      | is a directory            | `-L file`      | is a symlink                     |
+| `-s file`      | exists and size > 0       | `-x file`      | is executable                    |
+| `-z string`    | string is empty           | `-n string`    | string is non-empty              |
+| `str1 == str2` | string equality           | `str =~ regex` | regex match (extended regex)     |
+| `-eq -ne`      | numeric equal / not equal | `-lt -gt`      | numeric less-than / greater-than |
+| `-a` / `&&`    | logical AND               | `-o` / `\|\|`  | logical OR                       |
 
-## 🚀 Shell Basics & Navigation
+## 🚀 Shell Basics Navigation
 
 ```bash
 # Where am I / who am I
@@ -124,7 +124,9 @@ which python3           # path to an executable found on $PATH
 command -v python3      # POSIX-portable equivalent of `which`
 ```
 
-## 📁 File & Directory Operations
+<a id="file-directory-operations"></a>
+
+## 📁 File Directory Operations
 
 ```bash
 # Create
@@ -168,7 +170,9 @@ for f in *.JPG; do mv "$f" "${f%.JPG}.jpg"; done   # lowercase extensions
 rename 's/\.txt$/.bak/' *.txt                      # Perl-based rename (if installed)
 ```
 
-## 🔐 Permissions & Ownership
+<a id="permissions-ownership"></a>
+
+## 🔐 Permissions Ownership
 
 ```bash
 # Reading permission strings: -rwxr-xr-x
@@ -203,7 +207,9 @@ chmod u+s /usr/bin/some_binary    # setuid: runs with the *owner's* privileges (
 sudo -l                           # list what the current user can run via sudo
 ```
 
-## 🔎 Finding Files & Searching
+<a id="finding-files-searching"></a>
+
+## 🔎 Finding Files Searching
 
 ```bash
 # find — locate files by name, type, time, size
@@ -237,6 +243,8 @@ sudo updatedb                              # refresh the index
 which python3
 whereis python3                            # binary + man page + source, if known
 ```
+
+<a id="text-processing-basics"></a>
 
 ## ✂️ Text Processing Basics
 
@@ -288,7 +296,9 @@ tail -n +2 file.csv                 # everything from line 2 onward (skip header
 column -t -s',' data.csv            # align comma-delimited columns
 ```
 
-## 🐍 grep & Regular Expressions
+<a id="grep-regular-expressions"></a>
+
+## 🐍 grep Regular Expressions
 
 ```bash
 grep "error" app.log                     # literal substring match
@@ -317,6 +327,8 @@ grep -E '^#' -v config.ini               # drop comment lines starting with #
 fgrep "literal[stuff]" file.txt          # treats pattern as literal text, no regex
 zgrep "error" app.log.gz                 # grep directly inside a gzipped file
 ```
+
+<a id="sed-stream-editor"></a>
 
 ## 🪄 sed — Stream Editor
 
@@ -356,6 +368,8 @@ sed '3c\Replacement for line 3' file.txt
 sed 's#/old/path#/new/path#g' file.txt
 ```
 
+<a id="awk-text-processing-language"></a>
+
 ## 📊 awk — Text Processing Language
 
 ```bash
@@ -372,7 +386,7 @@ awk 'NR==1 || /pattern/' data.csv        # keep header + matching rows
 awk 'NF > 3' data.csv                    # rows with more than 3 fields
 
 # Aggregation with associative arrays
-awk -F',' 'NR>1 {sum[$3]+=$4; cnt[$3]++} 
+awk -F',' 'NR>1 {sum[$3]+=$4; cnt[$3]++}
            END {for (k in sum) printf "%s: total=%d avg=%.2f\n", k, sum[k], sum[k]/cnt[k]}' data.csv
 
 # Built-in variables
@@ -403,7 +417,9 @@ END {
 ' data.csv
 ```
 
-## 🔀 Redirection, Pipes & Process Substitution
+<a id="redirection-pipes-process-substitution"></a>
+
+## 🔀 Redirection, Pipes Process Substitution
 
 ```bash
 # Redirection
@@ -449,7 +465,9 @@ some_producer > mypipe &
 some_consumer < mypipe
 ```
 
-## ⚙️ Variables & Environment
+<a id="variables-environment"></a>
+
+## ⚙️ Variables Environment
 
 ```bash
 # Declaring and using
@@ -492,7 +510,9 @@ declare -A lookup          # associative array
 declare -x SHARED=1        # same as export
 ```
 
-## 🏗️ Shell Script Structure & Exit Codes
+<a id="shell-script-structure-exit-codes"></a>
+
+## 🏗️ Shell Script Structure Exit Codes
 
 ```bash
 #!/usr/bin/env bash
@@ -539,6 +559,8 @@ fi
 if some_command; then echo "succeeded"; fi
 ```
 
+<a id="arithmetic-operations"></a>
+
 ## 🔢 Arithmetic Operations
 
 ```bash
@@ -578,7 +600,9 @@ echo $(( RANDOM % 100 ))   # random number 0-99
 shuf -i 1-100 -n 1          # random number in a range (external tool)
 ```
 
-## 🧵 String Manipulation & Parameter Expansion
+<a id="string-manipulation-parameter-expansion"></a>
+
+## 🧵 String Manipulation Parameter Expansion
 
 ```bash
 str="Hello, World!"
@@ -625,6 +649,8 @@ echo "${parts[1]}"                  # "b"
 first="Hello"; second="World"
 combined="${first}, ${second}!"     # braces avoid ambiguity when adjacent to other text
 ```
+
+<a id="arrays"></a>
 
 ## 📦 Arrays
 
@@ -676,7 +702,9 @@ print_all() {
 print_all arr
 ```
 
-## 🔀 Conditionals & Test Operators
+<a id="conditionals-test-operators"></a>
+
+## 🔀 Conditionals Test Operators
 
 ```bash
 # if / elif / else
@@ -722,6 +750,8 @@ result=$([[ $x -gt 0 ]] && echo "positive" || echo "non-positive")
 [[ -d "$dir" ]] || mkdir -p "$dir"     # create dir only if it doesn't exist
 command -v jq >/dev/null || { echo "jq is required" >&2; exit 1; }
 ```
+
+<a id="loops"></a>
 
 ## 🔁 Loops
 
@@ -782,6 +812,8 @@ select option in "Start" "Stop" "Quit"; do
     esac
 done
 ```
+
+<a id="functions"></a>
 
 ## 🧩 Functions
 
@@ -854,7 +886,9 @@ factorial 5                     # 120
 # . ./lib/helpers.sh             # "." is the POSIX equivalent of "source"
 ```
 
-## 📥 Input/Output & User Interaction
+<a id="input-output-user-interaction"></a>
+
+## 📥 Input/Output User Interaction
 
 ```bash
 # Reading user input
@@ -899,7 +933,9 @@ fi
 } >> job.log 2>&1
 ```
 
-## 🎛️ Command-Line Arguments & getopts
+<a id="command-line-arguments-getopts"></a>
+
+## 🎛️ Command-Line Arguments getopts
 
 ```bash
 #!/usr/bin/env bash
@@ -951,7 +987,9 @@ done
 [[ $# -lt 1 ]] && { echo "Missing required argument" >&2; usage; }
 ```
 
-## ⚡ Process Management & Job Control
+<a id="process-management-job-control"></a>
+
+## ⚡ Process Management Job Control
 
 ```bash
 # Viewing processes
@@ -1000,7 +1038,9 @@ free -h                                # system memory usage
 vmstat 2 5                              # system stats every 2s, 5 times
 ```
 
-## 🌐 Networking & Remote Operations
+<a id="networking-remote-operations"></a>
+
+## 🌐 Networking Remote Operations
 
 ```bash
 # Connectivity checks
@@ -1052,7 +1092,9 @@ curl -X POST https://api.example.com/data \
 curl -u username:password https://api.example.com/secure
 ```
 
-## 📅 Cron, Scheduling & System Admin
+<a id="cron-scheduling-system-admin"></a>
+
+## 📅 Cron, Scheduling System Admin
 
 ```bash
 # crontab — recurring scheduled jobs
@@ -1107,7 +1149,9 @@ uname -r                             # kernel version
 nproc                                  # number of CPU cores
 ```
 
-## 🗜️ Archiving & Compression
+<a id="archiving-compression"></a>
+
+## 🗜️ Archiving Compression
 
 ```bash
 # tar — the standard bundling tool (does NOT compress by itself)
@@ -1147,7 +1191,9 @@ unzip archive.zip -d /target/dir/            # extract to a specific directory
 # .zip     — best when the receiving end is likely to be Windows/macOS
 ```
 
-## 🛡️ Error Handling, Debugging & Traps
+<a id="error-handling-debugging-traps"></a>
+
+## 🛡️ Error Handling, Debugging Traps
 
 ```bash
 #!/usr/bin/env bash
@@ -1203,9 +1249,11 @@ retry() {
 retry 3 curl -sf https://example.com/health
 ```
 
+<a id="common-gotchas"></a>
+
 ## ⚠️ Common Gotchas
 
-- **`set -e` + `((i++))` silently kills your script** — when `i` is `0`, `((i++))` evaluates (returns) the *old* value `0`, which bash treats as a false/failing exit status. Under `set -e`, that aborts the whole script the moment a post-increment counter starts at 0. Use `i=$((i+1))`, `(( ++i ))`, or `(( i++ )) || true` instead.
+- **`set -e` + `((i++))` silently kills your script** — when `i` is `0`, `((i++))` evaluates (returns) the _old_ value `0`, which bash treats as a false/failing exit status. Under `set -e`, that aborts the whole script the moment a post-increment counter starts at 0. Use `i=$((i+1))`, `(( ++i ))`, or `(( i++ )) || true` instead.
 - **Unquoted variable expansions break on spaces and globs** — `rm $file` can turn into multiple `rm` arguments (or an unintended glob) if `$file` contains spaces. Always write `rm "$file"`.
 - **`for f in $(ls *.txt)` breaks on filenames with spaces or newlines** — command substitution word-splits on `$IFS`. Prefer a glob directly (`for f in *.txt`) or `find ... -print0 | xargs -0`.
 - **`[ ]` vs `[[ ]]` are not the same** — `[` is the POSIX test command (external or builtin) and is sensitive to word-splitting/globbing on unquoted variables; `[[ ]]` is a bash keyword that's safer and supports `&&`, `||`, and `=~` directly. Use `[[ ]]` in bash scripts; reserve `[ ]` for scripts that must run under `/bin/sh`.
@@ -1219,6 +1267,8 @@ retry 3 curl -sf https://example.com/health
 - **Cron jobs "work in my terminal" but fail under cron** — cron runs with a minimal `$PATH` and no shell profile loaded; always use absolute paths for both the script and any tools it calls, and set `PATH` explicitly in the crontab if needed.
 - **Word-splitting on `$@` vs `$*`** — `"$@"` expands to separate quoted words (what you almost always want when forwarding arguments); `"$*"` joins everything into one single string. Unquoted, both behave the same (and both are unsafe).
 - **Reading a `while` loop's variables doesn't survive a pipe into it** — `cat file | while read -r line; do count=$((count+1)); done; echo $count` prints `0`, because the pipe puts the loop in a subshell with its own variable scope. Use process substitution (`while read -r line; do ...; done < <(cat file)`) or redirect the file directly into the loop instead.
+
+<a id="best-practices"></a>
 
 ## 🎯 Best Practices
 
@@ -1276,7 +1326,9 @@ log "Starting processing"
 - Keep scripts idempotent where possible (safe to re-run without side effects) — especially important for anything cron will call.
 - Write to `stderr` for logs/diagnostics and reserve `stdout` for the script's actual data output, so it composes cleanly in a pipeline.
 
-## 📚 Idioms, Performance & Memory Tips
+<a id="idioms-performance-memory-tips"></a>
+
+## 📚 Idioms, Performance Memory Tips
 
 ### Common Idioms
 
@@ -1343,6 +1395,8 @@ process() {
 5. Watch out for unbounded log growth from `set -x` or verbose `curl`/`rsync` output in long-running or cron-scheduled scripts — rotate or truncate logs.
 6. Use `ulimit -v` / `ulimit -f` to cap a runaway script's memory or file-size usage during development.
 7. For very large text processing jobs, `awk` typically uses far less memory than reading the same data into bash arrays.
+
+<a id="pro-tips"></a>
 
 ## 💡 Pro Tips
 

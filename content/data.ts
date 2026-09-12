@@ -2,105 +2,8 @@ import type { Category } from "@/lib/types";
 
 export const DATA: Category[] = [
 	{
-		key: "db",
-		label: "Data warehouses & databases",
-		items: [
-			{
-				id: "postgres",
-				customizedComponent: false,
-				name: "PostgreSQL",
-				file: "Databases/PostgreSQL_Cheatsheet.md",
-				status: "solid",
-				tagline: "psql, window functions, JSON/JSONB, arrays, indexing",
-				covers:
-					"Excellent coverage across psql commands, filtering, window functions, JSON/JSONB, arrays, indexing, and cohort/RFM/funnel patterns.",
-				fixes: [],
-				extend: [
-					"LISTEN/NOTIFY",
-					"Logical replication basics",
-					"pg_stat_statements",
-					"Partitioning (PARTITION BY RANGE/LIST)",
-				],
-			},
-			{
-				id: "mysql",
-				customizedComponent: false,
-				name: "MySQL",
-				file: "Databases/MySQL_Cheatsheet.md",
-				status: "solid",
-				tagline: "CRUD, joins, window functions, JSON, RFM, cohort/YoY",
-				covers:
-					"Comprehensive — CRUD, joins, window functions, JSON, RFM, cohort/YoY analysis, sampling, export, and user management.",
-				fixes: [],
-				extend: [
-					"Generated/virtual columns",
-					"JSON_TABLE",
-					"Replication basics",
-				],
-			},
-			{
-				id: "sqlalchemy",
-				customizedComponent: false,
-				name: "SQLAlchemy",
-				file: "Databases/SQLAlchemy.md",
-				status: "solid",
-				tagline: "The thinnest file in the set, written entirely in 1.x style",
-				covers:
-					"About 200 lines against 600–3000+ for its peers, and written throughout in SQLAlchemy 1.x idiom.",
-				fixes: [],
-				extend: [
-					"A full rewrite in 2.0 style",
-					"Alembic migrations",
-					"Async engine/session (create_async_engine)",
-					"Connection pooling options",
-					"Index/constraint definitions",
-				],
-			},
-			{
-				id: "bigquery",
-				customizedComponent: false,
-				name: "Google BigQuery",
-				file: "Databases/BigQuery_Cheatsheet.md",
-				status: "solid",
-				tagline:
-					"GCP's serverless warehouse — partitioning, clustering, slots, cost control",
-				covers:
-					"Google BigQuery as a serverless warehouse: table partitioning and clustering strategies, slot-based query pricing vs. on-demand, and the cost-control patterns that keep ad-hoc analytics from generating a surprise bill.",
-				fixes: [],
-				extend: [
-					"Partitioning by ingestion time vs. a column, and clustering column selection",
-					"On-demand vs. flat-rate/slot pricing, and reservations",
-					"Query cost estimation with dry runs, and bytes-scanned optimization",
-					"BigQuery ML for in-warehouse model training",
-					"Authorized views, row-level security, and dataset-level IAM",
-					"Streaming inserts vs. batch loads, and their cost/latency tradeoffs",
-				],
-			},
-			{
-				id: "lakehouse-formats",
-				customizedComponent: false,
-				name: "Delta Lake / Apache Iceberg / Hudi",
-				file: "Databases/Lakehouse_Table_Formats.md",
-				status: "solid",
-				tagline: "Lakehouse table formats — ACID on top of object storage",
-				covers:
-					"The three major open table formats that bring ACID transactions, schema evolution, and time travel to files sitting in S3/GCS/ADLS — what each format actually is, where they overlap, and the criteria that decide between them.",
-				fixes: [],
-				extend: [
-					"How table formats add ACID transactions and schema evolution on top of Parquet files",
-					"Delta Lake: transaction log, OPTIMIZE/VACUUM, Delta Live Tables",
-					"Apache Iceberg: hidden partitioning, snapshot isolation, catalog options (Glue, Nessie, REST)",
-					"Apache Hudi: copy-on-write vs. merge-on-read, upsert-heavy workloads",
-					"Time travel and rollback across all three formats",
-					"Format interoperability and engine support (Spark, Trino, Snowflake, BigQuery)",
-					"Choosing a format based on write pattern, ecosystem, and existing tooling",
-				],
-			},
-		],
-	},
-	{
 		key: "py",
-		label: "Python data libraries",
+		label: "Python Data Libraries",
 		items: [
 			{
 				id: "pandas",
@@ -173,730 +76,6 @@ export const DATA: Category[] = [
 					"Reproducibility: cell execution order pitfalls, restart-and-run-all discipline",
 					"Parameterizing notebooks with papermill for scheduled runs",
 					"Version control for notebooks: nbdime, stripping output before committing",
-				],
-			},
-		],
-	},
-	{
-		key: "infra",
-		label: "Infrastructure",
-		items: [
-			{
-				id: "dbt",
-				customizedComponent: false,
-				name: "dbt",
-				file: "Infrastructure/dbt_Cheatsheet.md",
-				status: "solid",
-				tagline: "Project structure, materializations, snapshots, tests",
-				covers:
-					"Project structure, materializations, model selection syntax, snapshots, tests, Jinja/macros, incremental strategies, hooks, and exposures.",
-				fixes: [],
-				extend: [
-					"Unit tests (dbt test for logic, not just data)",
-					"Model contracts/versions",
-					"dbt Mesh (cross-project ref())",
-					"Python models",
-				],
-			},
-			{
-				id: "kafka",
-				customizedComponent: false,
-				name: "Kafka",
-				file: "Infrastructure/kafka.md",
-				status: "solid",
-				tagline: "Deep and code-heavy, but styled differently from the rest",
-				covers:
-					"Producers, consumers, config tuning, a CDC/replication example, troubleshooting, and a glossary — genuinely deep content.",
-				fixes: [
-					'Written in a more verbose "definition \u2192 purpose \u2192 bullets" tutorial style with no table of contents or quick-reference table, unlike the rest of the set — worth reformatting if these are meant to sit together as one reference.',
-					"Built entirely on kafka-python, which has had slow-maintenance stretches. confluent-kafka-python (librdkafka-based) is the more actively maintained alternative and is worth at least a callout.",
-				],
-				extend: [
-					"Kafka Streams / ksqlDB",
-					"Schema Registry with Avro/Protobuf serialization",
-					"Kafka Connect",
-				],
-			},
-			{
-				id: "redis",
-				customizedComponent: false,
-				name: "Redis",
-				file: "Infrastructure/redis.md",
-				status: "solid",
-				tagline: "2,800+ lines — data types, production patterns, tuning",
-				covers:
-					"The deepest file in the whole set: data type deep-dives, production patterns (sessions, caching, rate limiting, distributed locks, leaderboards, carts, queues), performance tuning, security, monitoring scripts, and a deployment checklist.",
-				fixes: [
-					"Same narrative/tutorial style as Kafka rather than the terse quick-reference format used by the SQL/warehouse files — not wrong, just inconsistent if you want one uniform family of cheatsheets.",
-				],
-				extend: [
-					"Redis Streams (XADD/XREAD, consumer groups) — a notable omission given how much else is covered",
-					"Redis Cluster hands-on commands, currently only discussed conceptually",
-					"RedisJSON/RediSearch if you use Redis Stack",
-				],
-			},
-			{
-				id: "terraform",
-				customizedComponent: false,
-				name: "Terraform",
-				file: "Infrastructure/Terraform.md",
-				status: "solid",
-				tagline: "Infrastructure as code for provisioning the data stack",
-				covers:
-					"Terraform mechanics for standing up the pieces already covered elsewhere in this index — S3 buckets, Glue jobs, Redshift clusters — plus the state-management and module patterns that separate a script you run once from infrastructure a team can actually maintain.",
-				fixes: [],
-				extend: [
-					"Core workflow: init/plan/apply/destroy, and reading a plan diff before trusting it",
-					"State management: remote state (S3 + DynamoDB locking), why local state breaks in a team",
-					"Resource vs. data source vs. module — when each is the right building block",
-					"Variables, outputs, and locals — keeping dev/staging/prod from diverging",
-					"Provisioning the AWS data stack from this index: S3 buckets with lifecycle rules, Glue jobs/crawlers, Redshift clusters, IAM roles for least-privilege pipeline access",
-					"Workspaces vs. separate state files for environment separation",
-					"Drift detection and terraform import for adopting existing infrastructure",
-					"Common gotchas: circular dependencies between resources, provider version pinning",
-				],
-			},
-			{
-				id: "docker",
-				customizedComponent: false,
-				name: "Docker",
-				file: "Infrastructure/docker.md",
-				status: "solid",
-				tagline:
-					"Containerizing pipelines, notebooks, and the tools already in this index",
-				covers:
-					"Docker as the runtime layer underneath everything else here — packaging a Python/PySpark job so it runs the same on a laptop and in production, multi-stage builds for smaller images, and docker-compose for local Kafka/Redis/Postgres stacks during development.",
-				fixes: [],
-				extend: [
-					"Core concepts: images vs. containers, layers and caching, the build context",
-					"Dockerfile patterns for data jobs: pinning base images, multi-stage builds to keep Spark/ML images small",
-					"docker-compose for local dev stacks — spinning up Kafka + Redis + Postgres together, matching what\u2019s already in this category",
-					"Volume mounts and bind mounts — getting data in and out without baking it into the image",
-					"Environment variables and secrets — what not to bake into an image",
-					"Networking between containers, and the differences from host networking",
-					"Image size and security: distroless/slim base images, scanning for vulnerabilities",
-					"Where Docker stops and Kubernetes starts — a short note on when a single container isn\u2019t enough anymore",
-				],
-			},
-			{
-				id: "airflow",
-				customizedComponent: false,
-				name: "Apache Airflow",
-				file: "Infrastructure/Airflow.md",
-				status: "solid",
-				tagline:
-					"DAGs, operators, sensors, XComs — tool-specific companion to your ETL orchestration concepts",
-				covers:
-					"Airflow as the concrete implementation of the orchestration concepts covered generically elsewhere: DAG authoring, operator/sensor selection, XComs for passing small data between tasks, and the scheduler behavior that trips people up in production.",
-				fixes: [],
-				extend: [
-					"DAG structure: task dependencies, dynamic task mapping, TaskFlow API",
-					"Operators vs. sensors vs. hooks, and when to write a custom one",
-					"XComs for passing data between tasks, and their size limits",
-					"Scheduling: cron expressions, catchup/backfill behavior, execution_date semantics",
-					"Retries, SLAs, and alerting on failure",
-					"Connections and Variables, and where secrets should actually live",
-					"Executors: Local, Celery, Kubernetes — how task parallelism actually happens",
-				],
-			},
-			{
-				id: "kubernetes",
-				customizedComponent: false,
-				name: "Kubernetes",
-				file: "Infrastructure/Kubernetes.md",
-				status: "solid",
-				tagline:
-					"Complements Docker; how production pipelines actually get run at scale",
-				covers:
-					"The Kubernetes concepts a data engineer actually needs — pods, deployments, and jobs/cronjobs for running containerized pipeline code at scale, plus the resource and scheduling knobs that decide whether a Spark or batch job runs reliably.",
-				fixes: [],
-				extend: [
-					"Core objects: Pods, Deployments, Jobs, CronJobs — which fits a batch pipeline",
-					"ConfigMaps and Secrets for pipeline configuration",
-					"Resource requests/limits, and how under-provisioning kills jobs silently",
-					"Namespaces and RBAC for multi-team clusters",
-					"Running Spark on Kubernetes vs. YARN",
-					"Helm basics for packaging pipeline deployments",
-					"kubectl commands used most often for debugging a stuck pod",
-				],
-			},
-			{
-				id: "great-expectations",
-				customizedComponent: false,
-				name: "Great Expectations",
-				file: "Infrastructure/Great_Expectations.md",
-				status: "solid",
-				tagline:
-					'Tool-specific data quality/validation, companion to ETL "Data Quality & Testing"',
-				covers:
-					"Great Expectations as the concrete tool for the data-quality concepts covered generically elsewhere: expectation suites, checkpoints for running validations in a pipeline, and Data Docs for turning results into something a team actually reads.",
-				fixes: [],
-				extend: [
-					"Expectation suites: built-in expectations vs. writing custom ones",
-					"Checkpoints for running validation as a pipeline step, and failure behavior",
-					"Data Docs for human-readable validation reports",
-					"Integrating with Airflow/dbt to gate downstream steps on quality checks",
-					"Profiling a dataset to auto-generate a starting expectation suite",
-					"Comparing Great Expectations to lighter alternatives (dbt tests, Soda)",
-				],
-			},
-			{
-				id: "git-github",
-				customizedComponent: false,
-				name: "Git & GitHub",
-				file: "Infrastructure/git.md",
-				status: "solid",
-				tagline: "Branching, PR workflows, conflict resolution",
-				covers:
-					"Core Git mechanics and GitHub workflow habits that data teams rely on daily — branching strategies, resolving conflicts in code and notebooks, and the PR review conventions that keep a shared dbt/Airflow repo maintainable.",
-				fixes: [],
-				extend: [
-					"Core commands: branch, merge, rebase, cherry-pick, stash",
-					"Resolving merge conflicts, including notebook-specific conflict pain",
-					"Branching strategies: trunk-based vs. GitFlow for a data team",
-					"PR workflow: review conventions, draft PRs, requesting changes",
-					"Git hooks for pre-commit checks (linting, secrets scanning)",
-					"Undoing mistakes: reset vs. revert, recovering a deleted branch",
-				],
-			},
-			{
-				id: "cicd-data-pipelines",
-				customizedComponent: false,
-				name: "CI/CD for Data Pipelines",
-				file: "Infrastructure/CICD_for_Data_Pipelines.md",
-				status: "solid",
-				tagline:
-					"GitHub Actions/GitLab CI — testing & deploying dbt/Airflow projects",
-				covers:
-					"Setting up continuous integration and deployment for a data stack — running dbt tests and Airflow DAG validation on every PR, and safely promoting changes from dev to staging to production.",
-				fixes: [],
-				extend: [
-					"GitHub Actions/GitLab CI pipeline structure for a dbt project",
-					"Running dbt build/test in CI against a dedicated CI schema",
-					"DAG validation and linting for Airflow before deploy",
-					"Environment promotion: dev → staging → prod, and secrets per environment",
-					"Automated deployment of dbt docs and Airflow DAG syncing",
-					"Rollback strategies when a deploy breaks a pipeline",
-				],
-			},
-			{
-				id: "linux-bash",
-				customizedComponent: false,
-				name: "Linux / Bash / Shell Scripting",
-				file: "Linux_Bash_Shell_Scripting.md",
-				status: "planned",
-				tagline: "Cron, piping, file ops — unavoidable in real pipeline work",
-				covers:
-					"The command-line fundamentals that show up constantly in real pipeline work — cron scheduling, piping and redirection, and the file/process operations needed to debug a job running on a remote box.",
-				fixes: [],
-				extend: [
-					"Cron syntax and common scheduling patterns",
-					"Piping, redirection, and process substitution",
-					"File operations: find, xargs, permissions, disk usage",
-					"Process management: ps, top, kill, nohup, background jobs",
-					"Writing a robust bash script: set -euo pipefail, error handling, logging",
-					"SSH basics and moving files with scp/rsync",
-				],
-			},
-		],
-	},
-	{
-		key: "ds",
-		label: "Data science & statistics",
-		items: [
-			{
-				id: "abtesting",
-				customizedComponent: false,
-				name: "A/B Testing — 50 Problems",
-				file: "AB_Testing_50_Problems.md",
-				status: "solid",
-				tagline: "50 worked scenarios across a wide range of industries",
-				covers:
-					"Each scenario carries a hypothesis, correct test selection with rationale, runnable sample data, and a lesson that usually includes a real caveat — confounds, SRM, holdout limitations. The strongest file in the set relative to its stated goal.",
-				fixes: [],
-				extend: [
-					"Multiple-comparisons correction (Bonferroni / BH-FDR) for testing many metrics at once",
-					"Sequential / always-valid testing (mSPRT) for teams that peek continuously",
-					"CUPED or other variance-reduction techniques",
-					"An explicit non-inferiority test example",
-				],
-			},
-			{
-				id: "oneliners",
-				customizedComponent: false,
-				name: "Python One-Liners",
-				file: "1000_plus_python_one_liners.md",
-				status: "solid",
-				tagline: "1,020 one-liners across 52 categories",
-				covers:
-					"1,020 one-liners across 52 categories, closing with an honest limitations section — no try/except in lambdas, recursive-lambda naming quirks, ordering dependencies between functions.",
-				fixes: [],
-				extend: [
-					"A security-flagged section for eval/exec-based one-liners, with an explicit don\u2019t-run-on-untrusted-input warning, matching the existing pattern of flagging caveats",
-				],
-			},
-			{
-				id: "charts",
-				customizedComponent: false,
-				name: "Data Visualization",
-				file: "Data Visualization/Master_Cheatsheet.md",
-				status: "solid",
-				tagline: "103 chart types across matplotlib, seaborn & plotly",
-				covers:
-					"103 chart types, each with description, purpose, use cases, sample data, and runnable code, split sensibly across matplotlib, seaborn, and plotly by fit.",
-				fixes: [
-					'The intro claims everything was tested against "plotly 7.0" as the current stable release — the actual latest release is still the 6.x line (6.9.0); there is no 7.0 yet.',
-				],
-				extend: [
-					'A short "how to pick a chart" decision tree at the top — the 12 category headers already imply one',
-					"A dedicated style-customization section (themes, colorblind-safe palettes) instead of scattered per-chart notes",
-				],
-			},
-			{
-				id: "mathstats",
-				customizedComponent: true,
-				name: "Math & Statistics",
-				file: "Math_and_Statistics.md",
-				status: "solid",
-				tagline:
-					"The stats and applied math the A/B Testing and Clustering sheets assume you have",
-				covers:
-					"Foundational probability and statistics — distributions, estimation, hypothesis testing theory, and the linear algebra/calculus that shows up in ML — written as the reference the A/B Testing and Clustering cheatsheets assume you already have.",
-				fixes: [],
-				extend: [
-					"Descriptive statistics: mean/median/variance, skewness, robust statistics",
-					"Probability distributions: normal, binomial, Poisson, exponential — when each models real data",
-					"Estimation: point estimates, confidence intervals, the CLT",
-					"Hypothesis testing theory: p-values, power, Type I/II errors — the theory behind the A/B Testing test-selection table",
-					"Correlation vs. causation, Simpson\u2019s paradox — ties directly to a pitfall already covered in the 50 A/B testing problems",
-					"Bayesian basics: priors, posteriors, when Bayesian A/B testing beats frequentist",
-					"Linear algebra essentials: vectors, matrices, eigenvalues — the minimum needed to read ML papers / PCA",
-					"Basic calculus for ML: gradients, partial derivatives, why gradient descent works",
-				],
-			},
-			{
-				id: "eda",
-				customizedComponent: true,
-				name: "Exploratory Data Analysis (EDA)",
-				status: "solid",
-				tagline: "A structured workflow for understanding data before modeling",
-				covers:
-					"A complete EDA workflow covering data overview, missing values, descriptive statistics, distributions, relationships, correlation, outliers, target analysis, domain-specific questions, and a pre-modeling checklist, with pandas and Plotly examples.",
-				fixes: [],
-				extend: [
-					"Add a project-specific dataset and connect the examples to a live profiling runtime",
-					"Add automated data-quality thresholds and report export",
-					"Add time-series decomposition and drift analysis",
-				],
-			},
-			{
-				id: "statistical-inference",
-				customizedComponent: false,
-				name: "Statistical Inference & Hypothesis Testing",
-				file: "Statistical_Inference_and_Hypothesis_Testing.md",
-				status: "planned",
-				tagline:
-					"Dedicated foundations sheet — the layer your A/B Testing sheet assumes",
-				covers:
-					"The inferential statistics foundations that the A/B Testing sheet assumes — sampling distributions, p-values and confidence intervals done properly, and the common misinterpretations that lead to bad test conclusions.",
-				fixes: [],
-				extend: [
-					"Sampling distributions and the Central Limit Theorem in practice",
-					"p-values, confidence intervals, and what they don\u2019t mean",
-					"Type I/II errors, statistical power, and sample size calculations",
-					"Parametric vs. non-parametric tests, and when to reach for each",
-					"Multiple testing correction in depth (family-wise error vs. FDR)",
-					"Common misinterpretations that lead to wrong conclusions in practice",
-				],
-			},
-		],
-	},
-	{
-		key: "ml",
-		label: "Machine Learning",
-		slug: "machine-learning",
-		subcategories: [
-			{
-				key: "core-ml",
-				label: "Core & Classical ML",
-				slug: "core-ml",
-				status: "planned",
-				tagline:
-					"Classical supervised & unsupervised learning — algorithms, sklearn, evaluation, tuning",
-				covers:
-					"The classical machine learning toolkit for tabular data — core algorithms and ensembles, the scikit-learn workflow around them, feature engineering, evaluation metrics, hyperparameter search, and interpreting what a model actually learned.",
-				items: [
-					{
-						id: "featureeng",
-						customizedComponent: true,
-						name: "Feature Engineering",
-						file: "Feature_Engineering.md",
-						status: "solid",
-						slug: "featureeng",
-						tagline:
-							"Encoding, scaling, and the leakage traps that break models in production",
-						covers:
-							"The feature engineering practices that sit between raw data and a working model — encoding categorical variables correctly, scaling numeric ones, and the data leakage patterns that make a model look great in testing and fail silently in production.",
-						fixes: [],
-						extend: [
-							"Categorical encoding: one-hot, ordinal, target/mean encoding, and when each introduces leakage",
-							"Numeric scaling: standardization vs. normalization vs. robust scaling, and when tree-based models don\u2019t need any of it",
-							"Handling missing data as a feature: indicator columns, imputation strategies and their tradeoffs",
-							"Datetime feature extraction: cyclical encoding for hour/day-of-week, holiday flags, lag features for time series",
-							"Data leakage patterns: target leakage, train/test contamination, temporal leakage in time-ordered data",
-							"Feature selection: correlation filtering, mutual information, recursive feature elimination",
-							"Interaction and polynomial features — when they help vs. when they just add noise",
-							"Ties directly to the Math & Statistics sheet\u2019s correlation section and to Clustering\u2019s preprocessing steps",
-						],
-					},
-					{
-						id: "ml-algorithms",
-						customizedComponent: false,
-						name: "Machine Learning Algorithms",
-						file: "Machine_Learning_Algorithms.md",
-						status: "planned",
-						slug: "ml-algorithms",
-						tagline: "Regression, decision trees, ensembles, SVMs",
-						covers:
-							"The core supervised learning algorithms from first principles — how regression, decision trees, ensembles, and SVMs actually work, their assumptions, and when each is the right (or wrong) choice for tabular data.",
-						fixes: [],
-						extend: [
-							"Linear and logistic regression: assumptions, regularization (L1/L2)",
-							"Decision trees: splitting criteria, pruning, overfitting behavior",
-							"Ensembles: bagging vs. boosting, random forests vs. gradient boosting",
-							"Support vector machines: kernels, margin intuition, when SVMs still win",
-							"Naive Bayes and k-nearest neighbors as fast baselines",
-							"Choosing an algorithm family based on data size, interpretability needs, and latency",
-						],
-					},
-					{
-						id: "sklearn-general",
-						customizedComponent: false,
-						name: "Scikit-learn (General)",
-						file: "Scikit_learn_General.md",
-						status: "planned",
-						slug: "sklearn-general",
-						tagline:
-							"Pipelines, cross-validation, hyperparameter tuning — beyond clustering",
-						covers:
-							"The scikit-learn workflow beyond the clustering-specific sheet already in this index — Pipeline/ColumnTransformer for reproducible preprocessing, cross-validation strategies, and hyperparameter search.",
-						fixes: [],
-						extend: [
-							"Pipeline and ColumnTransformer for reproducible preprocessing",
-							"Cross-validation strategies: k-fold, stratified, time series split",
-							"GridSearchCV vs. RandomizedSearchCV vs. Bayesian search (optuna)",
-							"Custom transformers and estimators via BaseEstimator/TransformerMixin",
-							"Model persistence with joblib/pickle, and version compatibility gotchas",
-							"Common scikit-learn API patterns: fit/transform/predict consistency",
-						],
-					},
-					{
-						id: "model-evaluation",
-						customizedComponent: false,
-						name: "Model Evaluation & Metrics",
-						file: "Model_Evaluation_and_Metrics.md",
-						status: "planned",
-						slug: "model-evaluation",
-						tagline:
-							"Precision/recall/ROC-AUC, confusion matrices, calibration",
-						covers:
-							"Choosing and interpreting the right evaluation metric for a model — classification metrics beyond accuracy, regression error metrics, and calibration checks that catch a model that's confidently wrong.",
-						fixes: [],
-						extend: [
-							"Classification metrics: precision, recall, F1, ROC-AUC, PR-AUC — and when accuracy is misleading",
-							"Confusion matrices and cost-sensitive threshold selection",
-							"Regression metrics: MAE, RMSE, MAPE, and their sensitivity to outliers",
-							"Calibration curves and Brier score for probability estimates",
-							"Cross-validated metric estimates vs. a single train/test split",
-							"Business-metric alignment: translating model metrics into decision impact",
-						],
-					},
-					{
-						id: "clustering",
-						customizedComponent: false,
-						name: "Clustering Problems",
-						file: "clustering_100_problems.md",
-						status: "solid",
-						slug: "clustering",
-						tagline:
-							"75 self-contained scikit-learn problems, Beginner \u2192 Advanced",
-						covers:
-							'All problems are self-contained scikit-learn with synthetic data, progressing Beginner \u2192 Intermediate \u2192 Advanced, and ending in a genuinely useful "which algorithm when" reference table.',
-						fixes: [
-							'The filename says "100_problems" but the file is titled and structured as 75, not 100+ — either it was trimmed from a bigger plan and the filename wasn\u2019t updated, or 25 problems are missing. Worth reconciling either way.',
-						],
-						extend: [
-							"Fuzzy c-means",
-							"HDBSCAN",
-							"Self-organizing maps",
-							"Subspace clustering",
-							"Per-cluster silhouette evaluation",
-							"Clustering on sparse/text embeddings from a transformer model",
-						],
-					},
-					{
-						id: "xgboost-lightgbm",
-						customizedComponent: false,
-						name: "XGBoost / LightGBM",
-						file: "XGBoost_LightGBM_Cheatsheet.md",
-						status: "planned",
-						slug: "xgboost-lightgbm",
-						tagline:
-							"Gradient boosting — the most-used tabular ML approach in practice",
-						covers:
-							"Practical gradient boosting with XGBoost and LightGBM — the hyperparameters that actually matter, handling categorical features and imbalanced data, and the differences between the two libraries.",
-						fixes: [],
-						extend: [
-							"Key hyperparameters: learning rate, max depth, n_estimators, regularization terms",
-							"Early stopping and validation set usage",
-							"Handling categorical features (native support in LightGBM vs. encoding for XGBoost)",
-							"Imbalanced classification: scale_pos_weight, class weights",
-							"Feature importance: gain vs. split count vs. SHAP values",
-							"XGBoost vs. LightGBM vs. CatBoost — practical differences in speed and defaults",
-						],
-					},
-					{
-						id: "model-interpretability",
-						customizedComponent: false,
-						name: "Model Interpretability & Explainability",
-						file: "Model_Interpretability_and_Explainability.md",
-						status: "planned",
-						slug: "model-interpretability",
-						tagline:
-							"SHAP, LIME, partial dependence — explaining what a model actually learned",
-						covers:
-							"Explaining model predictions to stakeholders and debugging models that are confidently wrong — SHAP and LIME for local explanations, partial dependence and permutation importance for global behavior, and the caveats that keep an explanation from being misleading.",
-						fixes: [],
-						extend: [
-							"SHAP values: TreeSHAP vs. KernelSHAP, and reading a summary/force plot correctly",
-							"LIME: local surrogate models and where they break down",
-							"Partial dependence plots vs. permutation importance vs. built-in feature importance — what each actually measures",
-							"Counterfactual explanations for individual predictions",
-							"Interpretability caveats: correlated features distorting importance, and explanations vs. causation",
-							"Regulatory/compliance angle: when a model needs to be explainable by law (credit, hiring)",
-						],
-					},
-					{
-						id: "hyperparameter-optimization-automl",
-						customizedComponent: false,
-						name: "Hyperparameter Optimization & AutoML",
-						file: "Hyperparameter_Optimization_and_AutoML.md",
-						status: "planned",
-						slug: "hyperparameter-optimization-automl",
-						tagline:
-							"Grid/random search, Bayesian optimization (Optuna), and when AutoML earns its keep",
-						covers:
-							"Systematic hyperparameter search beyond GridSearchCV — Bayesian optimization with Optuna, early-stopping search strategies, and a practical look at AutoML frameworks and where they save time versus where they hide bad decisions.",
-						fixes: [],
-						extend: [
-							"Grid search vs. random search vs. Bayesian optimization — when each pays off",
-							"Optuna: defining a search space, pruning trials early, and parallelizing a study",
-							"Multi-objective tuning: balancing accuracy against latency or model size",
-							"AutoML frameworks (Auto-sklearn, H2O AutoML, AutoGluon) — what they automate and what they can't",
-							"Search budget planning: how many trials is enough for a given search space",
-							"Avoiding hyperparameter overfitting to the validation set",
-						],
-					},
-				],
-			},
-			{
-				key: "deep-learning-nlp",
-				label: "Deep Learning & NLP",
-				slug: "deep-learning-nlp",
-				status: "planned",
-				tagline: "Neural networks, NLP, and computer vision fundamentals",
-				covers:
-					"The deep learning path beyond classical ML — neural network fundamentals and training mechanics, the NLP pipeline from tokenization to transformers, and computer vision basics built on pretrained backbones.",
-				items: [
-					{
-						id: "deep-learning-basics",
-						customizedComponent: false,
-						name: "Deep Learning Basics",
-						file: "Deep_Learning_Basics.md",
-						status: "planned",
-						slug: "deep-learning-basics",
-						tagline: "Neural nets, PyTorch/TensorFlow/Keras fundamentals",
-						covers:
-							"Neural network fundamentals and the practical mechanics of training one — architecture basics, backpropagation intuition, and getting a model trained end-to-end in PyTorch or Keras.",
-						fixes: [],
-						extend: [
-							"Neural network basics: layers, activation functions, backpropagation intuition",
-							"Loss functions and optimizers (SGD, Adam) and learning rate scheduling",
-							"PyTorch vs. TensorFlow/Keras: core API differences",
-							"Training loop mechanics: batching, epochs, validation, early stopping",
-							"Regularization: dropout, batch normalization, weight decay",
-							"Common architectures overview: CNNs for images, RNNs/transformers for sequences",
-						],
-					},
-					{
-						id: "nlp-fundamentals",
-						customizedComponent: false,
-						name: "NLP Fundamentals",
-						file: "NLP_Fundamentals.md",
-						status: "planned",
-						slug: "nlp-fundamentals",
-						tagline: "Tokenization, embeddings, TF-IDF, transformers overview",
-						covers:
-							"The NLP pipeline from raw text to model input — tokenization and preprocessing choices, classical representations like TF-IDF, word/sentence embeddings, and a practical overview of transformer-based models.",
-						fixes: [],
-						extend: [
-							"Tokenization approaches: word, subword (BPE/WordPiece), and their tradeoffs",
-							"Text preprocessing: stopwords, stemming/lemmatization, and when to skip them",
-							"TF-IDF and bag-of-words as fast, interpretable baselines",
-							"Word embeddings (Word2Vec, GloVe) vs. contextual embeddings",
-							"Transformers overview: attention intuition, encoder vs. decoder models",
-							"Practical use of pretrained models via Hugging Face for classification/embedding tasks",
-						],
-					},
-					{
-						id: "computer-vision-fundamentals",
-						customizedComponent: false,
-						name: "Computer Vision Fundamentals",
-						file: "Computer_Vision_Fundamentals.md",
-						status: "planned",
-						slug: "computer-vision-fundamentals",
-						tagline:
-							"CNNs, image preprocessing, and transfer learning for image tasks",
-						covers:
-							"The computer vision pipeline from raw images to a trained classifier — preprocessing and augmentation, CNN architecture fundamentals, and transfer learning with pretrained backbones for tasks that don't need training from scratch.",
-						fixes: [],
-						extend: [
-							"Image preprocessing and augmentation: resizing, normalization, flips/rotations/color jitter",
-							"CNN fundamentals: convolutions, pooling, receptive fields — why they fit image data",
-							"Transfer learning: fine-tuning a pretrained backbone (ResNet, EfficientNet, ViT) vs. training from scratch",
-							"Object detection and segmentation overview: how they differ from plain classification",
-							"Common failure modes: dataset bias, class imbalance in image data, augmentation that changes the label",
-							"Practical tooling: torchvision/Keras applications, and when to reach for a pretrained model vs. training your own",
-						],
-					},
-				],
-			},
-			{
-				key: "specialized-ml",
-				label: "Specialized ML Applications",
-				slug: "specialized-ml",
-				status: "planned",
-				tagline:
-					"Recommenders, anomaly detection, and time series — applied ML beyond generic classifiers",
-				covers:
-					"Machine learning applied to specific problem shapes that don't fit a generic classifier — recommendation engines, rare-event and anomaly detection on imbalanced data, and forecasting time-ordered data.",
-				items: [
-					{
-						id: "recommender-systems",
-						customizedComponent: false,
-						name: "Recommender Systems",
-						file: "Recommender_Systems.md",
-						status: "planned",
-						slug: "recommender-systems",
-						tagline:
-							"Collaborative filtering, matrix factorization, content-based approaches",
-						covers:
-							"The core approaches behind recommendation engines — collaborative filtering and matrix factorization for behavior-based recommendations, content-based filtering for cold-start items, and the hybrid approaches production systems actually use.",
-						fixes: [],
-						extend: [
-							"Collaborative filtering: user-based vs. item-based, and why item-based tends to scale better",
-							"Matrix factorization: SVD, ALS, and implicit feedback (clicks/views) vs. explicit ratings",
-							"Content-based filtering for the cold-start problem (new users, new items)",
-							"Hybrid approaches: blending collaborative and content signals",
-							"Evaluation: precision@k, recall@k, NDCG — why plain RMSE misleads for ranking tasks",
-							"Production concerns: candidate generation vs. ranking stages, and serving latency",
-						],
-					},
-					{
-						id: "anomaly-detection-imbalanced-learning",
-						customizedComponent: false,
-						name: "Anomaly Detection & Imbalanced Learning",
-						file: "Anomaly_Detection_and_Imbalanced_Learning.md",
-						status: "planned",
-						slug: "anomaly-detection-imbalanced-learning",
-						tagline:
-							"Isolation forests, autoencoders, and modeling rare-event data honestly",
-						covers:
-							"Detecting rare events and handling severely imbalanced data — unsupervised approaches like isolation forests and autoencoder reconstruction error, resampling strategies for imbalanced classification, and the evaluation traps that make a fraud/anomaly model look better than it is.",
-						fixes: [],
-						extend: [
-							"Unsupervised anomaly detection: isolation forests, one-class SVM, autoencoder reconstruction error",
-							"Resampling strategies: SMOTE and its variants vs. class weighting vs. undersampling",
-							"Why accuracy is meaningless on a 99:1 class split, and what to report instead",
-							"Threshold selection for anomaly scores when there's no labeled validation set",
-							"Time-aware anomaly detection: seasonality-aware baselines instead of a static threshold",
-							"Production concerns: alert fatigue, and tuning precision/recall trade-offs to what an on-call team can act on",
-						],
-					},
-					{
-						id: "time-series-forecasting",
-						customizedComponent: false,
-						name: "Time Series Analysis & Forecasting",
-						file: "Time_Series_Analysis_and_Forecasting.md",
-						status: "planned",
-						slug: "time-series-forecasting",
-						tagline: "ARIMA, Prophet, seasonality/decomposition",
-						covers:
-							"Classical and modern time series forecasting — decomposition into trend/seasonality/residual, ARIMA family models, and Prophet, plus the evaluation pitfalls specific to time-ordered data.",
-						fixes: [],
-						extend: [
-							"Decomposition: trend, seasonality, residual — additive vs. multiplicative",
-							"Stationarity, differencing, and the ADF test",
-							"ARIMA/SARIMA: parameter selection with ACF/PACF plots",
-							"Prophet: holiday effects, changepoints, and when it beats ARIMA",
-							"Cross-validation for time series (rolling-origin, not random splits)",
-							"Forecast evaluation: MAPE/MASE, and backtesting against a naive baseline",
-						],
-					},
-				],
-			},
-			{
-				key: "mlops-production",
-				label: "MLOps & Production",
-				slug: "mlops-production",
-				status: "planned",
-				tagline:
-					"Feature stores, deployment, monitoring — keeping a model alive after it ships",
-				covers:
-					"The operational layer around a model once it leaves a notebook — feature stores bridging training and serving, deployment patterns, and the monitoring and retraining discipline that catches drift before it becomes a business problem.",
-				items: [
-					{
-						id: "mlops",
-						customizedComponent: false,
-						name: "MLOps",
-						file: "MLOps_Cheatsheet.md",
-						status: "planned",
-						slug: "mlops",
-						tagline:
-							"Model versioning, deployment, monitoring, drift detection",
-						covers:
-							"The operational layer that keeps a model working after it ships — versioning models and data, deployment patterns, and the monitoring that catches drift before it shows up as a business problem.",
-						fixes: [],
-						extend: [
-							"Model versioning and experiment tracking (MLflow, Weights & Biases)",
-							"Deployment patterns: batch scoring, real-time API, shadow deployment",
-							"Feature stores and training/serving skew",
-							"Monitoring: prediction drift, data drift, and performance decay over time",
-							"Retraining triggers and pipelines, and champion/challenger setups",
-							"Model governance: reproducibility, approval gates, rollback plans",
-						],
-					},
-					{
-						id: "feature-stores-ml-pipelines",
-						customizedComponent: false,
-						name: "Feature Stores & ML Data Pipelines",
-						file: "Feature_Stores_and_ML_Data_Pipelines.md",
-						status: "planned",
-						slug: "feature-stores-ml-pipelines",
-						tagline:
-							"Feature stores, training/serving skew, and data pipelines built for ML",
-						covers:
-							"The data engineering layer purpose-built for ML — feature stores as the bridge between offline training data and online serving, batch vs. streaming feature computation, and the training/serving skew that breaks models in production despite passing every offline test.",
-						fixes: [],
-						extend: [
-							"Feature store concepts: offline store vs. online store, and why both exist",
-							"Point-in-time correctness: avoiding label leakage when joining features to historical training labels",
-							"Batch vs. streaming feature computation, and keeping the two consistent",
-							"Training/serving skew: when the same feature is computed differently in training vs. production",
-							"Popular tooling: Feast, Tecton, and cloud-native feature store offerings",
-							"Versioning features alongside models for reproducible retraining",
-						],
-					},
 				],
 			},
 		],
@@ -1120,7 +299,7 @@ export const DATA: Category[] = [
 	},
 	{
 		key: "eng",
-		label: "Engineering fundamentals",
+		label: "Engineering Fundamentals",
 		items: [
 			{
 				id: "depatterns",
@@ -1207,432 +386,6 @@ export const DATA: Category[] = [
 					"Combining tools with pipes for quick ad-hoc data checks",
 					"When to stop reaching for CLI tools and open pandas/Polars instead",
 				],
-			},
-		],
-	},
-	{
-		key: "etl",
-		label: "ETL / ELT",
-		items: [
-			{
-				id: "etl-fundamentals",
-				customizedComponent: false,
-				name: "Fundamentals & Core Concepts",
-				file: "ETLxELT/01-fundamentals.md",
-				status: "solid",
-				tagline: "The foundations of reliable data movement",
-				covers:
-					"ETL vs ELT, batch and streaming, OLTP and OLAP, warehouses, lakes, lakehouses, and push versus pull processing.",
-				fixes: [],
-				extend: [
-					"When to choose ETL or ELT",
-					"Batch, micro-batch, and streaming trade-offs",
-					"Warehouse, lake, and lakehouse decision criteria",
-				],
-			},
-			{
-				id: "etl-extract",
-				customizedComponent: false,
-				name: "Extract",
-				file: "ETLxELT/02-extract.md",
-				status: "solid",
-				tagline: "Getting trustworthy data out of source systems",
-				covers:
-					"Source types, extraction patterns, change data capture, schema drift, pagination, and rate limiting.",
-				fixes: [],
-				extend: [
-					"Full, incremental, and CDC extraction",
-					"Watermarks and checkpointing",
-					"Schema evolution and source API limits",
-				],
-			},
-			{
-				id: "etl-transform",
-				customizedComponent: false,
-				name: "Transform",
-				file: "ETLxELT/03-transform.md",
-				status: "solid",
-				tagline: "Cleaning, modeling, and shaping data for use",
-				covers:
-					"Data cleaning, modeling, slowly changing dimensions, deduplication, aggregations, and transformation ordering.",
-				fixes: [],
-				extend: [
-					"Validation before and after transformations",
-					"SCD Types 1, 2, and 3",
-					"Warehouse pushdown and reusable transformations",
-				],
-			},
-			{
-				id: "etl-load",
-				customizedComponent: false,
-				name: "Load",
-				file: "ETLxELT/04-load.md",
-				status: "solid",
-				tagline: "Writing data safely into its destination",
-				covers:
-					"Load strategies, partitioning, idempotency, upserts, append-only designs, and backfilling.",
-				fixes: [],
-				extend: [
-					"Truncate-and-load versus merge",
-					"Partition and file-layout choices",
-					"Idempotent retries and historical backfills",
-				],
-			},
-			{
-				id: "etl-orchestration",
-				customizedComponent: false,
-				name: "Orchestration & Scheduling",
-				file: "ETLxELT/05-orchestration.md",
-				status: "solid",
-				tagline: "Coordinating dependencies, retries, and reruns",
-				covers:
-					"DAGs, scheduling patterns, retries, backfills, reruns, dependency management, and operational recovery.",
-				fixes: [],
-				extend: [
-					"Dependency and fan-out/fan-in patterns",
-					"Retry policies and failure boundaries",
-					"Backfill and re-run safety",
-				],
-			},
-			{
-				id: "etl-streaming",
-				customizedComponent: false,
-				name: "Streaming & Real-Time Processing",
-				file: "ETLxELT/06-streaming.md",
-				status: "solid",
-				tagline: "Processing events continuously and reliably",
-				covers:
-					"Stream concepts, windowing, delivery guarantees, event time, late data, and Lambda versus Kappa architectures.",
-				fixes: [],
-				extend: [
-					"Event time versus processing time",
-					"At-most-once, at-least-once, and exactly-once delivery",
-					"Watermarks and late-arriving events",
-				],
-			},
-			{
-				id: "etl-data-quality",
-				customizedComponent: false,
-				name: "Data Quality & Testing",
-				file: "ETLxELT/07-data-quality.md",
-				status: "solid",
-				tagline: "Proving pipeline outputs are trustworthy",
-				covers:
-					"Validation rules, data contracts, testing frameworks, anomaly detection, and quality gates across pipeline stages.",
-				fixes: [],
-				extend: [
-					"Schema, freshness, completeness, and uniqueness checks",
-					"Data contracts and ownership",
-					"Anomaly thresholds and quarantine workflows",
-				],
-			},
-			{
-				id: "etl-architecture-patterns",
-				customizedComponent: false,
-				name: "Architecture & Design Patterns",
-				file: "ETLxELT/08-architecture-patterns.md",
-				status: "solid",
-				tagline: "Structuring data platforms for scale and change",
-				covers:
-					"Medallion architecture, Kimball versus Inmon, Data Mesh, layered systems, and pipeline anti-patterns.",
-				fixes: [],
-				extend: [
-					"Bronze, silver, and gold layer responsibilities",
-					"Centralized warehouse versus domain-oriented ownership",
-					"Common architecture failure modes",
-				],
-			},
-			{
-				id: "etl-performance",
-				customizedComponent: false,
-				name: "Performance & Optimization",
-				file: "ETLxELT/09-performance.md",
-				status: "solid",
-				tagline: "Making pipelines faster and more economical",
-				covers:
-					"Partitioning, indexing, query optimization, parallelism, caching, file sizing, and workload tuning.",
-				fixes: [],
-				extend: [
-					"Partition pruning and clustering",
-					"Parallel extraction and transformation",
-					"Small-file mitigation and caching trade-offs",
-				],
-			},
-			{
-				id: "etl-monitoring-observability",
-				customizedComponent: false,
-				name: "Monitoring, Observability & Lineage",
-				file: "ETLxELT/10-monitoring-observability.md",
-				status: "solid",
-				tagline: "Seeing pipeline health before users report it",
-				covers:
-					"Logging, alerting, lineage, SLAs, freshness, run metadata, and operational dashboards.",
-				fixes: [],
-				extend: [
-					"Structured logs and correlation ids",
-					"Freshness, latency, and volume monitoring",
-					"Upstream and downstream lineage",
-				],
-			},
-			{
-				id: "etl-security-governance",
-				customizedComponent: false,
-				name: "Security & Governance",
-				file: "ETLxELT/11-security-governance.md",
-				status: "solid",
-				tagline: "Protecting data and controlling how it is used",
-				covers:
-					"RBAC, PII handling, compliance, encryption, secrets, retention, and governance controls for data pipelines.",
-				fixes: [],
-				extend: [
-					"Least-privilege access and service identities",
-					"Classification, masking, and tokenization",
-					"Encryption in transit and at rest",
-				],
-			},
-			{
-				id: "etl-tools-landscape",
-				customizedComponent: false,
-				name: "Tools & Platforms Landscape",
-				file: "ETLxELT/12-tools-landscape.md",
-				status: "solid",
-				tagline: "Comparing the building blocks of a modern data stack",
-				covers:
-					"Ingestion, transformation, warehouse, orchestration, and streaming tool comparisons with practical selection criteria.",
-				fixes: [],
-				extend: [
-					"Managed versus self-hosted trade-offs",
-					"Tool fit by scale, latency, team, and budget",
-					"Interoperability and lock-in considerations",
-				],
-			},
-			{
-				id: "etl-quick-reference",
-				customizedComponent: false,
-				name: "Quick Reference",
-				file: "ETLxELT/13-quick-reference.md",
-				status: "solid",
-				tagline: "Fast lookup for common ETL/ELT decisions and commands",
-				covers:
-					"SQL and CLI snippet index, glossary, and tool decision tables for common pipeline tasks.",
-				fixes: [],
-				extend: [
-					"Common SQL and CLI patterns",
-					"Pipeline vocabulary and abbreviations",
-					"Decision tables for selecting approaches and tools",
-				],
-			},
-			{
-				id: "etl-worked-examples",
-				customizedComponent: true,
-				name: "Worked Examples",
-				file: "ETLxELT/14-worked-examples.md",
-				status: "solid",
-				tagline: "Production-grade scenarios that combine the full reference",
-				covers:
-					"Ten end-to-end scenarios, each combining concepts from the fundamentals, pipeline stages, architecture, quality, performance, observability, and governance sheets.",
-				fixes: [],
-				extend: [
-					"One self-contained file per scenario",
-					"Source-to-consumption architecture and decisions",
-					"Failure handling, quality checks, and operational runbooks",
-				],
-			},
-		],
-	},
-	{
-		key: "modeling",
-		label: "Data Modeling",
-		items: [
-			{
-				id: "modeling-fundamentals",
-				customizedComponent: false,
-				name: "Fundamentals",
-				file: "Data Modeling/01-fundamentals.md",
-				status: "solid",
-				tagline: "The foundations, vocabulary, and goals of data modeling",
-				covers:
-					"Core concepts and terminology needed to design data models, including entities, attributes, relationships, keys, constraints, and the role of a model in a data system.",
-				fixes: [],
-				extend: [
-					"Entities, attributes, relationships, keys, and constraints",
-					"Grain, scope, and business rules",
-					"Conceptual, logical, and physical model boundaries",
-					"Choosing a model based on access patterns and business requirements",
-				],
-			},
-			{
-				id: "modeling-conceptual",
-				customizedComponent: false,
-				name: "Conceptual Data Modeling",
-				file: "Data Modeling/02-conceptual-modeling.md",
-				status: "solid",
-				tagline:
-					"Represent business concepts and relationships without implementation details",
-				covers:
-					"Business-focused modeling with entities, relationships, cardinality, and subject areas before choosing tables or database types.",
-				fixes: [],
-				extend: [
-					"Entity-relationship diagrams",
-					"Cardinality and optionality",
-					"Generalization and specialization",
-					"Stakeholder validation and scope control",
-				],
-			},
-			{
-				id: "modeling-logical",
-				customizedComponent: false,
-				name: "Logical Data Modeling",
-				file: "Data Modeling/03-logical-modeling.md",
-				status: "solid",
-				tagline:
-					"Define precise attributes, keys, and rules independent of a database engine",
-				covers:
-					"Detailed, technology-agnostic structures that turn business concepts into entities, attributes, identifiers, relationships, and enforceable rules.",
-				fixes: [],
-				extend: [
-					"Natural and surrogate keys",
-					"Optionality and relationship rules",
-					"Domain definitions",
-					"Logical-to-physical mapping",
-				],
-			},
-			{
-				id: "modeling-normalization",
-				customizedComponent: false,
-				name: "Normalization & Denormalization",
-				file: "Data Modeling/04-normalization-denormalization.md",
-				status: "solid",
-				tagline:
-					"Balance data integrity, storage efficiency, and query performance",
-				covers:
-					"Normalization forms and deliberate denormalization techniques for reducing anomalies while keeping analytical and operational workloads practical.",
-				fixes: [],
-				extend: [
-					"1NF, 2NF, 3NF, and BCNF",
-					"Insert, update, and delete anomalies",
-					"When denormalization is justified",
-					"Tradeoffs for OLTP and OLAP",
-				],
-			},
-			{
-				id: "modeling-physical",
-				customizedComponent: false,
-				name: "Physical Data Modeling",
-				file: "Data Modeling/05-physical-modeling.md",
-				status: "solid",
-				tagline:
-					"Translate a logical model into an efficient database implementation",
-				covers:
-					"Engine-specific decisions for data types, indexes, partitions, storage, naming, and performance while preserving the logical design intent.",
-				fixes: [],
-				extend: [
-					"Data types and precision",
-					"Indexes and access paths",
-					"Partitioning and clustering",
-					"Constraints and storage layouts",
-				],
-			},
-			{
-				id: "modeling-relational",
-				customizedComponent: false,
-				name: "Relational Modeling",
-				file: "Data Modeling/06-relational-modeling.md",
-				status: "solid",
-				tagline:
-					"Design tables and relationships for relational database systems",
-				covers:
-					"Relational schemas, primary and foreign keys, joins, constraints, associative entities, and practical table design for transactional systems.",
-				fixes: [],
-				extend: [
-					"One-to-one, one-to-many, and many-to-many relationships",
-					"Junction tables",
-					"Referential integrity",
-					"Views and schema evolution",
-				],
-			},
-			{
-				id: "modeling-dimensional",
-				customizedComponent: false,
-				name: "Dimensional Modeling",
-				file: "Data Modeling/07-dimensional-modeling.md",
-				status: "solid",
-				tagline: "Model analytical data for reporting and warehouse workloads",
-				covers:
-					"Fact and dimension design, grain, star and snowflake schemas, slowly changing dimensions, and the patterns that make warehouse queries useful and predictable.",
-				fixes: [],
-				extend: [
-					"Transaction and snapshot facts",
-					"Conformed, junk, and degenerate dimensions",
-					"Slowly changing dimensions",
-					"Kimball and Data Vault comparisons",
-				],
-			},
-			{
-				id: "modeling-nosql",
-				customizedComponent: false,
-				name: "NoSQL Data Modeling",
-				file: "Data Modeling/08-nosql-modeling.md",
-				status: "solid",
-				tagline:
-					"Design around access patterns in document, key-value, wide-column, and graph stores",
-				covers:
-					"NoSQL modeling choices, denormalization, partition keys, document boundaries, consistency, and selecting a model based on query and scale requirements.",
-				fixes: [],
-				extend: [
-					"Document and aggregate design",
-					"Partition and sort keys",
-					"Consistency and duplication tradeoffs",
-					"Graph relationships and traversal patterns",
-				],
-			},
-			{
-				id: "modeling-notations-tools",
-				customizedComponent: false,
-				name: "Notations & Tools",
-				file: "Data Modeling/09-notations-tools.md",
-				status: "solid",
-				tagline:
-					"Communicate and maintain models with the right diagrams and tooling",
-				covers:
-					"ERD and modeling notations, diagramming conventions, catalog tools, version control, and collaborative review practices.",
-				fixes: [],
-				extend: [
-					"Crow's Foot and Chen notation",
-					"UML and relational diagrams",
-					"Modeling and catalog tools",
-					"Documentation and version control workflows",
-				],
-			},
-			{
-				id: "modeling-best-practices",
-				customizedComponent: false,
-				name: "Best Practices & Anti-patterns",
-				file: "Data Modeling/10-best-practices-antipatterns.md",
-				status: "solid",
-				tagline:
-					"Review models for clarity, correctness, maintainability, and operational fit",
-				covers:
-					"Practical modeling principles, review checklists, common anti-patterns, and the tradeoffs that affect long-term data quality and usability.",
-				fixes: [],
-				extend: [
-					"Explicit grain and ownership",
-					"Naming and consistency standards",
-					"Avoiding over-modeling and under-modeling",
-					"Model review and evolution checklists",
-				],
-			},
-			{
-				id: "data-modeling-examples",
-				customizedComponent: true,
-				name: "Examples",
-				status: "solid",
-				tagline:
-					"Real-world data modeling examples for different domains and use cases",
-				covers:
-					"Practical examples of data models for various industries, including e-commerce, healthcare, finance, and social media, demonstrating the application of modeling principles and best practices.",
-				fixes: [],
-				extend: [],
 			},
 		],
 	},
@@ -2056,6 +809,754 @@ export const DATA: Category[] = [
 			},
 		],
 	},
+	// ---- Databases & Data Modeling ----
+	{
+		key: "db",
+		label: "Data Warehouses & Databases",
+		items: [
+			{
+				id: "postgres",
+				customizedComponent: false,
+				name: "PostgreSQL",
+				file: "Databases/PostgreSQL_Cheatsheet.md",
+				status: "solid",
+				tagline: "psql, window functions, JSON/JSONB, arrays, indexing",
+				covers:
+					"Excellent coverage across psql commands, filtering, window functions, JSON/JSONB, arrays, indexing, and cohort/RFM/funnel patterns.",
+				fixes: [],
+				extend: [
+					"LISTEN/NOTIFY",
+					"Logical replication basics",
+					"pg_stat_statements",
+					"Partitioning (PARTITION BY RANGE/LIST)",
+				],
+			},
+			{
+				id: "mysql",
+				customizedComponent: false,
+				name: "MySQL",
+				file: "Databases/MySQL_Cheatsheet.md",
+				status: "solid",
+				tagline: "CRUD, joins, window functions, JSON, RFM, cohort/YoY",
+				covers:
+					"Comprehensive — CRUD, joins, window functions, JSON, RFM, cohort/YoY analysis, sampling, export, and user management.",
+				fixes: [],
+				extend: [
+					"Generated/virtual columns",
+					"JSON_TABLE",
+					"Replication basics",
+				],
+			},
+			{
+				id: "sqlalchemy",
+				customizedComponent: false,
+				name: "SQLAlchemy",
+				file: "Databases/SQLAlchemy.md",
+				status: "solid",
+				tagline: "The thinnest file in the set, written entirely in 1.x style",
+				covers:
+					"About 200 lines against 600–3000+ for its peers, and written throughout in SQLAlchemy 1.x idiom.",
+				fixes: [],
+				extend: [
+					"A full rewrite in 2.0 style",
+					"Alembic migrations",
+					"Async engine/session (create_async_engine)",
+					"Connection pooling options",
+					"Index/constraint definitions",
+				],
+			},
+			{
+				id: "bigquery",
+				customizedComponent: false,
+				name: "Google BigQuery",
+				file: "Databases/BigQuery_Cheatsheet.md",
+				status: "solid",
+				tagline:
+					"GCP's serverless warehouse — partitioning, clustering, slots, cost control",
+				covers:
+					"Google BigQuery as a serverless warehouse: table partitioning and clustering strategies, slot-based query pricing vs. on-demand, and the cost-control patterns that keep ad-hoc analytics from generating a surprise bill.",
+				fixes: [],
+				extend: [
+					"Partitioning by ingestion time vs. a column, and clustering column selection",
+					"On-demand vs. flat-rate/slot pricing, and reservations",
+					"Query cost estimation with dry runs, and bytes-scanned optimization",
+					"BigQuery ML for in-warehouse model training",
+					"Authorized views, row-level security, and dataset-level IAM",
+					"Streaming inserts vs. batch loads, and their cost/latency tradeoffs",
+				],
+			},
+			{
+				id: "lakehouse-formats",
+				customizedComponent: false,
+				name: "Delta Lake / Apache Iceberg / Hudi",
+				file: "Databases/Lakehouse_Table_Formats.md",
+				status: "solid",
+				tagline: "Lakehouse table formats — ACID on top of object storage",
+				covers:
+					"The three major open table formats that bring ACID transactions, schema evolution, and time travel to files sitting in S3/GCS/ADLS — what each format actually is, where they overlap, and the criteria that decide between them.",
+				fixes: [],
+				extend: [
+					"How table formats add ACID transactions and schema evolution on top of Parquet files",
+					"Delta Lake: transaction log, OPTIMIZE/VACUUM, Delta Live Tables",
+					"Apache Iceberg: hidden partitioning, snapshot isolation, catalog options (Glue, Nessie, REST)",
+					"Apache Hudi: copy-on-write vs. merge-on-read, upsert-heavy workloads",
+					"Time travel and rollback across all three formats",
+					"Format interoperability and engine support (Spark, Trino, Snowflake, BigQuery)",
+					"Choosing a format based on write pattern, ecosystem, and existing tooling",
+				],
+			},
+		],
+	},
+	{
+		key: "modeling",
+		label: "Data Modeling",
+		items: [
+			{
+				id: "modeling-fundamentals",
+				customizedComponent: false,
+				name: "Fundamentals",
+				file: "Data Modeling/01-fundamentals.md",
+				status: "solid",
+				tagline: "The foundations, vocabulary, and goals of data modeling",
+				covers:
+					"Core concepts and terminology needed to design data models, including entities, attributes, relationships, keys, constraints, and the role of a model in a data system.",
+				fixes: [],
+				extend: [
+					"Entities, attributes, relationships, keys, and constraints",
+					"Grain, scope, and business rules",
+					"Conceptual, logical, and physical model boundaries",
+					"Choosing a model based on access patterns and business requirements",
+				],
+			},
+			{
+				id: "modeling-conceptual",
+				customizedComponent: false,
+				name: "Conceptual Data Modeling",
+				file: "Data Modeling/02-conceptual-modeling.md",
+				status: "solid",
+				tagline:
+					"Represent business concepts and relationships without implementation details",
+				covers:
+					"Business-focused modeling with entities, relationships, cardinality, and subject areas before choosing tables or database types.",
+				fixes: [],
+				extend: [
+					"Entity-relationship diagrams",
+					"Cardinality and optionality",
+					"Generalization and specialization",
+					"Stakeholder validation and scope control",
+				],
+			},
+			{
+				id: "modeling-logical",
+				customizedComponent: false,
+				name: "Logical Data Modeling",
+				file: "Data Modeling/03-logical-modeling.md",
+				status: "solid",
+				tagline:
+					"Define precise attributes, keys, and rules independent of a database engine",
+				covers:
+					"Detailed, technology-agnostic structures that turn business concepts into entities, attributes, identifiers, relationships, and enforceable rules.",
+				fixes: [],
+				extend: [
+					"Natural and surrogate keys",
+					"Optionality and relationship rules",
+					"Domain definitions",
+					"Logical-to-physical mapping",
+				],
+			},
+			{
+				id: "modeling-normalization",
+				customizedComponent: false,
+				name: "Normalization & Denormalization",
+				file: "Data Modeling/04-normalization-denormalization.md",
+				status: "solid",
+				tagline:
+					"Balance data integrity, storage efficiency, and query performance",
+				covers:
+					"Normalization forms and deliberate denormalization techniques for reducing anomalies while keeping analytical and operational workloads practical.",
+				fixes: [],
+				extend: [
+					"1NF, 2NF, 3NF, and BCNF",
+					"Insert, update, and delete anomalies",
+					"When denormalization is justified",
+					"Tradeoffs for OLTP and OLAP",
+				],
+			},
+			{
+				id: "modeling-physical",
+				customizedComponent: false,
+				name: "Physical Data Modeling",
+				file: "Data Modeling/05-physical-modeling.md",
+				status: "solid",
+				tagline:
+					"Translate a logical model into an efficient database implementation",
+				covers:
+					"Engine-specific decisions for data types, indexes, partitions, storage, naming, and performance while preserving the logical design intent.",
+				fixes: [],
+				extend: [
+					"Data types and precision",
+					"Indexes and access paths",
+					"Partitioning and clustering",
+					"Constraints and storage layouts",
+				],
+			},
+			{
+				id: "modeling-relational",
+				customizedComponent: false,
+				name: "Relational Modeling",
+				file: "Data Modeling/06-relational-modeling.md",
+				status: "solid",
+				tagline:
+					"Design tables and relationships for relational database systems",
+				covers:
+					"Relational schemas, primary and foreign keys, joins, constraints, associative entities, and practical table design for transactional systems.",
+				fixes: [],
+				extend: [
+					"One-to-one, one-to-many, and many-to-many relationships",
+					"Junction tables",
+					"Referential integrity",
+					"Views and schema evolution",
+				],
+			},
+			{
+				id: "modeling-dimensional",
+				customizedComponent: false,
+				name: "Dimensional Modeling",
+				file: "Data Modeling/07-dimensional-modeling.md",
+				status: "solid",
+				tagline: "Model analytical data for reporting and warehouse workloads",
+				covers:
+					"Fact and dimension design, grain, star and snowflake schemas, slowly changing dimensions, and the patterns that make warehouse queries useful and predictable.",
+				fixes: [],
+				extend: [
+					"Transaction and snapshot facts",
+					"Conformed, junk, and degenerate dimensions",
+					"Slowly changing dimensions",
+					"Kimball and Data Vault comparisons",
+				],
+			},
+			{
+				id: "modeling-nosql",
+				customizedComponent: false,
+				name: "NoSQL Data Modeling",
+				file: "Data Modeling/08-nosql-modeling.md",
+				status: "solid",
+				tagline:
+					"Design around access patterns in document, key-value, wide-column, and graph stores",
+				covers:
+					"NoSQL modeling choices, denormalization, partition keys, document boundaries, consistency, and selecting a model based on query and scale requirements.",
+				fixes: [],
+				extend: [
+					"Document and aggregate design",
+					"Partition and sort keys",
+					"Consistency and duplication tradeoffs",
+					"Graph relationships and traversal patterns",
+				],
+			},
+			{
+				id: "modeling-notations-tools",
+				customizedComponent: false,
+				name: "Notations & Tools",
+				file: "Data Modeling/09-notations-tools.md",
+				status: "solid",
+				tagline:
+					"Communicate and maintain models with the right diagrams and tooling",
+				covers:
+					"ERD and modeling notations, diagramming conventions, catalog tools, version control, and collaborative review practices.",
+				fixes: [],
+				extend: [
+					"Crow's Foot and Chen notation",
+					"UML and relational diagrams",
+					"Modeling and catalog tools",
+					"Documentation and version control workflows",
+				],
+			},
+			{
+				id: "modeling-best-practices",
+				customizedComponent: false,
+				name: "Best Practices & Anti-patterns",
+				file: "Data Modeling/10-best-practices-antipatterns.md",
+				status: "solid",
+				tagline:
+					"Review models for clarity, correctness, maintainability, and operational fit",
+				covers:
+					"Practical modeling principles, review checklists, common anti-patterns, and the tradeoffs that affect long-term data quality and usability.",
+				fixes: [],
+				extend: [
+					"Explicit grain and ownership",
+					"Naming and consistency standards",
+					"Avoiding over-modeling and under-modeling",
+					"Model review and evolution checklists",
+				],
+			},
+			{
+				id: "data-modeling-examples",
+				customizedComponent: true,
+				name: "Examples",
+				status: "solid",
+				tagline:
+					"Real-world data modeling examples for different domains and use cases",
+				covers:
+					"Practical examples of data models for various industries, including e-commerce, healthcare, finance, and social media, demonstrating the application of modeling principles and best practices.",
+				fixes: [],
+				extend: [],
+			},
+		],
+	},
+	// ---- Data Engineering & Infrastructure ----
+	{
+		key: "etl",
+		label: "ETL / ELT",
+		items: [
+			{
+				id: "etl-fundamentals",
+				customizedComponent: false,
+				name: "Fundamentals & Core Concepts",
+				file: "ETLxELT/01-fundamentals.md",
+				status: "solid",
+				tagline: "The foundations of reliable data movement",
+				covers:
+					"ETL vs ELT, batch and streaming, OLTP and OLAP, warehouses, lakes, lakehouses, and push versus pull processing.",
+				fixes: [],
+				extend: [
+					"When to choose ETL or ELT",
+					"Batch, micro-batch, and streaming trade-offs",
+					"Warehouse, lake, and lakehouse decision criteria",
+				],
+			},
+			{
+				id: "etl-extract",
+				customizedComponent: false,
+				name: "Extract",
+				file: "ETLxELT/02-extract.md",
+				status: "solid",
+				tagline: "Getting trustworthy data out of source systems",
+				covers:
+					"Source types, extraction patterns, change data capture, schema drift, pagination, and rate limiting.",
+				fixes: [],
+				extend: [
+					"Full, incremental, and CDC extraction",
+					"Watermarks and checkpointing",
+					"Schema evolution and source API limits",
+				],
+			},
+			{
+				id: "etl-transform",
+				customizedComponent: false,
+				name: "Transform",
+				file: "ETLxELT/03-transform.md",
+				status: "solid",
+				tagline: "Cleaning, modeling, and shaping data for use",
+				covers:
+					"Data cleaning, modeling, slowly changing dimensions, deduplication, aggregations, and transformation ordering.",
+				fixes: [],
+				extend: [
+					"Validation before and after transformations",
+					"SCD Types 1, 2, and 3",
+					"Warehouse pushdown and reusable transformations",
+				],
+			},
+			{
+				id: "etl-load",
+				customizedComponent: false,
+				name: "Load",
+				file: "ETLxELT/04-load.md",
+				status: "solid",
+				tagline: "Writing data safely into its destination",
+				covers:
+					"Load strategies, partitioning, idempotency, upserts, append-only designs, and backfilling.",
+				fixes: [],
+				extend: [
+					"Truncate-and-load versus merge",
+					"Partition and file-layout choices",
+					"Idempotent retries and historical backfills",
+				],
+			},
+			{
+				id: "etl-orchestration",
+				customizedComponent: false,
+				name: "Orchestration & Scheduling",
+				file: "ETLxELT/05-orchestration.md",
+				status: "solid",
+				tagline: "Coordinating dependencies, retries, and reruns",
+				covers:
+					"DAGs, scheduling patterns, retries, backfills, reruns, dependency management, and operational recovery.",
+				fixes: [],
+				extend: [
+					"Dependency and fan-out/fan-in patterns",
+					"Retry policies and failure boundaries",
+					"Backfill and re-run safety",
+				],
+			},
+			{
+				id: "etl-streaming",
+				customizedComponent: false,
+				name: "Streaming & Real-Time Processing",
+				file: "ETLxELT/06-streaming.md",
+				status: "solid",
+				tagline: "Processing events continuously and reliably",
+				covers:
+					"Stream concepts, windowing, delivery guarantees, event time, late data, and Lambda versus Kappa architectures.",
+				fixes: [],
+				extend: [
+					"Event time versus processing time",
+					"At-most-once, at-least-once, and exactly-once delivery",
+					"Watermarks and late-arriving events",
+				],
+			},
+			{
+				id: "etl-data-quality",
+				customizedComponent: false,
+				name: "Data Quality & Testing",
+				file: "ETLxELT/07-data-quality.md",
+				status: "solid",
+				tagline: "Proving pipeline outputs are trustworthy",
+				covers:
+					"Validation rules, data contracts, testing frameworks, anomaly detection, and quality gates across pipeline stages.",
+				fixes: [],
+				extend: [
+					"Schema, freshness, completeness, and uniqueness checks",
+					"Data contracts and ownership",
+					"Anomaly thresholds and quarantine workflows",
+				],
+			},
+			{
+				id: "etl-architecture-patterns",
+				customizedComponent: false,
+				name: "Architecture & Design Patterns",
+				file: "ETLxELT/08-architecture-patterns.md",
+				status: "solid",
+				tagline: "Structuring data platforms for scale and change",
+				covers:
+					"Medallion architecture, Kimball versus Inmon, Data Mesh, layered systems, and pipeline anti-patterns.",
+				fixes: [],
+				extend: [
+					"Bronze, silver, and gold layer responsibilities",
+					"Centralized warehouse versus domain-oriented ownership",
+					"Common architecture failure modes",
+				],
+			},
+			{
+				id: "etl-performance",
+				customizedComponent: false,
+				name: "Performance & Optimization",
+				file: "ETLxELT/09-performance.md",
+				status: "solid",
+				tagline: "Making pipelines faster and more economical",
+				covers:
+					"Partitioning, indexing, query optimization, parallelism, caching, file sizing, and workload tuning.",
+				fixes: [],
+				extend: [
+					"Partition pruning and clustering",
+					"Parallel extraction and transformation",
+					"Small-file mitigation and caching trade-offs",
+				],
+			},
+			{
+				id: "etl-monitoring-observability",
+				customizedComponent: false,
+				name: "Monitoring, Observability & Lineage",
+				file: "ETLxELT/10-monitoring-observability.md",
+				status: "solid",
+				tagline: "Seeing pipeline health before users report it",
+				covers:
+					"Logging, alerting, lineage, SLAs, freshness, run metadata, and operational dashboards.",
+				fixes: [],
+				extend: [
+					"Structured logs and correlation ids",
+					"Freshness, latency, and volume monitoring",
+					"Upstream and downstream lineage",
+				],
+			},
+			{
+				id: "etl-security-governance",
+				customizedComponent: false,
+				name: "Security & Governance",
+				file: "ETLxELT/11-security-governance.md",
+				status: "solid",
+				tagline: "Protecting data and controlling how it is used",
+				covers:
+					"RBAC, PII handling, compliance, encryption, secrets, retention, and governance controls for data pipelines.",
+				fixes: [],
+				extend: [
+					"Least-privilege access and service identities",
+					"Classification, masking, and tokenization",
+					"Encryption in transit and at rest",
+				],
+			},
+			{
+				id: "etl-tools-landscape",
+				customizedComponent: false,
+				name: "Tools & Platforms Landscape",
+				file: "ETLxELT/12-tools-landscape.md",
+				status: "solid",
+				tagline: "Comparing the building blocks of a modern data stack",
+				covers:
+					"Ingestion, transformation, warehouse, orchestration, and streaming tool comparisons with practical selection criteria.",
+				fixes: [],
+				extend: [
+					"Managed versus self-hosted trade-offs",
+					"Tool fit by scale, latency, team, and budget",
+					"Interoperability and lock-in considerations",
+				],
+			},
+			{
+				id: "etl-quick-reference",
+				customizedComponent: false,
+				name: "Quick Reference",
+				file: "ETLxELT/13-quick-reference.md",
+				status: "solid",
+				tagline: "Fast lookup for common ETL/ELT decisions and commands",
+				covers:
+					"SQL and CLI snippet index, glossary, and tool decision tables for common pipeline tasks.",
+				fixes: [],
+				extend: [
+					"Common SQL and CLI patterns",
+					"Pipeline vocabulary and abbreviations",
+					"Decision tables for selecting approaches and tools",
+				],
+			},
+			{
+				id: "etl-worked-examples",
+				customizedComponent: true,
+				name: "Worked Examples",
+				file: "ETLxELT/14-worked-examples.md",
+				status: "solid",
+				tagline: "Production-grade scenarios that combine the full reference",
+				covers:
+					"Ten end-to-end scenarios, each combining concepts from the fundamentals, pipeline stages, architecture, quality, performance, observability, and governance sheets.",
+				fixes: [],
+				extend: [
+					"One self-contained file per scenario",
+					"Source-to-consumption architecture and decisions",
+					"Failure handling, quality checks, and operational runbooks",
+				],
+			},
+		],
+	},
+	{
+		key: "infra",
+		label: "Infrastructure",
+		items: [
+			{
+				id: "dbt",
+				customizedComponent: false,
+				name: "dbt",
+				file: "Infrastructure/dbt_Cheatsheet.md",
+				status: "solid",
+				tagline: "Project structure, materializations, snapshots, tests",
+				covers:
+					"Project structure, materializations, model selection syntax, snapshots, tests, Jinja/macros, incremental strategies, hooks, and exposures.",
+				fixes: [],
+				extend: [
+					"Unit tests (dbt test for logic, not just data)",
+					"Model contracts/versions",
+					"dbt Mesh (cross-project ref())",
+					"Python models",
+				],
+			},
+			{
+				id: "kafka",
+				customizedComponent: false,
+				name: "Kafka",
+				file: "Infrastructure/kafka.md",
+				status: "solid",
+				tagline: "Deep and code-heavy, but styled differently from the rest",
+				covers:
+					"Producers, consumers, config tuning, a CDC/replication example, troubleshooting, and a glossary — genuinely deep content.",
+				fixes: [
+					'Written in a more verbose "definition \u2192 purpose \u2192 bullets" tutorial style with no table of contents or quick-reference table, unlike the rest of the set — worth reformatting if these are meant to sit together as one reference.',
+					"Built entirely on kafka-python, which has had slow-maintenance stretches. confluent-kafka-python (librdkafka-based) is the more actively maintained alternative and is worth at least a callout.",
+				],
+				extend: [
+					"Kafka Streams / ksqlDB",
+					"Schema Registry with Avro/Protobuf serialization",
+					"Kafka Connect",
+				],
+			},
+			{
+				id: "redis",
+				customizedComponent: false,
+				name: "Redis",
+				file: "Infrastructure/redis.md",
+				status: "solid",
+				tagline: "2,800+ lines — data types, production patterns, tuning",
+				covers:
+					"The deepest file in the whole set: data type deep-dives, production patterns (sessions, caching, rate limiting, distributed locks, leaderboards, carts, queues), performance tuning, security, monitoring scripts, and a deployment checklist.",
+				fixes: [
+					"Same narrative/tutorial style as Kafka rather than the terse quick-reference format used by the SQL/warehouse files — not wrong, just inconsistent if you want one uniform family of cheatsheets.",
+				],
+				extend: [
+					"Redis Streams (XADD/XREAD, consumer groups) — a notable omission given how much else is covered",
+					"Redis Cluster hands-on commands, currently only discussed conceptually",
+					"RedisJSON/RediSearch if you use Redis Stack",
+				],
+			},
+			{
+				id: "terraform",
+				customizedComponent: false,
+				name: "Terraform",
+				file: "Infrastructure/Terraform.md",
+				status: "solid",
+				tagline: "Infrastructure as code for provisioning the data stack",
+				covers:
+					"Terraform mechanics for standing up the pieces already covered elsewhere in this index — S3 buckets, Glue jobs, Redshift clusters — plus the state-management and module patterns that separate a script you run once from infrastructure a team can actually maintain.",
+				fixes: [],
+				extend: [
+					"Core workflow: init/plan/apply/destroy, and reading a plan diff before trusting it",
+					"State management: remote state (S3 + DynamoDB locking), why local state breaks in a team",
+					"Resource vs. data source vs. module — when each is the right building block",
+					"Variables, outputs, and locals — keeping dev/staging/prod from diverging",
+					"Provisioning the AWS data stack from this index: S3 buckets with lifecycle rules, Glue jobs/crawlers, Redshift clusters, IAM roles for least-privilege pipeline access",
+					"Workspaces vs. separate state files for environment separation",
+					"Drift detection and terraform import for adopting existing infrastructure",
+					"Common gotchas: circular dependencies between resources, provider version pinning",
+				],
+			},
+			{
+				id: "docker",
+				customizedComponent: false,
+				name: "Docker",
+				file: "Infrastructure/docker.md",
+				status: "solid",
+				tagline:
+					"Containerizing pipelines, notebooks, and the tools already in this index",
+				covers:
+					"Docker as the runtime layer underneath everything else here — packaging a Python/PySpark job so it runs the same on a laptop and in production, multi-stage builds for smaller images, and docker-compose for local Kafka/Redis/Postgres stacks during development.",
+				fixes: [],
+				extend: [
+					"Core concepts: images vs. containers, layers and caching, the build context",
+					"Dockerfile patterns for data jobs: pinning base images, multi-stage builds to keep Spark/ML images small",
+					"docker-compose for local dev stacks — spinning up Kafka + Redis + Postgres together, matching what\u2019s already in this category",
+					"Volume mounts and bind mounts — getting data in and out without baking it into the image",
+					"Environment variables and secrets — what not to bake into an image",
+					"Networking between containers, and the differences from host networking",
+					"Image size and security: distroless/slim base images, scanning for vulnerabilities",
+					"Where Docker stops and Kubernetes starts — a short note on when a single container isn\u2019t enough anymore",
+				],
+			},
+			{
+				id: "airflow",
+				customizedComponent: false,
+				name: "Apache Airflow",
+				file: "Infrastructure/Airflow.md",
+				status: "solid",
+				tagline:
+					"DAGs, operators, sensors, XComs — tool-specific companion to your ETL orchestration concepts",
+				covers:
+					"Airflow as the concrete implementation of the orchestration concepts covered generically elsewhere: DAG authoring, operator/sensor selection, XComs for passing small data between tasks, and the scheduler behavior that trips people up in production.",
+				fixes: [],
+				extend: [
+					"DAG structure: task dependencies, dynamic task mapping, TaskFlow API",
+					"Operators vs. sensors vs. hooks, and when to write a custom one",
+					"XComs for passing data between tasks, and their size limits",
+					"Scheduling: cron expressions, catchup/backfill behavior, execution_date semantics",
+					"Retries, SLAs, and alerting on failure",
+					"Connections and Variables, and where secrets should actually live",
+					"Executors: Local, Celery, Kubernetes — how task parallelism actually happens",
+				],
+			},
+			{
+				id: "kubernetes",
+				customizedComponent: false,
+				name: "Kubernetes",
+				file: "Infrastructure/Kubernetes.md",
+				status: "solid",
+				tagline:
+					"Complements Docker; how production pipelines actually get run at scale",
+				covers:
+					"The Kubernetes concepts a data engineer actually needs — pods, deployments, and jobs/cronjobs for running containerized pipeline code at scale, plus the resource and scheduling knobs that decide whether a Spark or batch job runs reliably.",
+				fixes: [],
+				extend: [
+					"Core objects: Pods, Deployments, Jobs, CronJobs — which fits a batch pipeline",
+					"ConfigMaps and Secrets for pipeline configuration",
+					"Resource requests/limits, and how under-provisioning kills jobs silently",
+					"Namespaces and RBAC for multi-team clusters",
+					"Running Spark on Kubernetes vs. YARN",
+					"Helm basics for packaging pipeline deployments",
+					"kubectl commands used most often for debugging a stuck pod",
+				],
+			},
+			{
+				id: "great-expectations",
+				customizedComponent: false,
+				name: "Great Expectations",
+				file: "Infrastructure/Great_Expectations.md",
+				status: "solid",
+				tagline:
+					'Tool-specific data quality/validation, companion to ETL "Data Quality & Testing"',
+				covers:
+					"Great Expectations as the concrete tool for the data-quality concepts covered generically elsewhere: expectation suites, checkpoints for running validations in a pipeline, and Data Docs for turning results into something a team actually reads.",
+				fixes: [],
+				extend: [
+					"Expectation suites: built-in expectations vs. writing custom ones",
+					"Checkpoints for running validation as a pipeline step, and failure behavior",
+					"Data Docs for human-readable validation reports",
+					"Integrating with Airflow/dbt to gate downstream steps on quality checks",
+					"Profiling a dataset to auto-generate a starting expectation suite",
+					"Comparing Great Expectations to lighter alternatives (dbt tests, Soda)",
+				],
+			},
+			{
+				id: "git-github",
+				customizedComponent: false,
+				name: "Git & GitHub",
+				file: "Infrastructure/git.md",
+				status: "solid",
+				tagline: "Branching, PR workflows, conflict resolution",
+				covers:
+					"Core Git mechanics and GitHub workflow habits that data teams rely on daily — branching strategies, resolving conflicts in code and notebooks, and the PR review conventions that keep a shared dbt/Airflow repo maintainable.",
+				fixes: [],
+				extend: [
+					"Core commands: branch, merge, rebase, cherry-pick, stash",
+					"Resolving merge conflicts, including notebook-specific conflict pain",
+					"Branching strategies: trunk-based vs. GitFlow for a data team",
+					"PR workflow: review conventions, draft PRs, requesting changes",
+					"Git hooks for pre-commit checks (linting, secrets scanning)",
+					"Undoing mistakes: reset vs. revert, recovering a deleted branch",
+				],
+			},
+			{
+				id: "cicd-data-pipelines",
+				customizedComponent: false,
+				name: "CI/CD for Data Pipelines",
+				file: "Infrastructure/CICD_for_Data_Pipelines.md",
+				status: "solid",
+				tagline:
+					"GitHub Actions/GitLab CI — testing & deploying dbt/Airflow projects",
+				covers:
+					"Setting up continuous integration and deployment for a data stack — running dbt tests and Airflow DAG validation on every PR, and safely promoting changes from dev to staging to production.",
+				fixes: [],
+				extend: [
+					"GitHub Actions/GitLab CI pipeline structure for a dbt project",
+					"Running dbt build/test in CI against a dedicated CI schema",
+					"DAG validation and linting for Airflow before deploy",
+					"Environment promotion: dev → staging → prod, and secrets per environment",
+					"Automated deployment of dbt docs and Airflow DAG syncing",
+					"Rollback strategies when a deploy breaks a pipeline",
+				],
+			},
+			{
+				id: "linux-bash",
+				customizedComponent: false,
+				name: "Linux / Bash / Shell Scripting",
+				file: "Infrastructure/Linux_Bash.md",
+				status: "solid",
+				tagline: "Cron, piping, file ops — unavoidable in real pipeline work",
+				covers:
+					"The command-line fundamentals that show up constantly in real pipeline work — cron scheduling, piping and redirection, and the file/process operations needed to debug a job running on a remote box.",
+				fixes: [],
+				extend: [
+					"Cron syntax and common scheduling patterns",
+					"Piping, redirection, and process substitution",
+					"File operations: find, xargs, permissions, disk usage",
+					"Process management: ps, top, kill, nohup, background jobs",
+					"Writing a robust bash script: set -euo pipefail, error handling, logging",
+					"SSH basics and moving files with scp/rsync",
+				],
+			},
+		],
+	},
 	{
 		key: "sysdesign",
 		label: "System Design for Data Engineers",
@@ -2161,6 +1662,7 @@ export const DATA: Category[] = [
 			},
 		],
 	},
+	// ---- Cloud Platforms ----
 	{
 		key: "cloud",
 		label: "Cloud Platforms for Data Engineering",
@@ -2170,7 +1672,7 @@ export const DATA: Category[] = [
 				key: "databricks",
 				label: "Databricks",
 				slug: "databricks",
-				status: "planned",
+				status: "solid",
 				tagline:
 					"Spark, Delta Lake, Lakeflow, Unity Catalog, and platform operations",
 				covers:
@@ -2181,7 +1683,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Databricks Overview",
 						file: "Databricks/Databricks_Cheatsheet.md",
-						status: "planned",
+						status: "solid",
 						slug: "overview",
 						tagline: "Notebooks, clusters, Delta Live Tables, Unity Catalog",
 						covers:
@@ -2194,7 +1696,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Spark Architecture & Runtime",
 						file: "Databricks/Spark_Architecture_Runtime.md",
-						status: "planned",
+						status: "solid",
 						slug: "spark-architecture-runtime",
 						tagline: "Spark internals, AQE, Photon, shuffles, joins",
 						covers:
@@ -2207,7 +1709,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Delta Table Deep Dive",
 						file: "Databricks/Delta_Table_Deep_Dive.md",
-						status: "planned",
+						status: "solid",
 						slug: "delta-table-deep-dive",
 						tagline:
 							"Format internals, constraints, CDF, cloning, liquid clustering",
@@ -2221,7 +1723,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Ingestion, ETL & DLT",
 						file: "Databricks/Ingestion_ETL_DLT.md",
-						status: "planned",
+						status: "solid",
 						slug: "ingestion-etl-dlt",
 						tagline: "Auto Loader, DLT/Lakeflow, medallion architecture",
 						covers:
@@ -2234,7 +1736,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Unity Catalog & Governance",
 						file: "Databricks/Unity_Catalog_Governance.md",
-						status: "planned",
+						status: "solid",
 						slug: "unity-catalog-governance",
 						tagline:
 							"Metastore, RBAC, lineage, row/column security, Delta Sharing",
@@ -2248,7 +1750,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Orchestration & Workflows",
 						file: "Databricks/Orchestration_Workflows.md",
-						status: "planned",
+						status: "solid",
 						slug: "orchestration-workflows",
 						tagline:
 							"Jobs, dependencies, triggers, alerting, multi-task orchestration",
@@ -2262,7 +1764,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Performance Tuning & Optimization",
 						file: "Databricks/Performance_Tuning_Optimization.md",
-						status: "planned",
+						status: "solid",
 						slug: "performance-tuning-optimization",
 						tagline:
 							"Query optimization, skew, caching, file sizing, broadcast joins",
@@ -2276,7 +1778,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Cluster & Compute Management",
 						file: "Databricks/Cluster_Compute_Management.md",
-						status: "planned",
+						status: "solid",
 						slug: "cluster-compute-management",
 						tagline: "Policies, pools, autoscaling, instance types",
 						covers:
@@ -2289,7 +1791,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "DevOps & CI/CD",
 						file: "Databricks/DevOps_CICD.md",
-						status: "planned",
+						status: "solid",
 						slug: "devops-cicd",
 						tagline: "CLI, Asset Bundles, Repos, Terraform",
 						covers:
@@ -2302,7 +1804,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "Cost, Governance & Troubleshooting",
 						file: "Databricks/Databricks_Cost_Governance_Troubleshooting.md",
-						status: "planned",
+						status: "solid",
 						slug: "cost-governance-troubleshooting",
 						tagline: "System tables, debugging, credit and DBU tracking",
 						covers:
@@ -2315,7 +1817,7 @@ export const DATA: Category[] = [
 						customizedComponent: false,
 						name: "MLflow & ML",
 						file: "Databricks/MLflow_ML.md",
-						status: "planned",
+						status: "solid",
 						slug: "mlflow-ml",
 						tagline: "Experiment tracking, registry, serving",
 						covers:
@@ -2859,6 +2361,508 @@ export const DATA: Category[] = [
 			},
 		],
 	},
+	// ---- Data Science, Machine Learning & Analytics ----
+	{
+		key: "ds",
+		label: "Data Science & Statistics",
+		items: [
+			{
+				id: "abtesting",
+				customizedComponent: false,
+				name: "A/B Testing — 50 Problems",
+				file: "AB_Testing_50_Problems.md",
+				status: "solid",
+				tagline: "50 worked scenarios across a wide range of industries",
+				covers:
+					"Each scenario carries a hypothesis, correct test selection with rationale, runnable sample data, and a lesson that usually includes a real caveat — confounds, SRM, holdout limitations. The strongest file in the set relative to its stated goal.",
+				fixes: [],
+				extend: [
+					"Multiple-comparisons correction (Bonferroni / BH-FDR) for testing many metrics at once",
+					"Sequential / always-valid testing (mSPRT) for teams that peek continuously",
+					"CUPED or other variance-reduction techniques",
+					"An explicit non-inferiority test example",
+				],
+			},
+			{
+				id: "oneliners",
+				customizedComponent: false,
+				name: "Python One-Liners",
+				file: "1000_plus_python_one_liners.md",
+				status: "solid",
+				tagline: "1,020 one-liners across 52 categories",
+				covers:
+					"1,020 one-liners across 52 categories, closing with an honest limitations section — no try/except in lambdas, recursive-lambda naming quirks, ordering dependencies between functions.",
+				fixes: [],
+				extend: [
+					"A security-flagged section for eval/exec-based one-liners, with an explicit don\u2019t-run-on-untrusted-input warning, matching the existing pattern of flagging caveats",
+				],
+			},
+			{
+				id: "charts",
+				customizedComponent: false,
+				name: "Data Visualization",
+				file: "Data Visualization/Master_Cheatsheet.md",
+				status: "solid",
+				tagline: "103 chart types across matplotlib, seaborn & plotly",
+				covers:
+					"103 chart types, each with description, purpose, use cases, sample data, and runnable code, split sensibly across matplotlib, seaborn, and plotly by fit.",
+				fixes: [
+					'The intro claims everything was tested against "plotly 7.0" as the current stable release — the actual latest release is still the 6.x line (6.9.0); there is no 7.0 yet.',
+				],
+				extend: [
+					'A short "how to pick a chart" decision tree at the top — the 12 category headers already imply one',
+					"A dedicated style-customization section (themes, colorblind-safe palettes) instead of scattered per-chart notes",
+				],
+			},
+			{
+				id: "mathstats",
+				customizedComponent: true,
+				name: "Math & Statistics",
+				file: "Math_and_Statistics.md",
+				status: "solid",
+				tagline:
+					"The stats and applied math the A/B Testing and Clustering sheets assume you have",
+				covers:
+					"Foundational probability and statistics — distributions, estimation, hypothesis testing theory, and the linear algebra/calculus that shows up in ML — written as the reference the A/B Testing and Clustering cheatsheets assume you already have.",
+				fixes: [],
+				extend: [
+					"Descriptive statistics: mean/median/variance, skewness, robust statistics",
+					"Probability distributions: normal, binomial, Poisson, exponential — when each models real data",
+					"Estimation: point estimates, confidence intervals, the CLT",
+					"Hypothesis testing theory: p-values, power, Type I/II errors — the theory behind the A/B Testing test-selection table",
+					"Correlation vs. causation, Simpson\u2019s paradox — ties directly to a pitfall already covered in the 50 A/B testing problems",
+					"Bayesian basics: priors, posteriors, when Bayesian A/B testing beats frequentist",
+					"Linear algebra essentials: vectors, matrices, eigenvalues — the minimum needed to read ML papers / PCA",
+					"Basic calculus for ML: gradients, partial derivatives, why gradient descent works",
+				],
+			},
+			{
+				id: "eda",
+				customizedComponent: true,
+				name: "Exploratory Data Analysis (EDA)",
+				status: "solid",
+				tagline: "A structured workflow for understanding data before modeling",
+				covers:
+					"A complete EDA workflow covering data overview, missing values, descriptive statistics, distributions, relationships, correlation, outliers, target analysis, domain-specific questions, and a pre-modeling checklist, with pandas and Plotly examples.",
+				fixes: [],
+				extend: [
+					"Add a project-specific dataset and connect the examples to a live profiling runtime",
+					"Add automated data-quality thresholds and report export",
+					"Add time-series decomposition and drift analysis",
+				],
+			},
+			{
+				id: "statistical-inference",
+				customizedComponent: false,
+				name: "Statistical Inference & Hypothesis Testing",
+				file: "Statistical_Inference_and_Hypothesis_Testing.md",
+				status: "solid",
+				tagline:
+					"Dedicated foundations sheet — the layer your A/B Testing sheet assumes",
+				covers:
+					"The inferential statistics foundations that the A/B Testing sheet assumes — sampling distributions, p-values and confidence intervals done properly, and the common misinterpretations that lead to bad test conclusions.",
+				fixes: [],
+				extend: [
+					"Sampling distributions and the Central Limit Theorem in practice",
+					"p-values, confidence intervals, and what they don\u2019t mean",
+					"Type I/II errors, statistical power, and sample size calculations",
+					"Parametric vs. non-parametric tests, and when to reach for each",
+					"Multiple testing correction in depth (family-wise error vs. FDR)",
+					"Common misinterpretations that lead to wrong conclusions in practice",
+				],
+			},
+		],
+	},
+	{
+		key: "ml",
+		label: "Machine Learning",
+		slug: "machine-learning",
+		subcategories: [
+			{
+				key: "core-ml",
+				label: "Core & Classical ML",
+				slug: "core-ml",
+				status: "planned",
+				tagline:
+					"Classical supervised & unsupervised learning — algorithms, sklearn, evaluation, tuning",
+				covers:
+					"The classical machine learning toolkit for tabular data — core algorithms and ensembles, the scikit-learn workflow around them, feature engineering, evaluation metrics, hyperparameter search, and interpreting what a model actually learned.",
+				items: [
+					{
+						id: "featureeng",
+						customizedComponent: true,
+						name: "Feature Engineering",
+						file: "Feature_Engineering.md",
+						status: "solid",
+						slug: "featureeng",
+						tagline:
+							"Encoding, scaling, and the leakage traps that break models in production",
+						covers:
+							"The feature engineering practices that sit between raw data and a working model — encoding categorical variables correctly, scaling numeric ones, and the data leakage patterns that make a model look great in testing and fail silently in production.",
+						fixes: [],
+						extend: [
+							"Categorical encoding: one-hot, ordinal, target/mean encoding, and when each introduces leakage",
+							"Numeric scaling: standardization vs. normalization vs. robust scaling, and when tree-based models don\u2019t need any of it",
+							"Handling missing data as a feature: indicator columns, imputation strategies and their tradeoffs",
+							"Datetime feature extraction: cyclical encoding for hour/day-of-week, holiday flags, lag features for time series",
+							"Data leakage patterns: target leakage, train/test contamination, temporal leakage in time-ordered data",
+							"Feature selection: correlation filtering, mutual information, recursive feature elimination",
+							"Interaction and polynomial features — when they help vs. when they just add noise",
+							"Ties directly to the Math & Statistics sheet\u2019s correlation section and to Clustering\u2019s preprocessing steps",
+						],
+					},
+					{
+						id: "ml-algorithms",
+						customizedComponent: false,
+						name: "Machine Learning Algorithms",
+						file: "Machine_Learning_Algorithms.md",
+						status: "planned",
+						slug: "ml-algorithms",
+						tagline: "Regression, decision trees, ensembles, SVMs",
+						covers:
+							"The core supervised learning algorithms from first principles — how regression, decision trees, ensembles, and SVMs actually work, their assumptions, and when each is the right (or wrong) choice for tabular data.",
+						fixes: [],
+						extend: [
+							"Linear and logistic regression: assumptions, regularization (L1/L2)",
+							"Decision trees: splitting criteria, pruning, overfitting behavior",
+							"Ensembles: bagging vs. boosting, random forests vs. gradient boosting",
+							"Support vector machines: kernels, margin intuition, when SVMs still win",
+							"Naive Bayes and k-nearest neighbors as fast baselines",
+							"Choosing an algorithm family based on data size, interpretability needs, and latency",
+						],
+					},
+					{
+						id: "sklearn-general",
+						customizedComponent: false,
+						name: "Scikit-learn (General)",
+						file: "Scikit_learn_General.md",
+						status: "planned",
+						slug: "sklearn-general",
+						tagline:
+							"Pipelines, cross-validation, hyperparameter tuning — beyond clustering",
+						covers:
+							"The scikit-learn workflow beyond the clustering-specific sheet already in this index — Pipeline/ColumnTransformer for reproducible preprocessing, cross-validation strategies, and hyperparameter search.",
+						fixes: [],
+						extend: [
+							"Pipeline and ColumnTransformer for reproducible preprocessing",
+							"Cross-validation strategies: k-fold, stratified, time series split",
+							"GridSearchCV vs. RandomizedSearchCV vs. Bayesian search (optuna)",
+							"Custom transformers and estimators via BaseEstimator/TransformerMixin",
+							"Model persistence with joblib/pickle, and version compatibility gotchas",
+							"Common scikit-learn API patterns: fit/transform/predict consistency",
+						],
+					},
+					{
+						id: "model-evaluation",
+						customizedComponent: false,
+						name: "Model Evaluation & Metrics",
+						file: "Model_Evaluation_and_Metrics.md",
+						status: "planned",
+						slug: "model-evaluation",
+						tagline:
+							"Precision/recall/ROC-AUC, confusion matrices, calibration",
+						covers:
+							"Choosing and interpreting the right evaluation metric for a model — classification metrics beyond accuracy, regression error metrics, and calibration checks that catch a model that's confidently wrong.",
+						fixes: [],
+						extend: [
+							"Classification metrics: precision, recall, F1, ROC-AUC, PR-AUC — and when accuracy is misleading",
+							"Confusion matrices and cost-sensitive threshold selection",
+							"Regression metrics: MAE, RMSE, MAPE, and their sensitivity to outliers",
+							"Calibration curves and Brier score for probability estimates",
+							"Cross-validated metric estimates vs. a single train/test split",
+							"Business-metric alignment: translating model metrics into decision impact",
+						],
+					},
+					{
+						id: "clustering",
+						customizedComponent: false,
+						name: "Clustering Problems",
+						file: "clustering_100_problems.md",
+						status: "solid",
+						slug: "clustering",
+						tagline:
+							"75 self-contained scikit-learn problems, Beginner \u2192 Advanced",
+						covers:
+							'All problems are self-contained scikit-learn with synthetic data, progressing Beginner \u2192 Intermediate \u2192 Advanced, and ending in a genuinely useful "which algorithm when" reference table.',
+						fixes: [
+							'The filename says "100_problems" but the file is titled and structured as 75, not 100+ — either it was trimmed from a bigger plan and the filename wasn\u2019t updated, or 25 problems are missing. Worth reconciling either way.',
+						],
+						extend: [
+							"Fuzzy c-means",
+							"HDBSCAN",
+							"Self-organizing maps",
+							"Subspace clustering",
+							"Per-cluster silhouette evaluation",
+							"Clustering on sparse/text embeddings from a transformer model",
+						],
+					},
+					{
+						id: "xgboost-lightgbm",
+						customizedComponent: false,
+						name: "XGBoost / LightGBM",
+						file: "XGBoost_LightGBM_Cheatsheet.md",
+						status: "planned",
+						slug: "xgboost-lightgbm",
+						tagline:
+							"Gradient boosting — the most-used tabular ML approach in practice",
+						covers:
+							"Practical gradient boosting with XGBoost and LightGBM — the hyperparameters that actually matter, handling categorical features and imbalanced data, and the differences between the two libraries.",
+						fixes: [],
+						extend: [
+							"Key hyperparameters: learning rate, max depth, n_estimators, regularization terms",
+							"Early stopping and validation set usage",
+							"Handling categorical features (native support in LightGBM vs. encoding for XGBoost)",
+							"Imbalanced classification: scale_pos_weight, class weights",
+							"Feature importance: gain vs. split count vs. SHAP values",
+							"XGBoost vs. LightGBM vs. CatBoost — practical differences in speed and defaults",
+						],
+					},
+					{
+						id: "model-interpretability",
+						customizedComponent: false,
+						name: "Model Interpretability & Explainability",
+						file: "Model_Interpretability_and_Explainability.md",
+						status: "planned",
+						slug: "model-interpretability",
+						tagline:
+							"SHAP, LIME, partial dependence — explaining what a model actually learned",
+						covers:
+							"Explaining model predictions to stakeholders and debugging models that are confidently wrong — SHAP and LIME for local explanations, partial dependence and permutation importance for global behavior, and the caveats that keep an explanation from being misleading.",
+						fixes: [],
+						extend: [
+							"SHAP values: TreeSHAP vs. KernelSHAP, and reading a summary/force plot correctly",
+							"LIME: local surrogate models and where they break down",
+							"Partial dependence plots vs. permutation importance vs. built-in feature importance — what each actually measures",
+							"Counterfactual explanations for individual predictions",
+							"Interpretability caveats: correlated features distorting importance, and explanations vs. causation",
+							"Regulatory/compliance angle: when a model needs to be explainable by law (credit, hiring)",
+						],
+					},
+					{
+						id: "hyperparameter-optimization-automl",
+						customizedComponent: false,
+						name: "Hyperparameter Optimization & AutoML",
+						file: "Hyperparameter_Optimization_and_AutoML.md",
+						status: "planned",
+						slug: "hyperparameter-optimization-automl",
+						tagline:
+							"Grid/random search, Bayesian optimization (Optuna), and when AutoML earns its keep",
+						covers:
+							"Systematic hyperparameter search beyond GridSearchCV — Bayesian optimization with Optuna, early-stopping search strategies, and a practical look at AutoML frameworks and where they save time versus where they hide bad decisions.",
+						fixes: [],
+						extend: [
+							"Grid search vs. random search vs. Bayesian optimization — when each pays off",
+							"Optuna: defining a search space, pruning trials early, and parallelizing a study",
+							"Multi-objective tuning: balancing accuracy against latency or model size",
+							"AutoML frameworks (Auto-sklearn, H2O AutoML, AutoGluon) — what they automate and what they can't",
+							"Search budget planning: how many trials is enough for a given search space",
+							"Avoiding hyperparameter overfitting to the validation set",
+						],
+					},
+				],
+			},
+			{
+				key: "deep-learning-nlp",
+				label: "Deep Learning & NLP",
+				slug: "deep-learning-nlp",
+				status: "planned",
+				tagline: "Neural networks, NLP, and computer vision fundamentals",
+				covers:
+					"The deep learning path beyond classical ML — neural network fundamentals and training mechanics, the NLP pipeline from tokenization to transformers, and computer vision basics built on pretrained backbones.",
+				items: [
+					{
+						id: "deep-learning-basics",
+						customizedComponent: false,
+						name: "Deep Learning Basics",
+						file: "Deep_Learning_Basics.md",
+						status: "planned",
+						slug: "deep-learning-basics",
+						tagline: "Neural nets, PyTorch/TensorFlow/Keras fundamentals",
+						covers:
+							"Neural network fundamentals and the practical mechanics of training one — architecture basics, backpropagation intuition, and getting a model trained end-to-end in PyTorch or Keras.",
+						fixes: [],
+						extend: [
+							"Neural network basics: layers, activation functions, backpropagation intuition",
+							"Loss functions and optimizers (SGD, Adam) and learning rate scheduling",
+							"PyTorch vs. TensorFlow/Keras: core API differences",
+							"Training loop mechanics: batching, epochs, validation, early stopping",
+							"Regularization: dropout, batch normalization, weight decay",
+							"Common architectures overview: CNNs for images, RNNs/transformers for sequences",
+						],
+					},
+					{
+						id: "nlp-fundamentals",
+						customizedComponent: false,
+						name: "NLP Fundamentals",
+						file: "NLP_Fundamentals.md",
+						status: "planned",
+						slug: "nlp-fundamentals",
+						tagline: "Tokenization, embeddings, TF-IDF, transformers overview",
+						covers:
+							"The NLP pipeline from raw text to model input — tokenization and preprocessing choices, classical representations like TF-IDF, word/sentence embeddings, and a practical overview of transformer-based models.",
+						fixes: [],
+						extend: [
+							"Tokenization approaches: word, subword (BPE/WordPiece), and their tradeoffs",
+							"Text preprocessing: stopwords, stemming/lemmatization, and when to skip them",
+							"TF-IDF and bag-of-words as fast, interpretable baselines",
+							"Word embeddings (Word2Vec, GloVe) vs. contextual embeddings",
+							"Transformers overview: attention intuition, encoder vs. decoder models",
+							"Practical use of pretrained models via Hugging Face for classification/embedding tasks",
+						],
+					},
+					{
+						id: "computer-vision-fundamentals",
+						customizedComponent: false,
+						name: "Computer Vision Fundamentals",
+						file: "Computer_Vision_Fundamentals.md",
+						status: "planned",
+						slug: "computer-vision-fundamentals",
+						tagline:
+							"CNNs, image preprocessing, and transfer learning for image tasks",
+						covers:
+							"The computer vision pipeline from raw images to a trained classifier — preprocessing and augmentation, CNN architecture fundamentals, and transfer learning with pretrained backbones for tasks that don't need training from scratch.",
+						fixes: [],
+						extend: [
+							"Image preprocessing and augmentation: resizing, normalization, flips/rotations/color jitter",
+							"CNN fundamentals: convolutions, pooling, receptive fields — why they fit image data",
+							"Transfer learning: fine-tuning a pretrained backbone (ResNet, EfficientNet, ViT) vs. training from scratch",
+							"Object detection and segmentation overview: how they differ from plain classification",
+							"Common failure modes: dataset bias, class imbalance in image data, augmentation that changes the label",
+							"Practical tooling: torchvision/Keras applications, and when to reach for a pretrained model vs. training your own",
+						],
+					},
+				],
+			},
+			{
+				key: "specialized-ml",
+				label: "Specialized ML Applications",
+				slug: "specialized-ml",
+				status: "planned",
+				tagline:
+					"Recommenders, anomaly detection, and time series — applied ML beyond generic classifiers",
+				covers:
+					"Machine learning applied to specific problem shapes that don't fit a generic classifier — recommendation engines, rare-event and anomaly detection on imbalanced data, and forecasting time-ordered data.",
+				items: [
+					{
+						id: "recommender-systems",
+						customizedComponent: false,
+						name: "Recommender Systems",
+						file: "Recommender_Systems.md",
+						status: "planned",
+						slug: "recommender-systems",
+						tagline:
+							"Collaborative filtering, matrix factorization, content-based approaches",
+						covers:
+							"The core approaches behind recommendation engines — collaborative filtering and matrix factorization for behavior-based recommendations, content-based filtering for cold-start items, and the hybrid approaches production systems actually use.",
+						fixes: [],
+						extend: [
+							"Collaborative filtering: user-based vs. item-based, and why item-based tends to scale better",
+							"Matrix factorization: SVD, ALS, and implicit feedback (clicks/views) vs. explicit ratings",
+							"Content-based filtering for the cold-start problem (new users, new items)",
+							"Hybrid approaches: blending collaborative and content signals",
+							"Evaluation: precision@k, recall@k, NDCG — why plain RMSE misleads for ranking tasks",
+							"Production concerns: candidate generation vs. ranking stages, and serving latency",
+						],
+					},
+					{
+						id: "anomaly-detection-imbalanced-learning",
+						customizedComponent: false,
+						name: "Anomaly Detection & Imbalanced Learning",
+						file: "Anomaly_Detection_and_Imbalanced_Learning.md",
+						status: "planned",
+						slug: "anomaly-detection-imbalanced-learning",
+						tagline:
+							"Isolation forests, autoencoders, and modeling rare-event data honestly",
+						covers:
+							"Detecting rare events and handling severely imbalanced data — unsupervised approaches like isolation forests and autoencoder reconstruction error, resampling strategies for imbalanced classification, and the evaluation traps that make a fraud/anomaly model look better than it is.",
+						fixes: [],
+						extend: [
+							"Unsupervised anomaly detection: isolation forests, one-class SVM, autoencoder reconstruction error",
+							"Resampling strategies: SMOTE and its variants vs. class weighting vs. undersampling",
+							"Why accuracy is meaningless on a 99:1 class split, and what to report instead",
+							"Threshold selection for anomaly scores when there's no labeled validation set",
+							"Time-aware anomaly detection: seasonality-aware baselines instead of a static threshold",
+							"Production concerns: alert fatigue, and tuning precision/recall trade-offs to what an on-call team can act on",
+						],
+					},
+					{
+						id: "time-series-forecasting",
+						customizedComponent: false,
+						name: "Time Series Analysis & Forecasting",
+						file: "Time_Series_Analysis_and_Forecasting.md",
+						status: "planned",
+						slug: "time-series-forecasting",
+						tagline: "ARIMA, Prophet, seasonality/decomposition",
+						covers:
+							"Classical and modern time series forecasting — decomposition into trend/seasonality/residual, ARIMA family models, and Prophet, plus the evaluation pitfalls specific to time-ordered data.",
+						fixes: [],
+						extend: [
+							"Decomposition: trend, seasonality, residual — additive vs. multiplicative",
+							"Stationarity, differencing, and the ADF test",
+							"ARIMA/SARIMA: parameter selection with ACF/PACF plots",
+							"Prophet: holiday effects, changepoints, and when it beats ARIMA",
+							"Cross-validation for time series (rolling-origin, not random splits)",
+							"Forecast evaluation: MAPE/MASE, and backtesting against a naive baseline",
+						],
+					},
+				],
+			},
+			{
+				key: "mlops-production",
+				label: "MLOps & Production",
+				slug: "mlops-production",
+				status: "planned",
+				tagline:
+					"Feature stores, deployment, monitoring — keeping a model alive after it ships",
+				covers:
+					"The operational layer around a model once it leaves a notebook — feature stores bridging training and serving, deployment patterns, and the monitoring and retraining discipline that catches drift before it becomes a business problem.",
+				items: [
+					{
+						id: "mlops",
+						customizedComponent: false,
+						name: "MLOps",
+						file: "MLOps_Cheatsheet.md",
+						status: "planned",
+						slug: "mlops",
+						tagline:
+							"Model versioning, deployment, monitoring, drift detection",
+						covers:
+							"The operational layer that keeps a model working after it ships — versioning models and data, deployment patterns, and the monitoring that catches drift before it shows up as a business problem.",
+						fixes: [],
+						extend: [
+							"Model versioning and experiment tracking (MLflow, Weights & Biases)",
+							"Deployment patterns: batch scoring, real-time API, shadow deployment",
+							"Feature stores and training/serving skew",
+							"Monitoring: prediction drift, data drift, and performance decay over time",
+							"Retraining triggers and pipelines, and champion/challenger setups",
+							"Model governance: reproducibility, approval gates, rollback plans",
+						],
+					},
+					{
+						id: "feature-stores-ml-pipelines",
+						customizedComponent: false,
+						name: "Feature Stores & ML Data Pipelines",
+						file: "Feature_Stores_and_ML_Data_Pipelines.md",
+						status: "planned",
+						slug: "feature-stores-ml-pipelines",
+						tagline:
+							"Feature stores, training/serving skew, and data pipelines built for ML",
+						covers:
+							"The data engineering layer purpose-built for ML — feature stores as the bridge between offline training data and online serving, batch vs. streaming feature computation, and the training/serving skew that breaks models in production despite passing every offline test.",
+						fixes: [],
+						extend: [
+							"Feature store concepts: offline store vs. online store, and why both exist",
+							"Point-in-time correctness: avoiding label leakage when joining features to historical training labels",
+							"Batch vs. streaming feature computation, and keeping the two consistent",
+							"Training/serving skew: when the same feature is computed differently in training vs. production",
+							"Popular tooling: Feast, Tecton, and cloud-native feature store offerings",
+							"Versioning features alongside models for reproducible retraining",
+						],
+					},
+				],
+			},
+		],
+	},
 	{
 		key: "bi",
 		label: "Business Intelligence & Analytics Tools",
@@ -2978,6 +2982,7 @@ export const DATA: Category[] = [
 			},
 		],
 	},
+	// ---- Career Tracks ----
 	{
 		key: "analytics-eng",
 		label: "Analytics Engineer",

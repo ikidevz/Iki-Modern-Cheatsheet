@@ -58,7 +58,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
 	return (
-		<html lang='en' suppressHydrationWarning>
+		<html lang='en' suppressHydrationWarning data-scroll-behavior='smooth'>
 			<head>
 				<meta name='theme-color' content='hsl(0 0% 100%)' />
 			</head>

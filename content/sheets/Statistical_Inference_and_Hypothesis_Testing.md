@@ -1,39 +1,39 @@
 # Statistical Inference & Hypothesis Testing Cheatsheet for Data & Analytics Engineers
 
-*(with Worked Examples Across Industries)*
+_(with Worked Examples Across Industries)_
 
 > A structured statistics reference for data & analytics engineering — probability foundations and estimation through confidence intervals, the full hypothesis-testing toolbox (parametric, non-parametric, categorical, non-inferiority/equivalence), effect sizes, multiple-comparisons and sequential-testing corrections, resampling methods, survival analysis, causal inference, time series diagnostics, meta-analysis, and Bayesian inference (credible intervals and Bayes Factors). This is the general inferential-statistics companion to the A/B Testing cheatsheet, which covers the applied experiment-design workflow. Every numeric example in this file — t/z statistics, ANOVA/ANCOVA/Tukey output, bootstrap and permutation p-values, power calculations, Kaplan-Meier/Cox survival estimates, propensity-score and difference-in-differences causal estimates, ADF/KPSS/Ljung-Box time series diagnostics, meta-analysis pooling, and Bayes Factors — was actually computed with SciPy 1.17, statsmodels 0.15, and lifelines 0.30, not hand-typed. That included simulating 2,000+ null hypothesis tests to confirm the ~5% false-positive rate, the multiple-comparisons inflation formula, and — new in this expansion — the false-positive inflation from naive repeated peeking at a running test. This edition also folds in 31 worked, real-world examples (one per test/method, across manufacturing, healthcare, retail, software, pharma, education, genomics, finance, and more) as a single combined reference.
 
 ## 📑 Table of Contents
 
-1. [📐 Core Concepts & Terminology](#core-concepts-terminology)
+1. [📐 Core Concepts Terminology](#core-concepts-terminology)
 2. [🔔 Probability Distributions Reference](#probability-distributions-reference)
 3. [🎯 Point Estimation](#point-estimation)
-4. [📊 Sampling Distributions & the Central Limit Theorem](#sampling-distributions-central-limit-theorem)
+4. [📊 Sampling Distributions the Central Limit Theorem](#sampling-distributions-central-limit-theorem)
 5. [📏 Confidence Intervals](#confidence-intervals)
 6. [🧪 Hypothesis Testing Framework](#hypothesis-testing-framework)
-7. [⚖️ Type I/II Errors & Statistical Power](#type-i-ii-errors-statistical-power)
-8. [🔢 Sample Size & Power Analysis](#sample-size-power-analysis)
+7. [⚖️ Type I/II Errors Statistical Power](#type-i-ii-errors-statistical-power)
+8. [🔢 Sample Size Power Analysis](#sample-size-power-analysis)
 9. [1️⃣ One-Sample Tests](#one-sample-tests)
 10. [2️⃣ Two-Sample Tests](#two-sample-tests)
-11. [🎚️ Non-Inferiority & Equivalence Testing](#non-inferiority-equivalence-testing)
-12. [📈 ANOVA & Post-Hoc Comparisons](#anova-post-hoc-comparisons)
+11. [🎚️ Non-Inferiority Equivalence Testing](#non-inferiority-equivalence-testing)
+12. [📈 ANOVA Post-Hoc Comparisons](#anova-post-hoc-comparisons)
 13. [🧮 ANCOVA](#ancova)
 14. [🎲 Non-Parametric Tests](#non-parametric-tests)
-15. [🔗 Chi-Square & Categorical Data Tests](#chi-square-categorical-data-tests)
+15. [🔗 Chi-Square Categorical Data Tests](#chi-square-categorical-data-tests)
 16. [📐 Effect Size Measures](#effect-size-measures)
 17. [🧮 Multiple Testing Correction](#multiple-testing-correction)
-18. [⏱️ Sequential Testing & Always-Valid Inference](#sequential-testing-always-valid-inference)
-19. [🔄 Bootstrapping & Resampling](#bootstrapping-resampling)
+18. [⏱️ Sequential Testing Always-Valid Inference](#sequential-testing-always-valid-inference)
+19. [🔄 Bootstrapping Resampling](#bootstrapping-resampling)
 20. [🔀 Permutation Tests](#permutation-tests)
-21. [📉 Correlation & Regression Inference](#correlation-regression-inference)
+21. [📉 Correlation Regression Inference](#correlation-regression-inference)
 22. [⏳ Survival Analysis](#survival-analysis)
 23. [🔀 Causal Inference Basics](#causal-inference-basics)
 24. [📉 Time Series Inference](#time-series-inference)
 25. [📚 Meta-Analysis Basics](#meta-analysis-basics)
 26. [🧠 Bayesian Inference Basics](#bayesian-inference-basics)
 27. [🧠 Bayesian Hypothesis Testing (Bayes Factors)](#bayesian-hypothesis-testing-bayes-factors)
-28. [⚠️ Common Gotchas & Misconceptions](#common-gotchas-misconceptions)
+28. [⚠️ Common Gotchas Misconceptions](#common-gotchas-misconceptions)
 29. [🎯 Best Practices](#best-practices)
 30. [📚 Test-Selection Guide & Quick Formulas](#test-selection-guide-quick-formulas)
 31. [💡 Pro Tips](#pro-tips)
@@ -43,50 +43,50 @@
 
 **Syntax cheatsheet (SciPy / statsmodels / lifelines)**
 
-| Task                              | Syntax                                                                       |
-| --------------------------------- | ----------------------------------------------------------------------------- |
-| One-sample t-test                 | `stats.ttest_1samp(sample, popmean)`                                        |
-| Two-sample t-test (unequal var)   | `stats.ttest_ind(a, b, equal_var=False)` (Welch's — the safer default)      |
-| Paired t-test                     | `stats.ttest_rel(after, before)`                                             |
-| Equivalence / non-inferiority     | `ttost_ind(new, old, low, upp)` (TOST: two one-sided tests)                  |
-| One-way ANOVA                     | `stats.f_oneway(g1, g2, g3)`                                                 |
-| ANCOVA (group + covariate)        | `anova_lm(smf.ols('y ~ C(group) + covariate', data=df).fit(), typ=2)`       |
-| Tukey HSD post-hoc                | `pairwise_tukeyhsd(data, labels)`                                            |
-| Mann-Whitney U                    | `stats.mannwhitneyu(a, b)`                                                   |
-| Wilcoxon signed-rank              | `stats.wilcoxon(after, before)`                                             |
-| Kruskal-Wallis                    | `stats.kruskal(g1, g2, g3)`                                                  |
-| Chi-square independence           | `stats.chi2_contingency(table)`                                             |
-| Fisher's exact                    | `stats.fisher_exact(table)`                                                  |
-| Confidence interval (mean)        | `stats.t.interval(0.95, df, loc=mean, scale=sem)`                           |
-| Confidence interval (proportion)  | `proportion_confint(successes, trials, method='wilson')`                    |
-| Bootstrap CI                      | `stats.bootstrap((data,), np.median, confidence_level=0.95)`                |
-| Permutation test                  | `stats.permutation_test((a, b), stat_fn, n_resamples=10000)`                |
-| Multiple-testing correction       | `multipletests(p_values, alpha=0.05, method='fdr_bh')`                       |
-| Sample size / power               | `TTestIndPower().solve_power(effect_size=d, alpha=0.05, power=0.8)`          |
-| Kaplan-Meier survival curve       | `KaplanMeierFitter().fit(time, event_observed)`                             |
-| Log-rank test (2 survival curves) | `logrank_test(time_a, time_b, event_a, event_b)`                            |
-| Cox proportional hazards          | `CoxPHFitter().fit(df, duration_col='time', event_col='event')`             |
-| Stationarity (unit root)          | `adfuller(series)` / `kpss(series)`                                          |
-| Autocorrelation                   | `acorr_ljungbox(series, lags=[10])`                                          |
-| Meta-analysis pooling             | `combine_effects(effects, variances, method_re='iterated')`                 |
-| Pearson / Spearman correlation    | `stats.pearsonr(x, y)` / `stats.spearmanr(x, y)`                             |
-| OLS regression with CI            | `sm.OLS(y, sm.add_constant(x)).fit()`                                        |
+| Task                              | Syntax                                                                 |
+| --------------------------------- | ---------------------------------------------------------------------- |
+| One-sample t-test                 | `stats.ttest_1samp(sample, popmean)`                                   |
+| Two-sample t-test (unequal var)   | `stats.ttest_ind(a, b, equal_var=False)` (Welch's — the safer default) |
+| Paired t-test                     | `stats.ttest_rel(after, before)`                                       |
+| Equivalence / non-inferiority     | `ttost_ind(new, old, low, upp)` (TOST: two one-sided tests)            |
+| One-way ANOVA                     | `stats.f_oneway(g1, g2, g3)`                                           |
+| ANCOVA (group + covariate)        | `anova_lm(smf.ols('y ~ C(group) + covariate', data=df).fit(), typ=2)`  |
+| Tukey HSD post-hoc                | `pairwise_tukeyhsd(data, labels)`                                      |
+| Mann-Whitney U                    | `stats.mannwhitneyu(a, b)`                                             |
+| Wilcoxon signed-rank              | `stats.wilcoxon(after, before)`                                        |
+| Kruskal-Wallis                    | `stats.kruskal(g1, g2, g3)`                                            |
+| Chi-square independence           | `stats.chi2_contingency(table)`                                        |
+| Fisher's exact                    | `stats.fisher_exact(table)`                                            |
+| Confidence interval (mean)        | `stats.t.interval(0.95, df, loc=mean, scale=sem)`                      |
+| Confidence interval (proportion)  | `proportion_confint(successes, trials, method='wilson')`               |
+| Bootstrap CI                      | `stats.bootstrap((data,), np.median, confidence_level=0.95)`           |
+| Permutation test                  | `stats.permutation_test((a, b), stat_fn, n_resamples=10000)`           |
+| Multiple-testing correction       | `multipletests(p_values, alpha=0.05, method='fdr_bh')`                 |
+| Sample size / power               | `TTestIndPower().solve_power(effect_size=d, alpha=0.05, power=0.8)`    |
+| Kaplan-Meier survival curve       | `KaplanMeierFitter().fit(time, event_observed)`                        |
+| Log-rank test (2 survival curves) | `logrank_test(time_a, time_b, event_a, event_b)`                       |
+| Cox proportional hazards          | `CoxPHFitter().fit(df, duration_col='time', event_col='event')`        |
+| Stationarity (unit root)          | `adfuller(series)` / `kpss(series)`                                    |
+| Autocorrelation                   | `acorr_ljungbox(series, lags=[10])`                                    |
+| Meta-analysis pooling             | `combine_effects(effects, variances, method_re='iterated')`            |
+| Pearson / Spearman correlation    | `stats.pearsonr(x, y)` / `stats.spearmanr(x, y)`                       |
+| OLS regression with CI            | `sm.OLS(y, sm.add_constant(x)).fit()`                                  |
 
 **Distribution cheat sheet**
 
-| Distribution | Typical use case                                        | SciPy object       |
-| ------------- | -------------------------------------------------------- | ------------------- |
-| Normal        | Continuous data symmetric around a mean (heights, errors)| `stats.norm`        |
-| t             | Like normal, but for small samples / unknown variance     | `stats.t`           |
-| Binomial      | Count of successes in n independent yes/no trials         | `stats.binom`       |
-| Poisson       | Count of rare events in a fixed interval (arrivals/hour)    | `stats.poisson`     |
-| Exponential   | Time between independent events (wait times)                | `stats.expon`       |
-| Chi-square    | Sum of squared normals; test statistics, variance tests       | `stats.chi2`        |
-| F             | Ratio of two variances; ANOVA test statistic                    | `stats.f`           |
-| Beta          | Values bounded in [0,1]; conjugate prior for proportions           | `stats.beta`        |
-| Uniform       | Equally likely outcomes over a range                                 | `stats.uniform`     |
+| Distribution | Typical use case                                          | SciPy object    |
+| ------------ | --------------------------------------------------------- | --------------- |
+| Normal       | Continuous data symmetric around a mean (heights, errors) | `stats.norm`    |
+| t            | Like normal, but for small samples / unknown variance     | `stats.t`       |
+| Binomial     | Count of successes in n independent yes/no trials         | `stats.binom`   |
+| Poisson      | Count of rare events in a fixed interval (arrivals/hour)  | `stats.poisson` |
+| Exponential  | Time between independent events (wait times)              | `stats.expon`   |
+| Chi-square   | Sum of squared normals; test statistics, variance tests   | `stats.chi2`    |
+| F            | Ratio of two variances; ANOVA test statistic              | `stats.f`       |
+| Beta         | Values bounded in [0,1]; conjugate prior for proportions  | `stats.beta`    |
+| Uniform      | Equally likely outcomes over a range                      | `stats.uniform` |
 
-## 📐 Core Concepts & Terminology
+## 📐 Core Concepts Terminology
 
 ```python
 import numpy as np
@@ -190,7 +190,7 @@ print(f"MLE-fitted gamma: shape={shape_hat:.2f}, scale={scale_hat:.2f} (true: sh
 # the older alternative to MLE — still used when MLE has no closed form or is unstable.
 ```
 
-## 📊 Sampling Distributions & the Central Limit Theorem
+## 📊 Sampling Distributions the Central Limit Theorem
 
 ```python
 import numpy as np
@@ -283,7 +283,7 @@ t_stat, p_greater = stats.ttest_1samp(sample, popmean=100, alternative='greater'
 print(f"one-tailed (H1: mean > 100): p={p_greater:.4f}  (roughly half the two-tailed p, when the effect is in that direction)")
 ```
 
-## ⚖️ Type I/II Errors & Statistical Power
+## ⚖️ Type I/II Errors Statistical Power
 
 ```python
 import numpy as np
@@ -315,7 +315,7 @@ print(f"false-positive rate over {n_tests} null-true tests: {false_positives/n_t
 # (more false negatives) for a fixed sample size — the only way to reduce BOTH is more data.
 ```
 
-## 🔢 Sample Size & Power Analysis
+## 🔢 Sample Size Power Analysis
 
 ```python
 from statsmodels.stats.power import TTestIndPower, TTestPower
@@ -400,7 +400,7 @@ t_stat, p_val = stats.ttest_rel(after, before)
 print(f"paired t-test: t={t_stat:.3f}, p={p_val:.4f}")
 ```
 
-## 🎚️ Non-Inferiority & Equivalence Testing
+## 🎚️ Non-Inferiority Equivalence Testing
 
 ```python
 import numpy as np
@@ -436,7 +436,7 @@ else:
 # migrating a pipeline/model and confirming output didn't meaningfully change.
 ```
 
-## 📈 ANOVA & Post-Hoc Comparisons
+## 📈 ANOVA Post-Hoc Comparisons
 
 ```python
 from scipy import stats
@@ -544,7 +544,7 @@ sign_p = stats.binomtest(n_pos, len(diffs), p=0.5).pvalue
 print(f"sign test: {n_pos}/{len(diffs)} positive, p={sign_p:.4f}")
 ```
 
-## 🔗 Chi-Square & Categorical Data Tests
+## 🔗 Chi-Square Categorical Data Tests
 
 ```python
 from scipy import stats
@@ -645,7 +645,7 @@ print(f"Benjamini-Hochberg rejects: {reject_bh.tolist()}")
 # - Exploratory analysis / many tests (e.g. genomics, dozens of metrics) -> Benjamini-Hochberg
 ```
 
-## ⏱️ Sequential Testing & Always-Valid Inference
+## ⏱️ Sequential Testing Always-Valid Inference
 
 ```python
 import numpy as np
@@ -704,7 +704,7 @@ print("(nominal alpha was 0.05 -- naive peeking roughly triples the real false-p
 # so the type-I error guarantee holds no matter how often or when you peek.
 ```
 
-## 🔄 Bootstrapping & Resampling
+## 🔄 Bootstrapping Resampling
 
 ```python
 import numpy as np
@@ -771,7 +771,7 @@ print(f"(for comparison) Welch's t-test p-value: {t_p:.4f}")   # typically very 
 # specific business metric or a non-mean summary) where no textbook test formula exists.
 ```
 
-## 📉 Correlation & Regression Inference
+## 📉 Correlation Regression Inference
 
 ```python
 import numpy as np
@@ -1046,11 +1046,11 @@ print(f"approximate Bayes Factor (H1 vs H0): {bf10:.2f}")
 # rather than just "we failed to find evidence against the null."
 ```
 
-## ⚠️ Common Gotchas & Misconceptions
+## ⚠️ Common Gotchas Misconceptions
 
 - **"p = 0.03 means there's a 3% chance H0 is true"** — false. A p-value is the probability of the observed data (or more extreme) GIVEN that H0 is true, not the probability that H0 is true given the data. Those are different conditional probabilities and conflating them is one of the most common statistics errors.
 - **"p > 0.05 means H0 is proven true / there's no effect"** — false. Failing to reject H0 means the data didn't provide strong enough evidence against it; it could easily mean the study was underpowered, not that there's truly no effect. "Absence of evidence is not evidence of absence."
-- **"A 95% CI means there's a 95% chance the true value is in this specific interval"** — technically false for a frequentist CI. The true parameter is a fixed number; either it's in the interval or it isn't. The 95% describes the LONG-RUN behavior of the *procedure* across repeated sampling, not this one interval. (A Bayesian *credible* interval, by contrast, does support that probability-of-the-parameter phrasing.)
+- **"A 95% CI means there's a 95% chance the true value is in this specific interval"** — technically false for a frequentist CI. The true parameter is a fixed number; either it's in the interval or it isn't. The 95% describes the LONG-RUN behavior of the _procedure_ across repeated sampling, not this one interval. (A Bayesian _credible_ interval, by contrast, does support that probability-of-the-parameter phrasing.)
 - **Multiple comparisons inflate the false-positive rate fast** — running k=20 independent tests at alpha=0.05 gives roughly a 64% chance of at least one false positive by pure chance (confirmed via simulation above), not 5%. Correct for it (Bonferroni/Holm/BH) whenever you run more than a couple of tests on the same question.
 - **Naive repeated peeking is multiple testing in disguise** — checking a running fixed-sample test at several checkpoints and stopping as soon as p<0.05 pushed the real false-positive rate to roughly 3x the nominal alpha in the simulation above. Use a pre-registered fixed sample size, a formal alpha-spending schedule, or an always-valid sequential method if you need to monitor results as they arrive.
 - **Statistical significance ≠ practical significance** — with a large enough sample, even a trivially small, meaningless difference can produce p < 0.05. Always report and interpret an effect size alongside the p-value.
@@ -1079,37 +1079,37 @@ print(f"approximate Bayes Factor (H1 vs H0): {bf10:.2f}")
 
 ## 📚 Test-Selection Guide & Quick Formulas
 
-| Question                                          | Assumptions hold (parametric)       | Assumptions violated (non-parametric) |
-| --------------------------------------------------- | -------------------------------------- | ---------------------------------------- |
-| Compare 1 sample mean to a known value              | One-sample t-test                       | Sign test / Wilcoxon signed-rank         |
-| Compare 2 independent group means                   | Welch's / Student's t-test               | Mann-Whitney U                           |
-| Compare 2 paired/matched samples                    | Paired t-test                             | Wilcoxon signed-rank                     |
-| Show 2 groups are "not meaningfully different"      | TOST equivalence / non-inferiority test    | —                                         |
-| Compare 3+ independent group means                  | One-way ANOVA + Tukey HSD                   | Kruskal-Wallis + Dunn's test             |
-| Compare 3+ group means, controlling for a covariate | ANCOVA                                        | Rank-based ANCOVA / permutation ANCOVA    |
-| Compare 3+ paired/repeated measures                 | Repeated-measures ANOVA                         | Friedman test                            |
-| Association between 2 categorical variables         | Chi-square test of independence                   | Fisher's exact (small/sparse tables)     |
-| Association between 2 continuous variables          | Pearson correlation                                 | Spearman correlation                     |
-| Paired categorical (before/after) comparison        | —                                                     | McNemar's test                           |
-| Time-to-event data across 2+ groups                 | Log-rank test + Cox proportional hazards               | Kaplan-Meier alone (descriptive)         |
-| Estimate a causal effect from observational data    | Regression adjustment / DiD (parallel trends)            | Propensity score matching                |
-| Is a time series stationary?                        | ADF test (H0: unit root)                                    | KPSS test (H0: stationary) — run both    |
-| Combine effect estimates across studies              | Fixed-effect meta-analysis (low heterogeneity)                | Random-effects meta-analysis             |
+| Question                                            | Assumptions hold (parametric)                  | Assumptions violated (non-parametric)  |
+| --------------------------------------------------- | ---------------------------------------------- | -------------------------------------- |
+| Compare 1 sample mean to a known value              | One-sample t-test                              | Sign test / Wilcoxon signed-rank       |
+| Compare 2 independent group means                   | Welch's / Student's t-test                     | Mann-Whitney U                         |
+| Compare 2 paired/matched samples                    | Paired t-test                                  | Wilcoxon signed-rank                   |
+| Show 2 groups are "not meaningfully different"      | TOST equivalence / non-inferiority test        | —                                      |
+| Compare 3+ independent group means                  | One-way ANOVA + Tukey HSD                      | Kruskal-Wallis + Dunn's test           |
+| Compare 3+ group means, controlling for a covariate | ANCOVA                                         | Rank-based ANCOVA / permutation ANCOVA |
+| Compare 3+ paired/repeated measures                 | Repeated-measures ANOVA                        | Friedman test                          |
+| Association between 2 categorical variables         | Chi-square test of independence                | Fisher's exact (small/sparse tables)   |
+| Association between 2 continuous variables          | Pearson correlation                            | Spearman correlation                   |
+| Paired categorical (before/after) comparison        | —                                              | McNemar's test                         |
+| Time-to-event data across 2+ groups                 | Log-rank test + Cox proportional hazards       | Kaplan-Meier alone (descriptive)       |
+| Estimate a causal effect from observational data    | Regression adjustment / DiD (parallel trends)  | Propensity score matching              |
+| Is a time series stationary?                        | ADF test (H0: unit root)                       | KPSS test (H0: stationary) — run both  |
+| Combine effect estimates across studies             | Fixed-effect meta-analysis (low heterogeneity) | Random-effects meta-analysis           |
 
 **Quick formulas**
 
-| Quantity                             | Formula                                             |
-| --------------------------------------- | ------------------------------------------------------ |
-| Standard error of the mean              | `s / sqrt(n)`                                          |
-| t-statistic (one-sample)                | `(x_bar - mu0) / (s / sqrt(n))`                        |
-| z-statistic (proportion)                | `(p_hat - p0) / sqrt(p0*(1-p0)/n)`                     |
-| Cohen's d (independent samples)         | `(mean_a - mean_b) / pooled_std`                       |
-| Confidence interval (general)           | `estimate +/- critical_value * standard_error`         |
-| P(>=1 false positive across k tests)    | `1 - (1 - alpha)^k`                                    |
-| Bonferroni-adjusted alpha               | `alpha / k`                                            |
-| Hazard ratio (Cox model)                | `exp(coefficient)`                                      |
-| I-squared (meta-analysis heterogeneity) | `max(0, (Q - df) / Q) * 100%`                            |
-| Bayes Factor via BIC approximation      | `exp((BIC_H0 - BIC_H1) / 2)`                              |
+| Quantity                                | Formula                                        |
+| --------------------------------------- | ---------------------------------------------- |
+| Standard error of the mean              | `s / sqrt(n)`                                  |
+| t-statistic (one-sample)                | `(x_bar - mu0) / (s / sqrt(n))`                |
+| z-statistic (proportion)                | `(p_hat - p0) / sqrt(p0*(1-p0)/n)`             |
+| Cohen's d (independent samples)         | `(mean_a - mean_b) / pooled_std`               |
+| Confidence interval (general)           | `estimate +/- critical_value * standard_error` |
+| P(>=1 false positive across k tests)    | `1 - (1 - alpha)^k`                            |
+| Bonferroni-adjusted alpha               | `alpha / k`                                    |
+| Hazard ratio (Cox model)                | `exp(coefficient)`                             |
+| I-squared (meta-analysis heterogeneity) | `max(0, (Q - df) / Q) * 100%`                  |
+| Bayes Factor via BIC approximation      | `exp((BIC_H0 - BIC_H1) / 2)`                   |
 
 ## 💡 Pro Tips
 
@@ -1164,6 +1164,7 @@ bolt_diameters = np.array([...])  # 35 measurements, mean=9.8267, sd=0.0628
 t_stat, p_val = stats.ttest_1samp(bolt_diameters, popmean=9.80)
 print(f"t={t_stat:.3f}, p={p_val:.4f}")
 ```
+
 **Output:** `n=35, sample mean=9.8267mm, sd=0.0628, t=2.516, p=0.0168`
 
 **Lesson:** p=0.0168 < 0.05 — the line has measurably drifted above spec (mean 9.83mm vs. target 9.80mm), even though the drift is only ~0.03mm. Small, consistent drifts are exactly what a one-sample t-test is built to catch early, before they compound into a larger tolerance problem. Whether a 0.03mm drift is worth halting the line for is a separate, practical-significance question — the test only answers "is this drift real or just noise."
@@ -1178,6 +1179,7 @@ from statsmodels.stats.proportion import proportions_ztest
 z_stat, p_val = proportions_ztest(count=268, nobs=320, value=0.80)
 print(f"observed rate: {268/320:.4f}, z={z_stat:.3f}, p={p_val:.4f}")
 ```
+
 **Output:** `observed rate: 0.8375, z=1.818, p=0.0690`
 
 **Lesson:** The observed rate (83.75%) looks comfortably above the 80% target, but p=0.069 is just above the conventional 0.05 cutoff — with n=320, a 3.75-point gap isn't quite enough to rule out noise as the explanation. This is a good example of a case to report honestly as "directionally positive but not conclusive yet" rather than rounding it to a clean "we beat target."
@@ -1193,6 +1195,7 @@ from scipy import stats
 
 t_stat, p_val = stats.ttest_ind(weekend_basket, weekday_basket, equal_var=False)
 ```
+
 **Output:** `weekday mean=$41.80, weekend mean=$45.29, Welch t=2.442, p=0.01510, Cohen's d=0.264`
 
 **Lesson:** The difference is statistically significant (p=0.015) but the effect size is small (d=0.26) — weekend baskets run about $3.50 higher on average, a real but modest effect. Worth knowing for staffing/inventory planning, but not a dramatic behavioral shift.
@@ -1206,6 +1209,7 @@ from scipy import stats
 
 t_stat, p_val = stats.ttest_rel(after_bp, before_bp)
 ```
+
 **Output:** `mean before=147.2, mean after=137.1, mean drop=10.13, t=-9.110, p<0.000001`
 
 **Lesson:** An overwhelmingly clear result — the drop is both large (10+ points) and extremely unlikely to be chance (p practically zero). This is the paired design doing its job: because each patient serves as their own baseline, within-patient noise (which is often huge for blood pressure) is removed from the comparison, giving far more power than comparing two independent groups would.
@@ -1220,6 +1224,7 @@ from scipy import stats
 levene_stat, levene_p = stats.levene(cdn_a, cdn_b)
 t_stat, p_val = stats.ttest_ind(cdn_a, cdn_b, equal_var=False)
 ```
+
 **Output:** `CDN A mean=58.82ms, CDN B mean=52.85ms, Levene p=0.0274, Welch t=3.326, p=0.00091`
 
 **Lesson:** Levene's test (p=0.027) shows the two CDNs' latency variances genuinely differ — exactly the situation where Welch's t-test (not Student's) is the right call, and it confirms CDN B is significantly faster on average (~6ms). Checking the equal-variance assumption first, rather than assuming it, mattered here.
@@ -1235,6 +1240,7 @@ from statsmodels.stats.weightstats import ttost_ind
 
 p_val, (t1,p1,df1), (t2,p2,df2) = ttost_ind(generic, brand, -10, 10, usevar='unequal')
 ```
+
 **Output:** `brand mean=99.73, generic mean=99.65, diff=-0.09, TOST p<0.0001`
 
 **Lesson:** A plain t-test here would almost certainly also show "no significant difference" — but that's a weak, indirect way to argue equivalence (absence of evidence). TOST directly tests "the difference is within the acceptable margin" and confirms it decisively. This distinction — proving similarity vs. failing to prove difference — is exactly why equivalence testing exists as its own tool, not just a reframed t-test.
@@ -1248,6 +1254,7 @@ from statsmodels.stats.weightstats import ttost_ind
 
 p_val, *_ = ttost_ind(new_vendor, old_vendor, -0.10, 0.10, usevar='unequal')
 ```
+
 **Output:** `old vendor mean=5.0037mm, new vendor mean=5.0222mm, TOST p<0.0001`
 
 **Lesson:** Equivalence confirmed well within margin — even though the new vendor's parts do run very slightly larger on average, the difference (0.019mm) is nowhere near the 0.10mm tolerance that would actually matter for fit. This is the practical, business-relevant question a plain difference test doesn't answer directly.
@@ -1265,6 +1272,7 @@ from statsmodels.stats.multicomp import pairwise_tukeyhsd
 f_stat, p_val = stats.f_oneway(control, fert_a, fert_b)
 print(pairwise_tukeyhsd(data, labels))
 ```
+
 **Output:** `means: control=47.9, A=54.2, B=57.2, F=13.047, p=0.000015` — Tukey HSD: control-vs-A p=0.0033 (significant), control-vs-B p<0.001 (significant), A-vs-B p=0.2446 (not significant)
 
 **Lesson:** The ANOVA confirms real differences exist, and Tukey HSD pinpoints exactly where: both fertilizers beat the control, but A and B aren't distinguishable from each other. Without the post-hoc test, "the ANOVA is significant" alone wouldn't tell the farm which fertilizer to actually buy.
@@ -1280,6 +1288,7 @@ naive_f, naive_p = stats.f_oneway(*[df[df.method==m].posttest for m in df.method
 model = smf.ols('posttest ~ C(method) + pretest', data=df).fit()
 print(anova_lm(model, typ=2))
 ```
+
 **Output:** naive ANOVA: `F=9.635, p=0.00012` (group means: lecture=71.5, flipped=78.5, blended=79.5) — ANCOVA: method `F=7.290, p=0.000995`, pretest `F=162.9, p<0.0001`
 
 **Lesson:** Both the naive comparison and the ANCOVA find a real method effect — but the ANCOVA's F-statistic is noticeably smaller (7.29 vs 9.64) after controlling for pretest. That gap is the pretest imbalance getting properly accounted for: part of the naive advantage for the blended group was really just "they started ahead," not the teaching method itself. The method effect survives adjustment, but it's more modest than the naive number suggested — exactly the kind of overstatement ANCOVA exists to catch.
@@ -1295,6 +1304,7 @@ from scipy import stats
 
 u_stat, p_val = stats.mannwhitneyu(new_design, old_design, alternative='two-sided')
 ```
+
 **Output:** `median old=34.2s, median new=43.1s, U=50503.0, p=0.009549`
 
 **Lesson:** With this much skew, comparing means directly would be dominated by a handful of extreme outlier sessions. Mann-Whitney U compares the whole distributions via ranks instead, and it detects the real shift toward longer engagement (p<0.01) without needing the data to look anything like normal.
@@ -1308,6 +1318,7 @@ from scipy import stats
 
 w_stat, p_val = stats.wilcoxon(after_time, before_time)
 ```
+
 **Output:** `mean before=4.520s, mean after=4.407s, W=0.0, p<0.00001`
 
 **Lesson:** W=0 means every single athlete improved — the most extreme possible Wilcoxon result. This is the paired non-parametric analog to example 4's paired t-test: same "before/after, same subjects" structure, but appropriate here because sprint-time improvements aren't well-modeled as normally distributed.
@@ -1321,6 +1332,7 @@ from scipy import stats
 
 h_stat, p_val = stats.kruskal(loc_a, loc_b, loc_c)
 ```
+
 **Output:** `median wait: A=4.04, B=5.18, C=5.33 min, H=1.963, p=0.37483`
 
 **Lesson:** Not significant — despite Location A's median looking noticeably lower than B and C, Kruskal-Wallis says this is plausibly just sampling noise at n=60 per location. This is a useful negative result: it stops the chain from over-reacting to what might just be normal week-to-week variation, and flags that a bigger sample (or a longer observation window) is needed before concluding any location genuinely runs faster.
@@ -1336,6 +1348,7 @@ from scipy import stats
 
 chi2, p_val = stats.chisquare(observed, f_exp=expected)
 ```
+
 **Output:** `observed: [420, 365, 315], expected: [385.0, 363.0, 352.0], chi2=7.082, p=0.0290`
 
 **Lesson:** p=0.029 flags a real deviation from the expected population split — this sample over-represents the first group and under-represents the third relative to known demographics. In practice this is exactly the signal that triggers survey weighting/reweighting before the poll's other results are reported.
@@ -1349,6 +1362,7 @@ from scipy import stats
 
 chi2, p_val, dof, expected = stats.chi2_contingency(table)
 ```
+
 **Output:** `click rates: 18-29=0.145, 30-49=0.210, 50+=0.095, chi2=52.157, p<0.000001, dof=2`
 
 **Lesson:** A large, highly significant association — the 30-49 age band clicks at roughly double the rate of the 50+ band. With this large a sample and this large a chi-square statistic, the practical takeaway (segment campaigns by age, don't blast everyone identically) is about as clear-cut as this kind of test gets.
@@ -1362,6 +1376,7 @@ from scipy import stats
 
 odds_ratio, p_val = stats.fisher_exact([[9, 3], [3, 9]])
 ```
+
 **Output:** `treatment remission: 9/12, placebo remission: 3/12, odds ratio=9.000, p=0.0391`
 
 **Lesson:** With expected cell counts well under 5 in a table this small, chi-square's p-value would not be trustworthy — Fisher's exact test computes the exact probability directly and still finds a significant treatment effect (p=0.039) despite the tiny sample, which is precisely the scenario Fisher's exact test exists for.
@@ -1375,6 +1390,7 @@ from statsmodels.stats.contingency_tables import mcnemar
 
 result = mcnemar([[62, 8], [22, 28]], exact=True)
 ```
+
 **Output:** `before success rate: 0.583, after success rate: 0.700, McNemar stat=8.000, p=0.01612`
 
 **Lesson:** 22 users who failed before now succeed, vs. only 8 who went the other way (succeeded before, failed after) — McNemar's test, which only looks at these "switchers," confirms the net improvement is real (p=0.016). A regular chi-square test of independence would have been the wrong tool here since it assumes independent samples, not the same 120 people measured twice.
@@ -1392,6 +1408,7 @@ reject_bonf, *_ = multipletests(p_values, alpha=0.05, method='bonferroni')
 reject_holm, *_ = multipletests(p_values, alpha=0.05, method='holm')
 reject_bh, *_ = multipletests(p_values, alpha=0.05, method='fdr_bh')
 ```
+
 **Output:** raw p-values range from 0.0002 to 0.89 — Bonferroni flags 2 genes, Holm flags 2 genes, Benjamini-Hochberg (FDR) flags 6 genes
 
 **Lesson:** This is the clearest possible illustration of the Bonferroni-vs-BH tradeoff: Bonferroni and Holm are both strict enough to only confirm the 2 most extreme genes, while BH's less conservative false-discovery-rate control picks up 4 more plausible hits at the same nominal alpha. For an exploratory genomics screen where the next step is targeted follow-up validation (not an immediate clinical claim), BH's larger, FDR-controlled candidate list is usually the more useful output.
@@ -1413,6 +1430,7 @@ for i, x in enumerate(transaction_stream, start=1):
     if log_lr >= np.log(A):
         alert(); break
 ```
+
 **Output:** `ALERT: elevated fraud rate detected after monitoring 172 transactions`
 
 **Lesson:** The SPRT reaches a confident decision after just 172 observations, rather than waiting for a pre-committed fixed batch (which, at typical transaction volumes, could mean hours of undetected elevated fraud). This is the concrete payoff of sequential testing over fixed-sample testing in a monitoring context: faster detection with a controlled, pre-specified false-alarm rate, rather than the uncontrolled false-alarm inflation that naive repeated peeking (see the main cheatsheet's gotchas) would produce.
@@ -1421,13 +1439,14 @@ for i, x in enumerate(transaction_stream, start=1):
 
 #### 20. Manufacturing reliability — what's the median time-to-failure, with uncertainty?
 
-150 components tested to failure; time-to-failure is right-skewed (Weibull-distributed), so there's no simple textbook formula for a CI on the *median* specifically.
+150 components tested to failure; time-to-failure is right-skewed (Weibull-distributed), so there's no simple textbook formula for a CI on the _median_ specifically.
 
 ```python
 from scipy import stats
 
 res = stats.bootstrap((time_to_failure,), np.median, confidence_level=0.95, n_resamples=5000)
 ```
+
 **Output:** `sample median=794.5 hrs, bootstrap 95% CI: (731.0, 891.5)`
 
 **Lesson:** There's no standard closed-form formula for a median's standard error the way there is for a mean's — bootstrapping sidesteps that entirely by directly resampling the data and observing how much the median actually varies across resamples. The resulting CI is exactly as usable for reliability planning (e.g. warranty period decisions) as a mean-based CI would be for a simpler statistic.
@@ -1441,6 +1460,7 @@ from scipy import stats
 
 res = stats.bootstrap((daily_returns,), sharpe_fn, confidence_level=0.95, n_resamples=5000)
 ```
+
 **Output:** `observed annualized Sharpe ratio: 1.983, bootstrap 95% CI: (-0.020, 4.083)`
 
 **Lesson:** The point estimate (1.98) looks great, but the bootstrap CI is enormous and its lower bound is essentially zero — one year of daily data just isn't enough to pin down a Sharpe ratio precisely, no matter how good the point estimate looks. This is a genuinely important, easy-to-miss lesson for evaluating trading strategies: report the CI, not just the point estimate, or risk mistaking a lucky year for a genuinely skilled strategy.
@@ -1457,6 +1477,7 @@ from scipy import stats
 def stat_fn(x, y): return np.mean(x) - np.mean(y)
 res = stats.permutation_test((campaign_b, campaign_a), stat_fn, n_resamples=10000)
 ```
+
 **Output:** `campaign A mean=$42.92, campaign B mean=$52.54, observed diff=$9.62, permutation p=0.1058`
 
 **Lesson:** Despite a $9.62 gap in raw means, the permutation test says this isn't strong enough evidence to call campaign B the winner (p=0.106) — donation amounts are so variable (a handful of large gifts can swing the mean substantially) that a real underlying difference this size is hard to distinguish from noise at this sample size. A useful reminder that skewed, high-variance outcomes (donations, revenue, session value) often need bigger samples than a naive look at the mean difference would suggest.
@@ -1472,6 +1493,7 @@ import statsmodels.api as sm
 
 model = sm.OLS(price, sm.add_constant(sqft)).fit()
 ```
+
 **Output:** `Pearson r=0.902, slope=$143.73/sqft, 95% CI ($134.06, $153.39), R-squared=0.813`
 
 **Lesson:** Square footage alone explains over 81% of price variance in this market — a strong, useful relationship — and critically, the regression gives a precise, actionable CI on the dollar-per-square-foot estimate ($134–$153), not just a correlation coefficient. That CI is what actually gets used in a pricing model; the r-value alone wouldn't be.
@@ -1485,6 +1507,7 @@ from scipy import stats
 
 rho, p_val = stats.spearmanr(pollution_rank, illness_rate)
 ```
+
 **Output:** `Spearman rho=0.945, p<0.000001`
 
 **Lesson:** A very strong monotonic relationship — as the pollution ranking worsens, illness rate rises almost in lockstep. Spearman is the right choice here specifically because the underlying pollution "ranking" is ordinal by construction, not because the relationship happens to be non-linear; Pearson would have been a conceptual mismatch even before checking assumptions.
@@ -1502,6 +1525,7 @@ from lifelines.statistics import logrank_test
 kmf.fit(time, event, label=arm)
 lr = logrank_test(std.time, new.time, std.event, new.event)
 ```
+
 **Output:** `standard_care median survival=12.7 months, new_drug median survival=23.2 months, log-rank stat=19.393, p=0.00001`
 
 **Lesson:** Nearly double the median survival time, and the log-rank test confirms the two survival curves are genuinely different, not just different by chance in this sample. Crucially, this analysis correctly uses patients who were still alive when the study ended (censored) rather than discarding them — a plain t-test on "observed survival time" would have thrown away exactly the patients doing best on the new drug.
@@ -1515,6 +1539,7 @@ from lifelines import CoxPHFitter
 
 cph.fit(df[['time','event','pro']], duration_col='time', event_col='event')
 ```
+
 **Output:** `hazard ratio (pro vs basic): 0.653, p=0.0055`
 
 **Lesson:** Pro-tier customers have roughly 35% lower instantaneous churn risk than Basic-tier customers at any given moment (hazard ratio 0.653), and it's statistically solid (p=0.0055). This single hazard-ratio number is exactly the input a customer-success team would want for prioritizing retention effort — Basic-tier subscribers are the higher-risk population to focus on.
@@ -1531,6 +1556,7 @@ import statsmodels.formula.api as smf
 naive_diff = quit_rate[enrolled==1].mean() - quit_rate[enrolled==0].mean()
 adjusted = smf.ols('quit ~ enrolled + income', data=df).fit()
 ```
+
 **Output:** `naive difference: 0.1533 (true simulated program effect: 0.12), income-adjusted coefficient: 0.1182`
 
 **Lesson:** The naive comparison overstates the program's effect (0.153 vs. the true 0.12 built into the simulation) because it's tangled up with income's own independent effect on quitting. Adjusting for income pulls the estimate almost exactly back to the true effect. This is precisely why "enrolled vs. didn't enroll" comparisons in voluntary programs need covariate adjustment before being trusted as causal claims — and even this adjusted estimate still assumes no other unmeasured confounders exist.
@@ -1544,6 +1570,7 @@ import statsmodels.formula.api as smf
 
 did_model = smf.ols('emp ~ treated * period', data=df).fit()
 ```
+
 **Output:** `estimated DiD effect: -1.429 (true simulated effect: -1.2), p=0.000212, 95% CI (-2.183, -0.675)`
 
 **Lesson:** Difference-in-differences recovers an estimate close to the true simulated effect by using each county's own pre-period trend as its baseline — it doesn't need treated and control counties to have started at the same employment level, only that they would have trended similarly absent the policy (the "parallel trends" assumption). That assumption is untestable directly and is exactly where real minimum-wage studies spend most of their methodological effort defending or challenging.
@@ -1560,9 +1587,10 @@ from statsmodels.tsa.stattools import adfuller, kpss
 adf_stat, adf_p, *_ = adfuller(trend_demand)
 kpss_stat, kpss_p, *_ = kpss(trend_demand, regression='c', nlags='auto')
 ```
+
 **Output:** `ADF p=0.3340 -> non-stationary, KPSS p=0.0100 -> non-stationary` (both tests agree). After first-differencing: `ADF p<0.000001 -> stationary`
 
-**Lesson:** Both ADF and KPSS agree the raw series is non-stationary (a trending random walk) — fitting a standard forecasting model directly to it would produce unreliable, overconfident intervals. First-differencing (modeling week-over-week *changes* instead of raw levels) fixes this cleanly, which is exactly the standard first step before applying ARIMA-family models to trending demand data.
+**Lesson:** Both ADF and KPSS agree the raw series is non-stationary (a trending random walk) — fitting a standard forecasting model directly to it would produce unreliable, overconfident intervals. First-differencing (modeling week-over-week _changes_ instead of raw levels) fixes this cleanly, which is exactly the standard first step before applying ARIMA-family models to trending demand data.
 
 ### Meta-Analysis
 
@@ -1575,6 +1603,7 @@ from statsmodels.stats.meta_analysis import combine_effects
 
 result = combine_effects(study_effects, study_variances, method_re='iterated')
 ```
+
 **Output:** `fixed-effect pooled estimate=0.4262, random-effects pooled estimate=0.4262, I-squared=0.0%, Q p-value=0.5521`
 
 **Lesson:** The fixed-effect and random-effects estimates come out identical here because I-squared is 0% — the 6 studies are statistically consistent with all estimating the same true effect (no real heterogeneity beyond sampling noise). That's the signal that a single pooled number (≈0.43) is a genuinely fair summary of "the effect" across this literature, rather than papering over studies that actually disagree.
@@ -1594,6 +1623,7 @@ ci = stats.beta.interval(0.95, post_a, post_b)
 # ...
 bf10 = np.exp((bic0 - bic1) / 2)
 ```
+
 **Output:** `posterior mean adoption rate=0.3932, 95% credible interval (0.3277, 0.4607)` — Bayes Factor (new flow effect vs. no effect): `0.12`
 
 **Lesson:** The credible interval gives a directly usable statement: "there's a 95% probability the true adoption rate is between 33% and 46%." The Bayes Factor of 0.12 (i.e., roughly 8:1 odds in favor of "no real difference" over "there's a real lift") is a genuinely informative negative result — unlike a large p-value, which can only say "we didn't find evidence of an effect," this BF actively argues the flows likely perform about the same, which is a much more decision-useful statement for whether to bother shipping the new flow.
