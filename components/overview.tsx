@@ -44,15 +44,14 @@ export function Overview() {
 				className='w-full h-100 object-cover mb-6'
 			/>
 			<p className='text-base text-muted-foreground mb-6'>
-				A self-hosted, searchable index for a personal library of
-				data-engineering cheatsheets — built with Next.js. It doesn't just link
-				out to files; every sheet is tracked with a review status, a
-				plain-language summary of what it covers, a list of concrete issues
-				found while reading it, and a list of topics worth adding. Think of it
-				less as a wiki and more as a **working audit dashboard**: some sheets
-				are written and vetted line-by-line (`solid`), some are written but have
-				a known problem worth revisiting (`flagged`), and some are fully scoped
-				but not written yet (`planned`).
+				An interactive, searchable library of data-engineering cheatsheets,
+				organized across databases, Python, infrastructure, data science,
+				algorithms, ETL/ELT, data modeling, design patterns, and AWS. Browse
+				practical notes, code examples, and focused references from the sidebar,
+				or search by topic to jump straight to a sheet. Each entry is part of a
+				living catalog with a clear scope, review status, known issues, and
+				ideas for what to add next — a working knowledge base that shows what is
+				solid, what needs another look, and what is still being built.
 			</p>
 
 			<div className='flex flex-wrap gap-x-6 gap-y-3 py-4 border-y border-border mb-9'>
