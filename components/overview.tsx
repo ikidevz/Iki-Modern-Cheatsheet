@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Globe, Link2 } from "lucide-react";
 import { DATA } from "@/content/data";
 import { CAT_CLASS, isNested, type ThemeType } from "@/lib/types";
 import { ALL_ENTRIES, slugOf } from "@/lib/content";
@@ -59,6 +60,41 @@ export function Overview() {
 				<Stat value={solid} label='solid' />
 				<Stat value={flagged} label='need a look' />
 				<Stat value={planned} label='planned' />
+			</div>
+
+			<div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-4 px-1 border-b border-border mb-9'>
+				<div>
+					<p className='text-xs uppercase tracking-[0.16em] text-foreground-faint'>
+						Maintained by
+					</p>
+					<a
+						href='https://ikidevs.vercel.app'
+						target='_blank'
+						rel='noreferrer'
+						className='text-sm font-semibold text-foreground hover:text-primary transition-colors'>
+						ikidevz
+					</a>
+				</div>
+				<div className='flex items-center gap-4 text-sm'>
+					<a
+						href='https://github.com/ikidevz'
+						target='_blank'
+						rel='noreferrer'
+						aria-label='ikidevz on GitHub'
+						className='inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors'>
+						<Link2 size={15} aria-hidden='true' />
+						GitHub
+					</a>
+					<a
+						href='https://ikidevs.vercel.app'
+						target='_blank'
+						rel='noreferrer'
+						aria-label='Visit ikidevz personal website'
+						className='inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors'>
+						<Globe size={15} aria-hidden='true' />
+						Website
+					</a>
+				</div>
 			</div>
 
 			{DATA.map((group) => {
