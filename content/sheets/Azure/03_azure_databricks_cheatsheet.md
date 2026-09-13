@@ -29,6 +29,7 @@
 | **Repos** | Git integration for notebooks/code, enabling CI/CD |
 | **Delta Live Tables (DLT)** | Declarative framework for building reliable ETL pipelines with built-in quality checks |
 | **Autoloader** | Efficient, scalable incremental file ingestion from cloud storage (structured streaming source) |
+| **Cluster Policy** | Admin-defined constraints on cluster creation (node types, max size, tags) to control cost/compliance |
 
 ---
 
@@ -47,15 +48,21 @@ databricks workspace import my_notebook.py /Shared/my_notebook -l PYTHON
 databricks clusters list
 databricks clusters create --json-file cluster-config.json
 databricks clusters start --cluster-id 1234-567890-abcde123
+databricks clusters terminate --cluster-id 1234-567890-abcde123
 
 # Jobs
 databricks jobs create --json-file job-config.json
 databricks jobs run-now --job-id 42
 databricks runs get --run-id 100
+databricks runs list --job-id 42
 
 # DBFS
 databricks fs cp local_file.csv dbfs:/mnt/data/local_file.csv
 databricks fs ls dbfs:/mnt/data/
+
+# Repos (Git integration for CI/CD)
+databricks repos create --url https://github.com/my-org/my-repo --provider gitHub --path /Repos/prod/my-repo
+databricks repos update --repo-id 123456 --branch main
 
 # Secrets (for credentials, never hardcode in notebooks)
 databricks secrets create-scope --scope my-scope
@@ -104,6 +111,9 @@ df_yesterday = spark.read.format("delta") \
 
 # View table history
 spark.sql("DESCRIBE HISTORY delta.`/mnt/data/events`").show()
+
+# Roll back to a previous version (RESTORE)
+spark.sql("RESTORE TABLE main.analytics.event_counts TO VERSION AS OF 5")
 ```
 
 ### Example 4 — OPTIMIZE, Z-ORDER & VACUUM (table maintenance)
@@ -195,6 +205,46 @@ def normalize_country_vectorized(codes: pd.Series) -> pd.Series:
 df = df.withColumn("country_name", normalize_country_vectorized(df.country))
 ```
 
+### Example 10 — Broadcast joins & performance tuning
+```python
+from pyspark.sql.functions import broadcast
+
+# Force a broadcast join when joining a large table to a small lookup table
+result = orders.join(broadcast(small_country_lookup), on="country_code", how="left")
+
+# Cache a DataFrame reused multiple times in the same session
+users.cache()
+users.count()   # triggers the cache to materialize
+
+# Repartition before a wide shuffle-heavy operation; coalesce before writing few large files
+df = df.repartition(200, "country")
+df.coalesce(10).write.format("delta").mode("overwrite").save("/mnt/data/output")
+```
+
+### Example 11 — Exploding arrays / working with nested JSON
+```python
+from pyspark.sql.functions import explode, col
+
+df = spark.read.json("/mnt/data/nested_events.json")
+flat = df.select("user_id", explode("events").alias("event")) \
+         .select("user_id", col("event.event_type"), col("event.timestamp"))
+```
+
+### Example 12 — Delta Change Data Feed (CDF) — track row-level changes
+```python
+# Enable CDF on a table
+spark.sql("ALTER TABLE main.raw.orders SET TBLPROPERTIES (delta.enableChangeDataFeed = true)")
+
+# Read only what changed between two versions
+changes = spark.read.format("delta") \
+    .option("readChangeFeed", "true") \
+    .option("startingVersion", 10) \
+    .option("endingVersion", 15) \
+    .table("main.raw.orders")
+
+changes.select("order_id", "_change_type", "_commit_version").show()
+```
+
 ---
 
 ## 5. Delta Live Tables (DLT) — Declarative Pipelines
@@ -223,7 +273,30 @@ def gold_daily_sales():
 
 ---
 
-## 6. Python SDK / REST API — Managing Databricks Programmatically
+## 6. Multi-Task Workflows (Jobs with Dependencies)
+
+Databricks Jobs support multiple tasks in a DAG, similar to an Airflow DAG but native to the platform:
+
+```python
+from databricks.sdk.service.jobs import Task, NotebookTask, TaskDependency
+
+tasks = [
+    Task(task_key="ingest", notebook_task=NotebookTask(notebook_path="/Shared/ingest")),
+    Task(task_key="transform", notebook_task=NotebookTask(notebook_path="/Shared/transform"),
+         depends_on=[TaskDependency(task_key="ingest")]),
+    Task(task_key="quality_check", notebook_task=NotebookTask(notebook_path="/Shared/quality_check"),
+         depends_on=[TaskDependency(task_key="transform")]),
+    # A task that only runs if quality_check fails (conditional/error-handling task)
+    Task(task_key="notify_on_failure", notebook_task=NotebookTask(notebook_path="/Shared/notify"),
+         depends_on=[TaskDependency(task_key="quality_check")],
+         run_if="ALL_FAILED"),
+]
+w.jobs.create(name="multi-task-etl", tasks=tasks)
+```
+
+---
+
+## 7. Python SDK / REST API — Managing Databricks Programmatically
 
 ```bash
 pip install databricks-sdk
@@ -295,9 +368,27 @@ w.secrets.create_scope(scope="my-scope")
 w.secrets.put_secret(scope="my-scope", key="api-key", string_value="super-secret-value")
 ```
 
+### Sync a Repo (CI/CD pattern — pull latest code before running a job)
+```python
+w.repos.update(repo_id=123456, branch="main")
+```
+
+### MLflow — track an experiment run from a notebook or job
+```python
+import mlflow
+
+with mlflow.start_run(run_name="churn_model_v3"):
+    mlflow.log_param("max_depth", 5)
+    mlflow.log_metric("auc", 0.87)
+    mlflow.spark.log_model(model, "model")
+
+# Register the model to Unity Catalog for governed deployment
+mlflow.register_model("runs:/<run_id>/model", "main.ml_models.churn_model")
+```
+
 ---
 
-## 7. Unity Catalog (Governance)
+## 8. Unity Catalog (Governance)
 
 ```sql
 -- Three-level namespace: catalog.schema.table
@@ -313,11 +404,16 @@ GRANT USAGE ON CATALOG main TO `analysts@company.com`;
 CREATE FUNCTION main.analytics.country_filter(country STRING) RETURN
   IF(IS_ACCOUNT_GROUP_MEMBER('admins'), true, country = current_user_country());
 ALTER TABLE main.analytics.event_counts SET ROW FILTER main.analytics.country_filter ON (country);
+
+-- External locations (governed access to ADLS Gen2 paths outside the managed catalog storage)
+CREATE EXTERNAL LOCATION my_external_loc
+URL 'abfss://data@myadls.dfs.core.windows.net/external/'
+WITH (CREDENTIAL my_storage_credential);
 ```
 
 ---
 
-## 8. Pricing
+## 9. Pricing
 
 | Component | Billed by |
 |---|---|
@@ -325,11 +421,11 @@ ALTER TABLE main.analytics.event_counts SET ROW FILTER main.analytics.country_fi
 | Underlying VMs | Standard Azure Compute pricing (billed separately by Azure) |
 | SQL Warehouses (serverless) | Per DBU-second while running, auto-stop when idle |
 
-💡 Use **Job clusters** (ephemeral, spun up per job) instead of leaving **All-Purpose clusters** running — job clusters are cheaper and auto-terminate.
+💡 Use **Job clusters** (ephemeral, spun up per job) instead of leaving **All-Purpose clusters** running — job clusters are cheaper and auto-terminate. Use **cluster policies** to prevent users from spinning up oversized interactive clusters.
 
 ---
 
-## 9. Monitoring
+## 10. Monitoring
 
 - **Spark UI** (per cluster): stages, tasks, DAG visualization, executor metrics.
 - **Databricks Jobs UI**: run history, task-level logs, retry status.
@@ -343,11 +439,17 @@ FROM system.billing.usage
 WHERE usage_date >= current_date() - INTERVAL 7 DAYS
 GROUP BY usage_metadata.job_id
 ORDER BY total_dbus DESC;
+
+-- Audit who queried a sensitive table
+SELECT user_identity.email, request_params.full_name_arg, event_time
+FROM system.access.audit
+WHERE action_name = 'getTable' AND request_params.full_name_arg = 'main.analytics.event_counts'
+ORDER BY event_time DESC;
 ```
 
 ---
 
-## 10. Common Gotchas
+## 11. Common Gotchas
 
 - Leaving **All-Purpose clusters** running interactively overnight is the most common cost leak — set aggressive auto-termination.
 - Forgetting `mergeSchema` on evolving streaming sources causes writes to fail once a new column appears upstream.
@@ -355,10 +457,11 @@ ORDER BY total_dbus DESC;
 - Small-file problem in Delta tables from many small streaming micro-batches — schedule regular `OPTIMIZE` compaction.
 - Not using **Job clusters** for scheduled jobs (using an interactive cluster instead) wastes money and risks resource contention with other users.
 - Mixing Unity Catalog and legacy Hive Metastore tables in the same workspace can cause confusing permission/visibility issues during migration.
+- `run_if` conditions on tasks are easy to get backwards (e.g., meaning to run only on failure but leaving the default `ALL_SUCCESS`) — always double check on error-handling tasks.
 
 ---
 
-## 11. Useful Links
+## 12. Useful Links
 
 - Docs: https://learn.microsoft.com/en-us/azure/databricks/
 - Delta Lake docs: https://docs.delta.io/latest/index.html

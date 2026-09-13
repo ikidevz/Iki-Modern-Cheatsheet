@@ -60,6 +60,27 @@ az storage account management-policy create --account-name myadlsaccount \
 # Generate a SAS token (time-limited access)
 az storage fs generate-sas --account-name myadlsaccount -f data -p raw/events/file.csv \
   --permissions r --expiry 2026-12-31
+
+# Enable soft delete & versioning (protect against accidental deletes)
+az storage account blob-service-properties update --account-name myadlsaccount \
+  --resource-group my-rg --enable-versioning true --enable-delete-retention true \
+  --delete-retention-days 14
+```
+
+### `azcopy` — the recommended tool for bulk transfers
+```bash
+# Upload a whole directory recursively
+azcopy copy "./local_data" "https://myadlsaccount.dfs.core.windows.net/data/raw?<SAS_TOKEN>" --recursive
+
+# Sync (mirror local <-> remote, only transfer changed files)
+azcopy sync "./local_data" "https://myadlsaccount.dfs.core.windows.net/data/raw?<SAS_TOKEN>" --recursive
+
+# Copy between two storage accounts (server-side, fast, no local download)
+azcopy copy "https://source.dfs.core.windows.net/data?<SAS>" "https://dest.dfs.core.windows.net/data?<SAS>" --recursive
+
+# Check transfer status/throughput
+azcopy jobs list
+azcopy jobs show <job-id>
 ```
 
 ---
@@ -129,6 +150,25 @@ df = pd.read_parquet(BytesIO(directory_client.get_file_client("events.parquet").
 paths = file_system_client.get_paths(path="raw/events")
 for path in paths:
     print(path.name, path.is_directory, path.content_length)
+
+# Recursive listing with a size/date filter (simple "find large recent files" pattern)
+from datetime import datetime, timedelta, timezone
+cutoff = datetime.now(timezone.utc) - timedelta(days=7)
+recent_large_files = [
+    p for p in file_system_client.get_paths(path="raw", recursive=True)
+    if not p.is_directory and p.last_modified > cutoff and p.content_length > 100_000_000
+]
+```
+
+### File & container properties / metadata
+```python
+props = file_client.get_file_properties()
+print(props.size, props.last_modified, props.metadata)
+
+file_client.set_metadata({"pipeline": "daily_etl", "source": "sales_system"})
+
+container_props = file_system_client.get_file_system_properties()
+print(container_props.last_modified)
 ```
 
 ### Delete files / directories
@@ -137,11 +177,21 @@ directory_client.get_file_client("old_file.csv").delete_file()
 directory_client.delete_directory()   # recursive delete of a whole directory
 ```
 
+### Batch delete many files matching a pattern
+```python
+paths_to_delete = [p.name for p in file_system_client.get_paths(path="tmp/", recursive=True) if not p.is_directory]
+for path in paths_to_delete:
+    file_system_client.delete_file(path)
+```
+
 ### Manage ACLs programmatically
 ```python
 directory_client.update_access_control(acl="user::rwx,group::r-x,other::---")
 acl_props = directory_client.get_access_control()
 print(acl_props["acl"])
+
+# Recursively apply an ACL to an entire directory tree
+directory_client.update_access_control_recursive(acl="user::rwx,group::r-x,other::---")
 ```
 
 ### Generate a SAS token from Python (temporary, scoped access)
@@ -195,9 +245,48 @@ mgmt_client = StorageManagementClient(credential, subscription_id="MY_SUB_ID")
 mgmt_client.management_policies.create_or_update("my-rg", "myadlsaccount", "default", policy)
 ```
 
+### Reading the Blob Change Feed (track all changes to a container over time)
+```python
+from azure.storage.blob import BlobServiceClient
+
+blob_service_client = BlobServiceClient(account_url="https://myadlsaccount.blob.core.windows.net", credential=credential)
+change_feed = blob_service_client.get_blob_change_feed(start_time=datetime(2026, 9, 1))
+for event in change_feed:
+    print(event["subject"], event["eventType"], event["eventTime"])
+```
+
 ---
 
-## 5. Authentication Options
+## 5. Databricks Integration Patterns
+
+```python
+# Option 1: direct abfss:// access (recommended, no mount needed) with OAuth service principal
+spark.conf.set("fs.azure.account.auth.type.myadlsaccount.dfs.core.windows.net", "OAuth")
+spark.conf.set("fs.azure.account.oauth.provider.type.myadlsaccount.dfs.core.windows.net",
+               "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider")
+spark.conf.set("fs.azure.account.oauth2.client.id.myadlsaccount.dfs.core.windows.net", "CLIENT_ID")
+spark.conf.set("fs.azure.account.oauth2.client.secret.myadlsaccount.dfs.core.windows.net",
+               dbutils.secrets.get(scope="my-scope", key="client-secret"))
+spark.conf.set("fs.azure.account.oauth2.client.endpoint.myadlsaccount.dfs.core.windows.net",
+               "https://login.microsoftonline.com/TENANT_ID/oauth2/token")
+
+df = spark.read.parquet("abfss://data@myadlsaccount.dfs.core.windows.net/raw/events/")
+
+# Option 2 (legacy): mount points via dbutils
+dbutils.fs.mount(
+    source="abfss://data@myadlsaccount.dfs.core.windows.net/",
+    mount_point="/mnt/data",
+    extra_configs={"fs.azure.account.auth.type": "OAuth", ...},
+)
+df = spark.read.parquet("/mnt/data/raw/events/")
+
+# Option 3 (recommended, current best practice): Unity Catalog External Locations —
+# governance-friendly, no per-cluster credentials needed (see 03_azure_databricks_cheatsheet.md)
+```
+
+---
+
+## 6. Authentication Options
 
 | Method | Use case |
 |---|---|
@@ -208,7 +297,7 @@ mgmt_client.management_policies.create_or_update("my-rg", "myadlsaccount", "defa
 
 ---
 
-## 6. IAM & ACLs
+## 7. IAM & ACLs
 
 | Mechanism | Scope | Notes |
 |---|---|---|
@@ -218,13 +307,13 @@ mgmt_client.management_policies.create_or_update("my-rg", "myadlsaccount", "defa
 
 ---
 
-## 7. Integration with Data Services
+## 8. Integration with Data Services
 
 | Service | Pattern |
 |---|---|
 | **Azure Data Factory** | Linked Service of type ADLS Gen2; Copy Activity source/sink |
 | **Synapse** | `abfss://` paths in Spark notebooks; `OPENROWSET` in serverless SQL |
-| **Databricks** | Mount via `abfss://` + OAuth/service principal, or use Unity Catalog external locations |
+| **Databricks** | Direct `abfss://` + OAuth/service principal, or Unity Catalog external locations |
 | **Power BI** | Connect directly as a data source, or query via a Synapse Serverless SQL view on top |
 
 ```python
@@ -234,16 +323,17 @@ df = spark.read.parquet("abfss://data@myadlsaccount.dfs.core.windows.net/raw/eve
 
 ---
 
-## 8. Performance Tips
+## 9. Performance Tips
 
 - Avoid **too many small files** — compact to 100MB–1GB files for analytics workloads (Spark/Synapse read performance).
 - Use **hierarchical namespace** (enabled on ADLS Gen2 by default) for efficient directory rename/delete operations.
 - Co-locate the storage account region with compute (Databricks workspace, Synapse workspace) to avoid cross-region latency/egress.
 - Use **Premium (block blob)** tier for latency-sensitive workloads with heavy read/write transaction volume.
+- Use `azcopy` (parallelized, resumable) instead of single-threaded SDK loops for large bulk transfers.
 
 ---
 
-## 9. Pricing
+## 10. Pricing
 
 - **Storage**: $/GB/month, varies by tier (Hot/Cool/Cold/Archive) and redundancy (LRS/ZRS/GRS).
 - **Transactions**: priced per 10,000 operations, varies by tier and operation type (read vs write).
@@ -252,18 +342,20 @@ df = spark.read.parquet("abfss://data@myadlsaccount.dfs.core.windows.net/raw/eve
 
 ---
 
-## 10. Common Gotchas
+## 11. Common Gotchas
 
 - Hierarchical namespace **cannot be disabled** after account creation — decide upfront (regular Blob Storage vs ADLS Gen2).
 - Deleting a directory recursively is irreversible without **soft delete**/versioning enabled — turn these on for critical data.
 - Mixing flat Blob Storage tools/SDKs with ADLS Gen2 hierarchical features can cause confusing behavior — use the `filedatalake` SDK for directory-aware operations.
 - Small file explosion from streaming writes (Autoloader, Event Hubs Capture) hurts downstream Spark/Synapse read performance — schedule compaction (`OPTIMIZE` in Delta).
 - SAS tokens with overly broad permissions/long expiry are a common security misconfiguration — scope tightly and prefer Azure AD auth where possible.
+- Legacy DBFS **mount points** share credentials workspace-wide — Unity Catalog external locations are the safer, more auditable current approach.
 
 ---
 
-## 11. Useful Links
+## 12. Useful Links
 
 - Docs: https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction
 - Pricing: https://azure.microsoft.com/en-us/pricing/details/storage/data-lake/
 - Python SDK reference: https://learn.microsoft.com/en-us/python/api/overview/azure/storage-file-datalake-readme
+- `azcopy` reference: https://learn.microsoft.com/en-us/azure/storage/common/storage-ref-azcopy

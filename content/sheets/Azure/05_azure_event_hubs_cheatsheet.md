@@ -27,6 +27,7 @@
 | **Event Hubs Capture** | Automatically archives streamed events to Blob/ADLS Gen2 in Avro/Parquet — zero code |
 | **Checkpointing** | Consumers persist their read position (offset) so they can resume after restart |
 | **Schema Registry** | Optional enforced Avro/JSON schemas for events |
+| **Partition ownership / load balancing** | `EventProcessorClient` automatically distributes partitions across multiple running consumer instances |
 
 ---
 
@@ -68,6 +69,17 @@ az eventhubs eventhub update --name orders --namespace-name my-eventhub-ns \
   --capture-size-limit 314572800 \
   --destination-name EventHubArchive.AzureBlockBlob \
   --storage-account myadlsaccount --blob-container captured-events
+
+# Geo-disaster recovery (Geo-DR) — pair a namespace with a secondary region
+az eventhubs georecovery-alias create --alias my-dr-alias \
+  --resource-group my-rg --namespace-name my-eventhub-ns \
+  --partner-namespace /subscriptions/.../namespaces/my-eventhub-ns-secondary
+
+# Diagnostic settings (send metrics/logs to Log Analytics)
+az monitor diagnostic-settings create --name EventHubDiagnostics \
+  --resource /subscriptions/.../namespaces/my-eventhub-ns \
+  --workspace my-log-analytics-workspace \
+  --logs '[{"category": "OperationalLogs", "enabled": true}]'
 ```
 
 ---
@@ -99,6 +111,32 @@ with producer:
 event_data_batch = producer.create_batch(partition_key="user-123")
 event_data_batch.add(EventData('{"order_id": "o3", "user_id": "user-123"}'))
 producer.send_batch(event_data_batch)
+```
+
+### Send to a specific partition ID directly
+```python
+event_data_batch = producer.create_batch(partition_id="0")
+event_data_batch.add(EventData('{"order_id": "o4"}'))
+producer.send_batch(event_data_batch)
+```
+
+### Handle batch overflow gracefully (auto-split into multiple batches)
+```python
+events = [EventData(f'{{"order_id": "o{i}"}}') for i in range(10000)]
+
+def send_all(producer, events):
+    batch = producer.create_batch()
+    for event in events:
+        try:
+            batch.add(event)
+        except ValueError:            # batch is full
+            producer.send_batch(batch)
+            batch = producer.create_batch()
+            batch.add(event)
+    if len(batch) > 0:
+        producer.send_batch(batch)
+
+send_all(producer, events)
 ```
 
 ### Send using Azure AD auth instead of a connection string
@@ -134,8 +172,11 @@ def on_event(partition_context, event):
     print(f"Partition {partition_context.partition_id}: {event.body_as_str()}")
     partition_context.update_checkpoint(event)   # persist progress
 
+def on_error(partition_context, error):
+    print(f"Error on partition {partition_context.partition_id if partition_context else 'N/A'}: {error}")
+
 with consumer:
-    consumer.receive(on_event=on_event, starting_position="-1")   # "-1" = from the beginning
+    consumer.receive(on_event=on_event, on_error=on_error, starting_position="-1")   # "-1" = from the beginning
 ```
 
 ### Async consumption (higher throughput, production-recommended)
@@ -157,6 +198,8 @@ async def main():
         eventhub_name="orders", checkpoint_store=checkpoint_store,
     )
     async with client:
+        # Running multiple instances of this same script auto-balances partitions
+        # across them via the shared checkpoint store — no manual partition assignment needed.
         await client.receive(on_event=on_event, starting_position="-1")
 
 asyncio.run(main())
@@ -172,6 +215,28 @@ def on_event_batch(partition_context, events):
 consumer.receive_batch(on_event_batch=on_event_batch, max_batch_size=100, max_wait_time=5)
 ```
 
+### Reading from a specific point in time (replay pattern)
+```python
+from datetime import datetime, timedelta
+
+consumer.receive(on_event=on_event, starting_position=datetime.utcnow() - timedelta(hours=1))
+```
+
+### Reading Event Hubs Capture files (Avro) directly from ADLS Gen2
+```python
+import fastavro
+from azure.storage.filedatalake import DataLakeServiceClient
+
+file_client = service_client.get_file_system_client("captured-events") \
+    .get_file_client("orders/0/2026/09/12/10/00/00.avro")
+data = file_client.download_file().readall()
+
+import io
+records = list(fastavro.reader(io.BytesIO(data)))
+for record in records:
+    print(record["Body"])   # the original event bytes, base64/binary encoded inside the Avro wrapper
+```
+
 ---
 
 ## 6. Using Kafka Clients Against Event Hubs
@@ -179,7 +244,7 @@ consumer.receive_batch(on_event_batch=on_event_batch, max_batch_size=100, max_wa
 Event Hubs exposes a **Kafka-compatible endpoint**, so existing `kafka-python`/`confluent-kafka` code often works with minimal changes:
 
 ```python
-from confluent_kafka import Producer
+from confluent_kafka import Producer, Consumer
 
 conf = {
     "bootstrap.servers": "my-eventhub-ns.servicebus.windows.net:9093",
@@ -191,6 +256,15 @@ conf = {
 producer = Producer(conf)
 producer.produce("orders", key="user-123", value='{"order_id": "o1"}')
 producer.flush()
+
+# Consumer side, using the Kafka consumer group semantics
+consumer_conf = {**conf, "group.id": "my-consumer-group", "auto.offset.reset": "earliest"}
+consumer = Consumer(consumer_conf)
+consumer.subscribe(["orders"])
+while True:
+    msg = consumer.poll(1.0)
+    if msg is not None and not msg.error():
+        print(msg.value())
 ```
 
 This is exactly the pattern used by **Databricks Structured Streaming** (see `03_azure_databricks_cheatsheet.md`, Example 6) to read Event Hubs via the Kafka connector.
@@ -206,6 +280,7 @@ This is exactly the pattern used by **Databricks Structured Streaming** (see `03
 | **Event Hubs → Azure Function** | Event-driven serverless processing (trigger binding) |
 | **Event Hubs Capture → ADLS Gen2** | Zero-code archival of raw events for later batch processing |
 | **Event Hubs → Synapse (via Stream Analytics or Spark)** | Real-time ingestion into the Synapse ecosystem |
+| **Event Hubs → Fabric Eventstream** | No-code routing into a Lakehouse/KQL Database (see `07_microsoft_fabric_cheatsheet.md`) |
 
 ### Azure Function triggered by Event Hubs (Python)
 ```python
@@ -215,6 +290,20 @@ import logging
 def main(events: func.EventHubEvent):
     for event in events:
         logging.info(f"Processing event: {event.get_body().decode('utf-8')}")
+```
+
+### Dead-letter pattern (Event Hubs has no native DLQ like Service Bus — build one)
+```python
+def on_event(partition_context, event):
+    try:
+        process(event.body_as_str())
+        partition_context.update_checkpoint(event)
+    except Exception as e:
+        # Forward the poison message to a separate "dead-letter" Event Hub for later inspection
+        dlq_producer.send_batch(dlq_producer.create_batch(
+            [EventData(event.body_as_str())]
+        ))
+        partition_context.update_checkpoint(event)   # still checkpoint so we don't loop forever
 ```
 
 ---
@@ -242,6 +331,17 @@ az eventhubs namespace update --name my-eventhub-ns --resource-group my-rg \
   --enable-auto-inflate true --maximum-throughput-units 10
 ```
 
+```python
+# Check consumer lag programmatically (compare last enqueued sequence number vs checkpoint)
+from azure.eventhub import EventHubConsumerClient
+
+consumer = EventHubConsumerClient.from_connection_string(conn_str, consumer_group="$Default", eventhub_name="orders")
+props = consumer.get_eventhub_properties()
+for pid in props["partition_ids"]:
+    partition_props = consumer.get_partition_properties(pid)
+    print(pid, partition_props["last_enqueued_sequence_number"])
+```
+
 ---
 
 ## 10. Common Gotchas
@@ -251,6 +351,8 @@ az eventhubs namespace update --name my-eventhub-ns --resource-group my-rg \
 - Basic tier has no Kafka support and only 1-day retention — most production pipelines need at least Standard.
 - Throttling occurs silently as `ServerBusyException` if you exceed purchased TUs — monitor and enable auto-inflate.
 - Event Hubs Capture writes many small files by default — plan downstream compaction if reading captured files directly.
+- Running multiple `EventProcessorClient` instances with **mismatched checkpoint store configuration** causes partition-stealing thrash instead of clean load balancing.
+- Checkpointing too frequently (every single event) adds storage overhead/latency — checkpoint every N events or every few seconds instead.
 
 ---
 

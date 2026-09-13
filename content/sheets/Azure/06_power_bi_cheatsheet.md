@@ -27,6 +27,7 @@
 | **DAX** | Data Analysis Expressions — the formula language for measures/calculated columns |
 | **Gateway** | On-prem data gateway for refreshing models that read from on-prem sources |
 | **Storage modes** | **Import** (cached in-memory), **DirectQuery** (live query passthrough), **Direct Lake** (Fabric only) |
+| **Composite model** | Mixes Import and DirectQuery/Direct Lake tables within the same semantic model |
 
 ---
 
@@ -50,6 +51,27 @@ in
     Content
 ```
 
+### More M query patterns
+```
+// Merge two queries (join, like SQL JOIN)
+let
+    Orders = Sales,
+    Customers = Customer,
+    Merged = Table.NestedJoin(Orders, {"CustomerId"}, Customers, {"CustomerId"}, "CustomerDetails", JoinKind.LeftOuter),
+    Expanded = Table.ExpandTableColumn(Merged, "CustomerDetails", {"CustomerName", "Country"})
+in
+    Expanded
+
+// Parameterize a query (e.g., environment-specific server name)
+let
+    Source = Sql.Database(ServerName, DatabaseName)   // ServerName/DatabaseName are Power BI parameters
+in
+    Source
+
+// Unpivot columns (wide -> long, common for messy source exports)
+Table.UnpivotOtherColumns(Source, {"ProductId"}, "Month", "Sales")
+```
+
 ---
 
 ## 4. DAX Cheat Sheet — Common Measures
@@ -65,6 +87,8 @@ PH Sales = CALCULATE([Total Sales], Sales[Country] = "PH")
 Sales YTD = TOTALYTD([Total Sales], 'Date'[Date])
 Sales PY = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))
 Sales YoY % = DIVIDE([Total Sales] - [Sales PY], [Sales PY])
+Sales MTD = TOTALMTD([Total Sales], 'Date'[Date])
+Rolling 7 Day Sales = CALCULATE([Total Sales], DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -7, DAY))
 
 -- Running total
 Running Total = CALCULATE([Total Sales], FILTER(ALLSELECTED('Date'[Date]), 'Date'[Date] <= MAX('Date'[Date])))
@@ -87,6 +111,20 @@ SWITCH(
     "Bronze"
 )
 
+-- Iterator functions (row-by-row calculation, then aggregate)
+Total Profit = SUMX(Sales, Sales[Quantity] * (Sales[UnitPrice] - Sales[UnitCost]))
+Avg Order Value = AVERAGEX(VALUES(Sales[OrderId]), CALCULATE(SUM(Sales[Amount])))
+
+-- Variables (readability + performance — compute once, reuse)
+Sales Growth =
+VAR CurrentSales = [Total Sales]
+VAR PriorSales = [Sales PY]
+RETURN DIVIDE(CurrentSales - PriorSales, PriorSales)
+
+-- ALLEXCEPT (keep filters on some columns, remove others)
+Sales % of Category =
+DIVIDE([Total Sales], CALCULATE([Total Sales], ALLEXCEPT(Sales, Sales[Category])))
+
 -- Calculated column vs measure: prefer measures for anything aggregated
 -- (calculated columns are computed at refresh time and stored, bloating the model)
 ```
@@ -101,6 +139,9 @@ SWITCH(
 
 -- More flexible: mapping table approach
 'UserCountryMapping'[Email] = USERPRINCIPALNAME()
+
+-- Dynamic RLS with manager hierarchy (see everything below you in an org chart)
+PATHCONTAINS('EmployeeHierarchy'[Path], LOOKUPVALUE('EmployeeHierarchy'[EmployeeId], 'EmployeeHierarchy'[Email], USERPRINCIPALNAME()))
 ```
 Assign users to roles in Power BI Service → **Security** settings per workspace/model.
 
@@ -159,6 +200,20 @@ for report in resp.json()["value"]:
     print(report["name"], report["id"], report["webUrl"])
 ```
 
+### Create a workspace and assign it to a capacity
+```python
+resp = requests.post(
+    "https://api.powerbi.com/v1.0/myorg/groups",
+    headers=headers, json={"name": "Sales Analytics"},
+)
+new_workspace_id = resp.json()["id"]
+
+requests.post(
+    f"https://api.powerbi.com/v1.0/myorg/groups/{new_workspace_id}/AssignToCapacity",
+    headers=headers, json={"capacityId": "CAPACITY_ID"},
+)
+```
+
 ### Push data into a Streaming/PUSH dataset (real-time tile updates)
 ```python
 push_url = f"https://api.powerbi.com/v1.0/myorg/groups/{workspace_id}/datasets/{dataset_id}/tables/RealTimeSales/rows"
@@ -203,6 +258,32 @@ requests.post(
 )
 ```
 
+### Deployment pipelines — promote content Dev → Test → Prod
+```python
+pipeline_id = "PIPELINE_ID"
+requests.post(
+    f"https://api.powerbi.com/v1.0/myorg/pipelines/{pipeline_id}/Deploy",
+    headers=headers,
+    json={"sourceStageOrder": 0, "targetStageOrder": 1},   # Dev(0) -> Test(1)
+)
+```
+
+### Query the Activity Log (audit / usage monitoring)
+```python
+from datetime import datetime
+
+start = datetime(2026, 9, 12, 0, 0, 0).isoformat() + "Z"
+end = datetime(2026, 9, 12, 23, 59, 59).isoformat() + "Z"
+
+resp = requests.get(
+    f"https://api.powerbi.com/v1.0/myorg/admin/activityevents"
+    f"?startDateTime='{start}'&endDateTime='{end}'",
+    headers=headers,
+)
+for event in resp.json()["activityEventEntities"]:
+    print(event["Activity"], event["UserId"], event["ItemName"])
+```
+
 ---
 
 ## 7. Chart Types Quick Reference
@@ -216,10 +297,21 @@ requests.post(
 | Map / Filled map | Geographic data |
 | Combo chart | Two metrics at different scales |
 | Decomposition tree | Ad-hoc drill-down / root-cause exploration |
+| Key influencers | AI-assisted "what drives this metric" analysis |
 
 ---
 
-## 8. Performance Tips
+## 8. Incremental Refresh (Large Import Models)
+
+```
+// Configured via Power BI Desktop's "Incremental refresh" policy dialog, backed by RangeStart/RangeEnd parameters:
+Filtered Rows = Table.SelectRows(Source, each [OrderDate] >= RangeStart and [OrderDate] < RangeEnd)
+```
+Typical policy: store 5 years of history, but only refresh (re-process) the last 1–7 days — dramatically cuts refresh time/cost on large fact tables.
+
+---
+
+## 9. Performance Tips
 
 - Prefer **Import mode** for most reports — DirectQuery adds live query latency per interaction.
 - Use **Direct Lake** (Fabric) when data is large and refresh-freshness matters more than raw import speed.
@@ -227,10 +319,12 @@ requests.post(
 - Move heavy transformation logic upstream (Dataflow Gen2, Synapse view, Databricks table) instead of in Power Query inside the report.
 - Avoid excessive **calculated columns** — prefer measures, computed at query time, not stored per-row.
 - Limit visuals per page; each interaction can trigger multiple backend queries.
+- Use **incremental refresh** for large Import fact tables instead of full reloads every time.
+- Use DAX **variables** (`VAR`/`RETURN`) to avoid recomputing the same sub-expression multiple times in one measure.
 
 ---
 
-## 9. Sharing & Governance
+## 10. Sharing & Governance
 
 | Mechanism | Purpose |
 |---|---|
@@ -239,10 +333,11 @@ requests.post(
 | **Row-Level Security (RLS)** | Restrict rows visible to each user/role |
 | **Sensitivity labels** | Classify and protect reports containing sensitive data (integrates with Microsoft Purview) |
 | **Deployment pipelines** | Dev → Test → Prod promotion of reports/datasets |
+| **Paginated reports** | Pixel-perfect, print-ready reports (invoices, regulatory forms) via Power BI Report Builder |
 
 ---
 
-## 10. Pricing
+## 11. Pricing
 
 | License | Notes |
 |---|---|
@@ -253,7 +348,7 @@ requests.post(
 
 ---
 
-## 11. Common Gotchas
+## 12. Common Gotchas
 
 - DirectQuery reports feel slow if the underlying warehouse (Synapse/Databricks) isn't tuned — every filter change re-queries live.
 - RLS roles must be tested via **"View As Role"** — it's easy to accidentally leave a hole (e.g., a table without a filter relationship to the RLS table).
@@ -261,10 +356,11 @@ requests.post(
 - The on-prem **Data Gateway** is a single point of failure for scheduled refreshes of on-prem-sourced models — configure a cluster for HA in production.
 - Calculated columns computed from other tables can break **Direct Lake** fallback to DirectQuery — check compatibility when migrating to Fabric.
 - Refreshing large Import models too frequently can hit **capacity/API refresh limits** — consider incremental refresh policies.
+- `CALCULATE` inside iterator functions (`SUMX`/`AVERAGEX`) is a common performance trap — profile with Performance Analyzer before assuming a measure is "just slow because it's DAX."
 
 ---
 
-## 12. Useful Links
+## 13. Useful Links
 
 - Docs: https://learn.microsoft.com/en-us/power-bi/
 - DAX reference: https://learn.microsoft.com/en-us/dax/

@@ -28,6 +28,7 @@
 | **Synapse Link** | Near-real-time analytics over operational data (Cosmos DB, SQL DB) without ETL |
 | **Distribution** | How a table's rows are spread across the 60 underlying compute nodes: Hash, Round Robin, Replicate |
 | **Workspace SQL/Spark database** | Shared metadata (Lake Database) queryable by both SQL and Spark engines |
+| **`mssparkutils`** | Utility library inside Synapse notebooks for file system ops, notebook chaining, credentials, and job exit values |
 
 ---
 
@@ -57,6 +58,10 @@ az synapse spark pool create --name mysparkpool --workspace-name my-synapse-ws \
 # Run a SQL script against a pool
 az synapse sql pool query --name mysqlpool --workspace-name my-synapse-ws \
   --resource-group my-rg --query "SELECT TOP 10 * FROM dbo.Sales"
+
+# Firewall rules (allow specific IPs to reach the workspace endpoint)
+az synapse workspace firewall-rule create --name AllowMyIp --workspace-name my-synapse-ws \
+  --resource-group my-rg --start-ip-address 203.0.113.5 --end-ip-address 203.0.113.5
 ```
 
 ---
@@ -103,10 +108,50 @@ FROM dbo.FactSales
 GROUP BY ProductId, SaleDate;
 ```
 
+### Bulk loading with `COPY INTO` (recommended over older PolyBase syntax for simplicity)
+```sql
+COPY INTO dbo.FactSales
+FROM 'https://myadls.dfs.core.windows.net/data/sales/*.parquet'
+WITH (
+    FILE_TYPE = 'PARQUET',
+    CREDENTIAL = (IDENTITY = 'Managed Identity')
+);
+
+-- With column mapping and error handling
+COPY INTO dbo.FactSales (SaleId, ProductId, CustomerId, Amount, SaleDate)
+FROM 'https://myadls.dfs.core.windows.net/data/sales/*.csv'
+WITH (
+    FILE_TYPE = 'CSV',
+    FIELDTERMINATOR = ',',
+    FIRSTROW = 2,
+    MAXERRORS = 100,
+    ERRORFILE = 'https://myadls.dfs.core.windows.net/data/errors/'
+);
+```
+
+### Materialized views (dedicated pool — pre-computed, auto-maintained aggregates)
+```sql
+CREATE MATERIALIZED VIEW dbo.mv_MonthlySales
+WITH (DISTRIBUTION = HASH(ProductId))
+AS
+SELECT ProductId, DATEFROMPARTS(YEAR(SaleDate), MONTH(SaleDate), 1) AS SaleMonth, SUM(Amount) AS TotalSales
+FROM dbo.FactSales
+GROUP BY ProductId, DATEFROMPARTS(YEAR(SaleDate), MONTH(SaleDate), 1);
+```
+
 ### Statistics (essential for the query optimizer)
 ```sql
 CREATE STATISTICS stat_FactSales_CustomerId ON dbo.FactSales(CustomerId);
 UPDATE STATISTICS dbo.FactSales;
+```
+
+### Security: dynamic data masking & TDE
+```sql
+-- Mask a column so non-privileged users see partial/obfuscated values
+ALTER TABLE dbo.Customers ALTER COLUMN Email ADD MASKED WITH (FUNCTION = 'email()');
+ALTER TABLE dbo.Customers ALTER COLUMN CreditCard ADD MASKED WITH (FUNCTION = 'partial(0,"XXXX-XXXX-XXXX-",4)');
+
+-- Transparent Data Encryption is enabled at the workspace/pool level via CLI/Portal, not T-SQL
 ```
 
 ### Workload management
@@ -155,6 +200,14 @@ CREATE VIEW dbo.v_events AS
 SELECT * FROM OPENROWSET(
     BULK 'https://myadls.dfs.core.windows.net/data/events/*.parquet', FORMAT = 'PARQUET'
 ) AS r;
+
+-- CETAS: Create External Table As Select — write query results back to the lake as new files
+CREATE EXTERNAL TABLE dbo.ExtDailySummary
+WITH (LOCATION = 'summaries/daily/', DATA_SOURCE = LakeData, FILE_FORMAT = ParquetFormat)
+AS
+SELECT CAST(event_ts AS DATE) AS event_date, country, COUNT(*) AS n
+FROM OPENROWSET(BULK 'https://myadls.dfs.core.windows.net/data/events/*.parquet', FORMAT='PARQUET') AS r
+GROUP BY CAST(event_ts AS DATE), country;
 ```
 
 ---
@@ -184,6 +237,25 @@ result.write \
 
 # Using %%sql magic to run Spark SQL in the same notebook
 spark.sql("SELECT country, COUNT(*) n FROM lake_db.event_counts GROUP BY country").show()
+```
+
+### Using `mssparkutils` (notebook utilities)
+```python
+from notebookutils import mssparkutils
+
+# File system operations against ADLS Gen2 / the primary storage account
+mssparkutils.fs.ls("abfss://data@myadls.dfs.core.windows.net/raw/")
+mssparkutils.fs.cp("abfss://data@myadls.dfs.core.windows.net/a.csv",
+                    "abfss://data@myadls.dfs.core.windows.net/archive/a.csv")
+
+# Chain notebooks together (like a lightweight pipeline)
+result = mssparkutils.notebook.run("/Shared/child_notebook", timeout_seconds=300, arguments={"date": "2026-09-12"})
+
+# Read a secret from a linked Key Vault
+api_key = mssparkutils.credentials.getSecret("my-keyvault", "api-key")
+
+# Exit a notebook with a value (readable by a parent pipeline's activity output)
+mssparkutils.notebook.exit("Success: 1master204 rows processed")
 ```
 
 ---
@@ -228,6 +300,10 @@ from azure.synapse.artifacts import ArtifactsClient
 artifacts_client = ArtifactsClient(credential=credential, endpoint="https://my-synapse-ws.dev.azuresynapse.net")
 run = artifacts_client.pipeline.create_pipeline_run("CopyBlobToSql", parameters={"sourcePath": "raw/2026-09-01"})
 print(f"Run ID: {run.run_id}")
+
+# Poll for status
+pipeline_run = artifacts_client.pipeline_run.get_pipeline_run(run.run_id)
+print(pipeline_run.status)
 ```
 
 ### Manage Dedicated SQL Pool (pause/resume/scale for cost control)
@@ -247,6 +323,10 @@ from azure.mgmt.synapse.models import SqlPool
 mgmt_client.sql_pools.begin_update(
     "my-rg", "my-synapse-ws", "mysqlpool", SqlPool(sku={"name": "DW500c"})
 ).wait()
+
+# A common cost-control pattern: schedule pause/resume via an Azure Function on a timer
+def pause_pool_overnight(mytimer):
+    mgmt_client.sql_pools.begin_pause("my-rg", "my-synapse-ws", "mysqlpool")
 ```
 
 ### Query a Dedicated SQL Pool from Python (via `pyodbc`)
@@ -261,6 +341,17 @@ conn_str = (
 )
 with pyodbc.connect(conn_str) as conn:
     df = pd.read_sql("SELECT TOP 100 * FROM dbo.FactSales", conn)
+```
+
+### Query Serverless SQL Pool from Python
+```python
+conn_str = (
+    "DRIVER={ODBC Driver 18 for SQL Server};"
+    "SERVER=my-synapse-ws-ondemand.sql.azuresynapse.net;DATABASE=master;"
+    "Authentication=ActiveDirectoryDefault;"
+)
+with pyodbc.connect(conn_str) as conn:
+    df = pd.read_sql("SELECT * FROM dbo.v_events WHERE country = 'PH'", conn)
 ```
 
 ---
@@ -280,9 +371,11 @@ with pyodbc.connect(conn_str) as conn:
 - Keep **clustered columnstore indexes** as the default for large analytical tables.
 - Update **statistics** after major data loads — the optimizer relies on them heavily.
 - Avoid **data skew**: pick hash keys with high, even cardinality (not booleans/low-cardinality columns).
-- Use **CTAS** instead of `INSERT INTO ... SELECT` for large transforms — it's far more efficient in MPP.
+- Use **CTAS**/`COPY INTO` instead of `INSERT INTO ... SELECT` for large transforms — far more efficient in MPP.
 - For serverless SQL, partition lake files (e.g., `year=2026/month=09/`) so `filepath()` filters can prune scanned data.
 - Scale Dedicated SQL Pool up temporarily for big loads, then back down (or pause) afterward.
+- Use **result set caching** (`SET RESULT_SET_CACHING ON`) for dashboards hitting the same query repeatedly.
+- Check **DMVs** for skew: `sys.dm_pdw_nodes_db_partition_stats` shows row counts per distribution.
 
 ---
 
@@ -316,6 +409,12 @@ SELECT request_id, status, submit_time, total_elapsed_time
 FROM sys.dm_pdw_exec_requests
 WHERE status NOT IN ('Completed', 'Failed')
 ORDER BY submit_time DESC;
+
+-- Check for data skew across distributions
+SELECT pdw_node_id, COUNT(*) AS row_count
+FROM dbo.FactSales
+GROUP BY pdw_node_id
+ORDER BY row_count DESC;
 ```
 
 ---
@@ -328,6 +427,7 @@ ORDER BY submit_time DESC;
 - Spark Pool auto-pause has a startup delay (cold start) — first query after idle can be noticeably slower.
 - Mixing round-robin distribution on large fact tables (instead of hash) causes excessive data movement during joins.
 - CTAS replaces the table entirely — remember to re-apply grants/permissions afterward if they aren't inherited.
+- `COPY INTO` with `MAXERRORS` set too high can silently swallow large amounts of bad data — always check `ERRORFILE` output after loads.
 
 ---
 

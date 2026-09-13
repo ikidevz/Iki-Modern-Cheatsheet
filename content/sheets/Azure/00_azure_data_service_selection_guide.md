@@ -113,15 +113,33 @@ Notice everything reads/writes the **same OneLake copy** — no separate ETL ste
 
 - **Azure Data Factory**: stop Azure-SSIS IR and Data Flow debug sessions when not in use — both bill hourly while idle.
 - **Synapse**: pause Dedicated SQL Pools outside business hours; use Serverless SQL for infrequent ad-hoc lake queries instead of a provisioned pool.
-- **Databricks**: use ephemeral **Job clusters** instead of leaving All-Purpose clusters running; set aggressive auto-termination.
+- **Databricks**: use ephemeral **Job clusters** instead of leaving All-Purpose clusters running; set aggressive auto-termination; use cluster policies to cap size.
 - **Event Hubs**: right-size Throughput Units and enable auto-inflate instead of over-provisioning a fixed high TU count.
 - **ADLS Gen2**: apply lifecycle policies to move cold data to Cool/Cold/Archive tiers.
-- **Power BI**: prefer Import/Direct Lake over DirectQuery where possible to cut repeated live-query costs on the warehouse.
+- **Power BI**: prefer Import/Direct Lake over DirectQuery where possible to cut repeated live-query costs on the warehouse; use incremental refresh on large models.
 - **Fabric**: watch capacity (F-SKU) utilization — a single heavy job can throttle every workload sharing that capacity; scale the SKU or isolate heavy workloads in their own capacity.
 
 ---
 
-## 8. Reference Implementation — Tying It All Together in Python
+## 8. GCP ↔ Azure Service Mapping
+
+If you're cross-referencing against the GCP cheatsheet set, here's how the two stacks line up conceptually (they're not 1:1, but this is a useful mental map):
+
+| GCP | Azure | Notes |
+|---|---|---|
+| BigQuery | Azure Synapse Analytics (SQL Pools) / Fabric Warehouse | GCP is serverless-by-default; Synapse Dedicated Pool is provisioned (DWU), Serverless SQL Pool is closer to BQ's pay-per-scan model |
+| Dataflow | Azure Databricks (Structured Streaming) / Fabric Dataflow Gen2 | Dataflow = managed Apache Beam; Databricks = managed Spark — different underlying engines, similar role |
+| Pub/Sub | Azure Event Hubs | Both support high-throughput streaming ingestion; Event Hubs adds native Kafka-protocol compatibility |
+| Dataproc | Azure Databricks / Synapse Spark Pools | All three are managed Spark; Databricks has the deepest Delta Lake integration |
+| Cloud Composer | Azure Data Factory / Fabric Data Factory | Composer = managed Airflow (code-first DAGs); ADF = visual pipeline designer + JSON — different authoring model, same orchestration role |
+| Cloud Storage (GCS) | Azure Data Lake Storage Gen2 | Both are the lake-layer object store underneath everything else |
+| Dataform | Databricks SQL / Fabric Warehouse CTAS / dbt-on-Synapse | No exact Azure-native equivalent — dbt is commonly layered on top of Synapse/Databricks instead |
+| Looker Studio | Power BI | Power BI is a much fuller product (paid tiers, RLS, full REST API) than the free Looker Studio |
+| *(no GCP equivalent)* | Microsoft Fabric | GCP doesn't have a single "unify everything under one lake + one capacity" SaaS platform in the same way — BigQuery's tight compute/storage integration is the closest conceptual parallel |
+
+---
+
+## 9. Reference Implementation — Tying It All Together in Python
 
 A minimal, realistic sketch of how the classic PaaS pieces chain together. Each snippet is expanded with far more detail in its own cheatsheet.
 
@@ -180,6 +198,6 @@ requests.post(
 
 ---
 
-## 9. Where to Go Deeper
+## 10. Where to Go Deeper
 
 Each linked cheatsheet includes: core concepts, CLI commands, extensive Python code examples, SQL/PySpark/DAX where relevant, pricing model, performance tips, monitoring pointers, and common gotchas — read the relevant one before implementing.

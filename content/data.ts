@@ -1596,10 +1596,27 @@ export const DATA: Category[] = [
 				],
 			},
 			{
+				id: "sysdesign-storage-file-formats",
+				customizedComponent: false,
+				name: "Storage & File Formats",
+				file: "System Design/03-storage-file-formats.md",
+				status: "planned",
+				tagline:
+					"Parquet vs. ORC vs. Avro, partitioning, and the small-file problem",
+				covers:
+					"Choosing storage layouts and file formats for a given access pattern — columnar vs. row-based formats, partitioning/bucketing strategy, compaction, and how lakehouse vs. warehouse vs. lake sit on the same spectrum rather than being three separate boxes.",
+				fixes: [],
+				extend: [
+					"Columnar (Parquet/ORC) vs. row-based (Avro) — when each wins",
+					"Partitioning and bucketing strategy, and the small-files problem it causes if done wrong",
+					"Lakehouse vs. data warehouse vs. data lake as a spectrum, not three separate boxes",
+				],
+			},
+			{
 				id: "sysdesign-batch-streaming",
 				customizedComponent: false,
 				name: "Batch vs. Streaming vs. Hybrid Design",
-				file: "System Design/03-batch-streaming-hybrid.md",
+				file: "System Design/04-batch-streaming-hybrid.md",
 				status: "planned",
 				tagline: "Choosing an architecture shape once scale is known",
 				covers:
@@ -1612,10 +1629,27 @@ export const DATA: Category[] = [
 				],
 			},
 			{
+				id: "sysdesign-cdc-idempotent-processing",
+				customizedComponent: false,
+				name: "CDC & Idempotent Processing",
+				file: "System Design/05-cdc-idempotent-processing.md",
+				status: "planned",
+				tagline:
+					"Capturing source-system changes without duplicating or losing data",
+				covers:
+					"Designing change-data-capture ingestion — log-based vs. query-based CDC, ordering/watermark guarantees across streams, and how idempotent upserts make replay and backfill safe.",
+				fixes: [],
+				extend: [
+					"Log-based CDC (e.g. Debezium/binlog tailing) vs. query-based/timestamp polling",
+					"Ordering guarantees and handling out-of-order events across CDC streams",
+					"Idempotent MERGE/upsert design so reprocessing a CDC stream never double-applies changes",
+				],
+			},
+			{
 				id: "sysdesign-fault-tolerance",
 				customizedComponent: false,
 				name: "Designing for Fault Tolerance",
-				file: "System Design/04-fault-tolerance.md",
+				file: "System Design/06-fault-tolerance.md",
 				status: "planned",
 				tagline: "Idempotency, exactly-once semantics, replay",
 				covers:
@@ -1628,26 +1662,76 @@ export const DATA: Category[] = [
 				],
 			},
 			{
+				id: "sysdesign-data-quality-observability",
+				customizedComponent: false,
+				name: "Data Quality, Contracts & Observability",
+				file: "System Design/07-data-quality-observability.md",
+				status: "planned",
+				tagline:
+					"Schema contracts, freshness SLAs, and catching bad data before it spreads",
+				covers:
+					"Designing the quality and observability layer of a pipeline — data contracts between producer and consumer, schema evolution handling, and freshness/lineage monitoring that catches problems before they reach consumers.",
+				fixes: [],
+				extend: [
+					"Data contracts and schema evolution: breaking vs. non-breaking changes",
+					"Freshness SLAs/SLOs and how to alert on missed ones",
+					"Where to enforce quality checks: at ingestion, in-pipeline, or at the serving layer",
+				],
+			},
+			{
+				id: "sysdesign-security-governance-multitenancy",
+				customizedComponent: false,
+				name: "Security, Governance & Multi-Tenancy",
+				file: "System Design/08-security-governance-multitenancy.md",
+				status: "planned",
+				tagline:
+					"Access control, PII handling, and isolating tenants on shared infrastructure",
+				covers:
+					"Designing access control and data governance for a platform shared across teams or tenants — row-level security, PII masking, and the isolation patterns that keep one tenant's data and workload from leaking into another's.",
+				fixes: [],
+				extend: [
+					"Row-level security and column-level masking for PII",
+					"Multi-tenant isolation patterns: shared schema vs. schema-per-tenant vs. database-per-tenant",
+					"Compliance-driven design constraints (retention, right-to-be-forgotten, audit trails)",
+				],
+			},
+			{
+				id: "sysdesign-metadata-catalog-design",
+				customizedComponent: false,
+				name: "Metadata & Catalog Design",
+				file: "System Design/09-metadata-catalog-design.md",
+				status: "planned",
+				tagline: "Making a growing platform discoverable and auditable",
+				covers:
+					"Designing the metadata layer — data catalogs, schema registries, and lineage tracking — that keeps a growing platform discoverable, auditable, and safe to change.",
+				fixes: [],
+				extend: [
+					"Data catalog and schema registry design for discoverability",
+					"Lineage tracking: why it matters for impact analysis and incident response",
+					"Metadata as its own system: who writes it, who reads it, how it stays in sync",
+				],
+			},
+			{
 				id: "sysdesign-followups",
 				customizedComponent: false,
 				name: "Common Follow-ups & Trade-off Talk Tracks",
-				file: "System Design/05-followups-tradeoffs.md",
+				file: "System Design/10-followups-tradeoffs.md",
 				status: "planned",
 				tagline: "How to reason out loud when the interviewer pushes back",
 				covers:
-					"The follow-up questions interviewers reliably ask after the initial design — 'what if traffic 10x's', 'what if this node dies' — and talk tracks for reasoning through them live instead of freezing.",
+					"The follow-up questions interviewers reliably ask after the initial design — 'what if traffic 10x's', 'what if this node dies', 'how would you cut the cost' — and talk tracks for reasoning through them live instead of freezing.",
 				fixes: [],
 				extend: [
 					"'What if scale increases 10x/100x' — how to reason about it live",
 					"'What if a component fails mid-write' — talking through failure domains",
-					"Handling a challenge to your choice without abandoning your design outright",
+					"'How would you cut the cost in half' — cost/performance trade-off scripts",
 				],
 			},
 			{
 				id: "sysdesign-case-studies",
 				customizedComponent: true,
 				name: "Worked Case Studies",
-				file: "System Design/06-worked-case-studies.md",
+				file: "System Design/11-worked-case-studies.md",
 				status: "planned",
 				tagline:
 					"Full prompts combining framework, scale, architecture, and fault tolerance",
@@ -2502,13 +2586,13 @@ export const DATA: Category[] = [
 						fixes: [],
 						extend: [
 							"Categorical encoding: one-hot, ordinal, target/mean encoding, and when each introduces leakage",
-							"Numeric scaling: standardization vs. normalization vs. robust scaling, and when tree-based models don\u2019t need any of it",
+							"Numeric scaling: standardization vs. normalization vs. robust scaling, and when tree-based models don't need any of it",
 							"Handling missing data as a feature: indicator columns, imputation strategies and their tradeoffs",
 							"Datetime feature extraction: cyclical encoding for hour/day-of-week, holiday flags, lag features for time series",
 							"Data leakage patterns: target leakage, train/test contamination, temporal leakage in time-ordered data",
 							"Feature selection: correlation filtering, mutual information, recursive feature elimination",
 							"Interaction and polynomial features — when they help vs. when they just add noise",
-							"Ties directly to the Math & Statistics sheet\u2019s correlation section and to Clustering\u2019s preprocessing steps",
+							"Ties directly to the Math & Statistics sheet's correlation section and to Clustering's preprocessing steps",
 						],
 					},
 					{
@@ -2581,11 +2665,11 @@ export const DATA: Category[] = [
 						status: "solid",
 						slug: "clustering",
 						tagline:
-							"75 self-contained scikit-learn problems, Beginner \u2192 Advanced",
+							"75 self-contained scikit-learn problems, Beginner → Advanced",
 						covers:
-							'All problems are self-contained scikit-learn with synthetic data, progressing Beginner \u2192 Intermediate \u2192 Advanced, and ending in a genuinely useful "which algorithm when" reference table.',
+							'All problems are self-contained scikit-learn with synthetic data, progressing Beginner → Intermediate → Advanced, and ending in a genuinely useful "which algorithm when" reference table.',
 						fixes: [
-							'The filename says "100_problems" but the file is titled and structured as 75, not 100+ — either it was trimmed from a bigger plan and the filename wasn\u2019t updated, or 25 problems are missing. Worth reconciling either way.',
+							'The filename says "100_problems" but the file is titled and structured as 75, not 100+ — either it was trimmed from a bigger plan and the filename wasn\'t updated, or 25 problems are missing. Worth reconciling either way.',
 						],
 						extend: [
 							"Fuzzy c-means",
@@ -2734,14 +2818,260 @@ export const DATA: Category[] = [
 				],
 			},
 			{
+				key: "advanced-deep-learning",
+				label: "Advanced Deep Learning",
+				slug: "advanced-deep-learning",
+				status: "planned",
+				tagline:
+					"Beyond the basics — attention mechanisms, generative vision models, graphs, and self-supervision",
+				covers:
+					"The deep learning topics that sit past the fundamentals sheet — the attention mechanism that underlies modern architectures, generative models for images, learning on graph-structured data, and the self-supervised and multimodal training paradigms behind today's foundation models.",
+				items: [
+					{
+						id: "sequence-models-attention",
+						customizedComponent: false,
+						name: "Sequence Models & Attention",
+						file: "Sequence_Models_and_Attention.md",
+						status: "planned",
+						slug: "sequence-models-attention",
+						tagline:
+							"RNNs, LSTMs, and the attention mechanism that replaced them",
+						covers:
+							"The evolution of sequence modeling — how RNNs and LSTMs handle order and their vanishing-gradient limits, and how the attention mechanism and self-attention solved the bottlenecks that made transformers possible.",
+						fixes: [],
+						extend: [
+							"RNN and LSTM/GRU mechanics: hidden state, gating, and why vanishing gradients limited long-range dependencies",
+							"Sequence-to-sequence models and the encoder-decoder bottleneck that motivated attention",
+							"Attention mechanism from first principles: query/key/value, scaled dot-product attention",
+							"Self-attention vs. cross-attention, and multi-head attention's role",
+							"Positional encoding: why transformers need it and common schemes (sinusoidal, learned, rotary)",
+							"When an RNN is still the right, cheaper choice over a transformer",
+						],
+					},
+					{
+						id: "generative-vision-models",
+						customizedComponent: false,
+						name: "Generative Models for Vision",
+						file: "Generative_Models_for_Vision.md",
+						status: "planned",
+						slug: "generative-vision-models",
+						tagline:
+							"GANs, VAEs, and diffusion models — how each generates images",
+						covers:
+							"The three major families of image-generation models — GANs and the adversarial training that makes them unstable, VAEs and their latent-space tradeoffs, and diffusion models, now the dominant approach, plus how to evaluate generated images.",
+						fixes: [],
+						extend: [
+							"GANs: generator/discriminator setup, mode collapse, and training stabilization tricks",
+							"Variational autoencoders: the reparameterization trick and the reconstruction/KL tradeoff",
+							"Diffusion models: forward noising process, learned denoising, and why they overtook GANs",
+							"Conditioning generation: class labels, text prompts (cross-attention in text-to-image models)",
+							"Evaluation metrics for generated images: FID, Inception Score, and their limitations",
+							"Practical tooling: Stable Diffusion-style pipelines, LoRA fine-tuning for image models",
+						],
+					},
+					{
+						id: "graph-neural-networks",
+						customizedComponent: false,
+						name: "Graph Neural Networks & Graph ML",
+						file: "Graph_Neural_Networks_and_Graph_ML.md",
+						status: "planned",
+						slug: "graph-neural-networks",
+						tagline:
+							"Learning on graph-structured data — GCNs, GraphSAGE, and graph embeddings",
+						covers:
+							"Machine learning on graph-structured data — message passing and convolution on graphs, node/edge/graph-level prediction tasks, and the sampling strategies that make GNNs scale to large graphs.",
+						fixes: [],
+						extend: [
+							"Graph representation: adjacency matrices, node/edge features, and when a problem is actually a graph problem",
+							"Message passing intuition: how GCN, GraphSAGE, and GAT aggregate neighbor information",
+							"Node classification, link prediction, and graph classification as distinct task types",
+							"Scaling to large graphs: neighbor sampling, mini-batching on graphs",
+							"Graph embeddings (Node2Vec, DeepWalk) as a simpler alternative to full GNNs",
+							"Common applications: fraud detection on transaction graphs, recommendation, molecule property prediction",
+						],
+					},
+					{
+						id: "self-supervised-multimodal-learning",
+						customizedComponent: false,
+						name: "Self-Supervised & Multimodal Learning",
+						file: "Self_Supervised_and_Multimodal_Learning.md",
+						status: "planned",
+						slug: "self-supervised-multimodal-learning",
+						tagline:
+							"Learning from unlabeled data, and models that connect text, images, and audio",
+						covers:
+							"The training paradigms behind modern foundation models — self-supervised pretext tasks that learn from unlabeled data, contrastive learning, and multimodal architectures that align representations across text, image, and audio.",
+						fixes: [],
+						extend: [
+							"Self-supervised pretext tasks: masked language modeling, masked image modeling, next-token prediction",
+							"Contrastive learning: CLIP-style objectives and the role of negative sampling",
+							"Multimodal architectures: joint embedding spaces vs. cross-attention fusion",
+							"Fine-tuning a pretrained self-supervised backbone vs. training a supervised model from scratch",
+							"Evaluating representation quality: linear probing and downstream transfer performance",
+							"Practical use: zero-shot image classification, embedding-based multimodal search",
+						],
+					},
+				],
+			},
+			{
+				key: "generative-ai-llms",
+				label: "Generative AI & LLMs",
+				slug: "generative-ai-llms",
+				status: "planned",
+				tagline:
+					"Large language models — prompting, fine-tuning, retrieval, and evaluation",
+				covers:
+					"The practical LLM stack for building on top of foundation models — how they work at inference time and how to prompt them effectively, parameter-efficient fine-tuning, retrieval-augmented generation for grounding outputs in real data, and the evaluation and safety practices specific to generative text systems.",
+				items: [
+					{
+						id: "llm-fundamentals-prompting",
+						customizedComponent: false,
+						name: "LLM Fundamentals & Prompt Engineering",
+						file: "LLM_Fundamentals_and_Prompt_Engineering.md",
+						status: "planned",
+						slug: "llm-fundamentals-prompting",
+						tagline:
+							"How LLMs generate text, and prompting patterns that reliably improve output",
+						covers:
+							"The mental model for what an LLM does at inference time — autoregressive next-token prediction, context windows, and sampling parameters — paired with prompting techniques (few-shot examples, chain-of-thought, structured output formats) that measurably change output quality.",
+						fixes: [],
+						extend: [
+							"Autoregressive generation: next-token prediction, context window limits, and why order matters",
+							"Sampling parameters: temperature, top-p/top-k, and their effect on output diversity vs. reliability",
+							"Zero-shot vs. few-shot prompting, and when examples help vs. just burn context",
+							"Chain-of-thought and other reasoning-eliciting prompt patterns",
+							"Structured output: getting reliable JSON/function-call-style responses from a prompt",
+							"System prompts vs. user prompts, and prompt injection as a practical failure mode",
+						],
+					},
+					{
+						id: "finetuning-peft",
+						customizedComponent: false,
+						name: "Fine-tuning & PEFT",
+						file: "Fine_tuning_and_PEFT.md",
+						status: "planned",
+						slug: "finetuning-peft",
+						tagline:
+							"LoRA, QLoRA, and adapters — adapting a pretrained model without retraining it",
+						covers:
+							"Parameter-efficient fine-tuning as the practical alternative to full fine-tuning — how LoRA and QLoRA work, when full fine-tuning is still worth the cost, and the data and evaluation practices that keep a fine-tune from overfitting or drifting.",
+						fixes: [],
+						extend: [
+							"Full fine-tuning vs. parameter-efficient fine-tuning (PEFT): cost/benefit tradeoffs",
+							"LoRA: low-rank adapter matrices and why they approximate full fine-tuning cheaply",
+							"QLoRA: combining quantization with LoRA to fine-tune large models on limited hardware",
+							"Instruction tuning and RLHF/DPO at a conceptual level: aligning a base model to follow instructions",
+							"Dataset construction for fine-tuning: quality over quantity, and avoiding catastrophic forgetting",
+							"Evaluating a fine-tune: held-out task performance vs. general capability regression",
+						],
+					},
+					{
+						id: "rag-vector-search",
+						customizedComponent: false,
+						name: "RAG & Vector Search",
+						file: "RAG_and_Vector_Search.md",
+						status: "planned",
+						slug: "rag-vector-search",
+						tagline:
+							"Grounding LLM outputs in real data with retrieval and embeddings",
+						covers:
+							"Retrieval-augmented generation as the practical fix for hallucination and stale knowledge — chunking and embedding documents, vector search and indexing, and the retrieval-quality problems that determine whether a RAG system actually works.",
+						fixes: [],
+						extend: [
+							"Why RAG: grounding generation in retrieved documents instead of relying on parametric memory",
+							"Document chunking strategies and their effect on retrieval relevance",
+							"Embedding models and similarity search (cosine similarity, ANN indexes like HNSW)",
+							"Vector databases and when a plain index is enough vs. a dedicated store",
+							"Hybrid search: combining keyword (BM25) and vector retrieval",
+							"Common failure modes: irrelevant retrieval, context stuffing, and evaluating retrieval quality separately from generation quality",
+						],
+					},
+					{
+						id: "llm-evaluation-safety",
+						customizedComponent: false,
+						name: "LLM Evaluation & Safety",
+						file: "LLM_Evaluation_and_Safety.md",
+						status: "planned",
+						slug: "llm-evaluation-safety",
+						tagline:
+							"Benchmarks, hallucination detection, and guardrails for generative systems",
+						covers:
+							"Evaluating and safeguarding LLM-based systems — the gap between benchmark scores and real task performance, hallucination detection strategies, and the guardrail patterns that catch unsafe or off-policy outputs before they reach a user.",
+						fixes: [],
+						extend: [
+							"Benchmark evaluation (MMLU, HellaSwag, etc.) vs. task-specific evaluation, and why benchmarks can mislead",
+							"LLM-as-judge evaluation: using a model to score another model's outputs, and its known biases",
+							"Hallucination: why it happens, and detection strategies (retrieval grounding, citation checking, uncertainty signals)",
+							"Guardrails: input/output content filtering, prompt injection defenses, and jailbreak-resistance testing",
+							"Human evaluation design: rubrics, inter-annotator agreement, and avoiding leading questions",
+							"Cost/latency tradeoffs: model size selection, caching, and batching for production LLM apps",
+						],
+					},
+				],
+			},
+			{
+				key: "reinforcement-learning",
+				label: "Reinforcement Learning",
+				slug: "reinforcement-learning",
+				status: "planned",
+				tagline:
+					"Sequential decision-making — from tabular Q-learning to deep policy-gradient methods",
+				covers:
+					"Reinforcement learning fundamentals and the deep RL methods built on top of them — Markov decision processes and value-based tabular methods, then the deep RL algorithms (DQN, policy gradients, actor-critic) that scale to complex state spaces.",
+				items: [
+					{
+						id: "rl-fundamentals",
+						customizedComponent: false,
+						name: "RL Fundamentals",
+						file: "RL_Fundamentals.md",
+						status: "planned",
+						slug: "rl-fundamentals",
+						tagline:
+							"MDPs, Q-learning, and the exploration/exploitation tradeoff",
+						covers:
+							"The foundational concepts of reinforcement learning — Markov decision processes, value functions, and tabular Q-learning — plus the exploration/exploitation tradeoff that separates RL from supervised learning.",
+						fixes: [],
+						extend: [
+							"Markov decision processes: states, actions, rewards, transitions, and the Markov assumption",
+							"Value functions and Bellman equations: state-value vs. action-value (Q) functions",
+							"Tabular Q-learning and SARSA: on-policy vs. off-policy learning",
+							"Exploration vs. exploitation: epsilon-greedy, and why pure exploitation fails",
+							"Reward shaping and its pitfalls: reward hacking and unintended policies",
+							"When RL is (and isn't) the right framing for a problem, vs. supervised or bandit approaches",
+						],
+					},
+					{
+						id: "deep-rl",
+						customizedComponent: false,
+						name: "Deep Reinforcement Learning",
+						file: "Deep_Reinforcement_Learning.md",
+						status: "planned",
+						slug: "deep-rl",
+						tagline:
+							"DQN, policy gradients, and actor-critic methods for large state spaces",
+						covers:
+							"Scaling reinforcement learning past small tabular problems with deep function approximation — DQN and its stabilization tricks, policy gradient methods, and actor-critic algorithms like PPO that dominate modern applications.",
+						fixes: [],
+						extend: [
+							"Deep Q-Networks (DQN): function approximation, experience replay, and target networks",
+							"Policy gradient methods: REINFORCE and the variance problem it has",
+							"Actor-critic methods: combining value estimation with policy optimization",
+							"PPO and trust-region methods: why they became the practical default for stability",
+							"Continuous action spaces: DDPG/SAC vs. discrete-action methods",
+							"RLHF as an applied case: using RL to align a language model to human preference signals",
+						],
+					},
+				],
+			},
+			{
 				key: "specialized-ml",
 				label: "Specialized ML Applications",
 				slug: "specialized-ml",
 				status: "planned",
 				tagline:
-					"Recommenders, anomaly detection, and time series — applied ML beyond generic classifiers",
+					"Recommenders, anomaly detection, time series, and causal inference — applied ML beyond generic classifiers",
 				covers:
-					"Machine learning applied to specific problem shapes that don't fit a generic classifier — recommendation engines, rare-event and anomaly detection on imbalanced data, and forecasting time-ordered data.",
+					"Machine learning applied to specific problem shapes that don't fit a generic classifier — recommendation engines, rare-event and anomaly detection on imbalanced data, forecasting time-ordered data, and estimating causal effects rather than just correlations.",
 				items: [
 					{
 						id: "recommender-systems",
@@ -2805,6 +3135,27 @@ export const DATA: Category[] = [
 							"Forecast evaluation: MAPE/MASE, and backtesting against a naive baseline",
 						],
 					},
+					{
+						id: "causal-inference-ml",
+						customizedComponent: false,
+						name: "Causal Inference for ML",
+						file: "Causal_Inference_for_ML.md",
+						status: "planned",
+						slug: "causal-inference-ml",
+						tagline:
+							"Estimating treatment effects and uplift when correlation isn't enough",
+						covers:
+							"Moving from prediction to causal estimation — the assumptions that let you estimate a treatment effect from observational data, uplift modeling for targeting decisions, and the pitfalls that make causal claims from ML models unreliable.",
+						fixes: [],
+						extend: [
+							"Correlation vs. causation, and the core assumptions (no unmeasured confounding, positivity) needed to estimate a causal effect",
+							"Randomized experiments as the gold standard, and observational methods when randomization isn't possible",
+							"Propensity score matching and inverse propensity weighting",
+							"Uplift/treatment-effect modeling: estimating individual-level effects for targeting decisions",
+							"Difference-in-differences and instrumental variables at a conceptual level",
+							"Common pitfalls: confounding, selection bias, and mistaking a predictive model's feature importance for a causal effect",
+						],
+					},
 				],
 			},
 			{
@@ -2813,9 +3164,9 @@ export const DATA: Category[] = [
 				slug: "mlops-production",
 				status: "planned",
 				tagline:
-					"Feature stores, deployment, monitoring — keeping a model alive after it ships",
+					"Feature stores, serving, distributed training, and monitoring — keeping a model alive after it ships",
 				covers:
-					"The operational layer around a model once it leaves a notebook — feature stores bridging training and serving, deployment patterns, and the monitoring and retraining discipline that catches drift before it becomes a business problem.",
+					"The operational layer around a model once it leaves a notebook — feature stores bridging training and serving, deployment and serving patterns, scaling training itself, and the monitoring and retraining discipline that catches drift before it becomes a business problem.",
 				items: [
 					{
 						id: "mlops",
@@ -2857,6 +3208,47 @@ export const DATA: Category[] = [
 							"Training/serving skew: when the same feature is computed differently in training vs. production",
 							"Popular tooling: Feast, Tecton, and cloud-native feature store offerings",
 							"Versioning features alongside models for reproducible retraining",
+						],
+					},
+					{
+						id: "model-serving-deployment",
+						customizedComponent: false,
+						name: "Model Serving & Deployment",
+						file: "Model_Serving_and_Deployment.md",
+						status: "planned",
+						slug: "model-serving-deployment",
+						tagline: "Turning a trained model into a fast, reliable API",
+						covers:
+							"The engineering layer between a trained model and a production endpoint — serving frameworks and API design, latency-focused optimizations like quantization and batching, and the deployment patterns that keep an inference service reliable under load.",
+						fixes: [],
+						extend: [
+							"Serving frameworks: TorchServe, TensorFlow Serving, Triton, and simple FastAPI-based serving",
+							"Latency optimization: quantization, ONNX export, batching requests, and model distillation for inference speed",
+							"Deployment patterns: blue/green, canary releases, and rollback for model updates",
+							"Autoscaling for inference workloads, and GPU vs. CPU serving cost tradeoffs",
+							"Caching strategies for repeated or similar inputs",
+							"Observability for serving: latency percentiles, throughput, and error-rate monitoring specific to model endpoints",
+						],
+					},
+					{
+						id: "distributed-training-scaling",
+						customizedComponent: false,
+						name: "Distributed & Large-Scale Training",
+						file: "Distributed_and_Large_Scale_Training.md",
+						status: "planned",
+						slug: "distributed-training-scaling",
+						tagline:
+							"Data parallelism, model parallelism, and mixed precision for training at scale",
+						covers:
+							"Training models too large or too slow for a single GPU — data and model parallelism strategies, mixed-precision training for speed, and the practical bottlenecks (communication overhead, checkpointing) that show up at scale.",
+						fixes: [],
+						extend: [
+							"Data parallelism: synchronous SGD across GPUs, and gradient synchronization overhead",
+							"Model parallelism and pipeline parallelism for models too large for one device",
+							"Mixed-precision training (FP16/BF16) and gradient scaling to avoid underflow",
+							"Distributed training frameworks: PyTorch DDP/FSDP, DeepSpeed, Horovod",
+							"Checkpointing strategies for long-running training jobs, and resuming after failure",
+							"Communication bottlenecks: when scaling stops paying off, and gradient accumulation as an alternative",
 						],
 					},
 				],

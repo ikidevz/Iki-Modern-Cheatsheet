@@ -10,7 +10,7 @@
 |---|---|
 | Type | SaaS, unified analytics platform (not just PaaS building blocks like Synapse) |
 | Underlying storage | **OneLake** — a single, tenant-wide Delta/Parquet lake ("OneDrive for data") |
-| Componentry | Data Factory (pipelines/Dataflow Gen2), Synapse Data Engineering (Spark/Lakehouse), Synapse Data Warehouse, Power BI, Real-Time Intelligence (Eventstream/KQL), Data Science |
+| Componentry | Data Factory (pipelines/Dataflow Gen2), Synapse Data Engineering (Spark/Lakehouse), Synapse Data Warehouse, Power BI, Real-Time Intelligence (Eventstream/KQL), Data Science, Data Activator |
 | Billing | Capacity-based (F-SKUs), not per-service |
 | 2026 status | Microsoft's own leadership has described Fabric as **"the next version of Azure Synapse."** Synapse remains supported with no end-of-life date, but net-new investment (Direct Lake, OneLake mirroring, Copilot, current Spark versions) is concentrated on Fabric. New projects are generally advised to start on Fabric; existing tuned Synapse workloads (esp. GPU Spark pools, fixed 200-node scaling) can stay put for now. |
 
@@ -27,8 +27,10 @@
 | **Warehouse** | A full T-SQL data warehouse experience, but Delta-native and OneLake-backed (successor to Dedicated SQL Pool) |
 | **Dataflow Gen2** | Power Query-based, low-code ETL — writes results straight into a Lakehouse |
 | **Data Factory (in Fabric)** | Pipelines — architecturally similar to Azure Data Factory / Synapse Pipelines |
+| **Copy Job** | A simpler alternative to a full pipeline for one-off/scheduled bulk copy tasks — less setup than a Copy Activity in a pipeline |
 | **Eventstream** | No-code real-time event routing/processing (successor role to Stream Analytics + Event Hubs config) |
 | **Real-Time Intelligence / KQL Database** | Real-time analytics store & query engine (Kusto Query Language) for streaming/telemetry data |
+| **Data Activator** | No-code service to trigger alerts/actions when data meets a condition (e.g., "notify me if sales drop 20%") |
 | **Direct Lake** | Power BI storage mode reading Delta tables in OneLake directly into memory — Import-level speed without a separate refresh/ETL step |
 | **Shortcuts** | Zero-copy references to data in ADLS Gen2, S3, or other Fabric items — avoids duplicating data into OneLake |
 | **Semantic Link (`sempy`)** | Python library for Fabric notebooks bridging Spark DataFrames and Power BI semantic models |
@@ -103,6 +105,23 @@ df = spark.read.synapsesql("MyWarehouse.dbo.FactSales")
 df = spark.read.parquet("Files/shortcut_to_existing_lake/events/")
 ```
 
+### `notebookutils` (Fabric's equivalent of Databricks' `dbutils` / Synapse's `mssparkutils`)
+```python
+from notebookutils import mssparkutils
+
+# File system operations
+mssparkutils.fs.ls("Files/raw/")
+
+# Chain notebooks together
+result = mssparkutils.notebook.run("ChildNotebook", timeout_seconds=300, arguments={"date": "2026-09-12"})
+
+# Read a secret from a linked Key Vault
+api_key = mssparkutils.credentials.getSecret("my-keyvault", "api-key")
+
+# Exit a notebook with a value (readable by a parent pipeline's activity output)
+mssparkutils.notebook.exit("Success: 204 rows processed")
+```
+
 ---
 
 ## 6. T-SQL in a Fabric Warehouse
@@ -139,6 +158,9 @@ print(result)
 
 # List all measures in a model (useful for documentation/auditing)
 measures = fabric.list_measures("Sales Model")
+
+# List reports in a workspace
+reports = fabric.list_reports(workspace="Finance")
 ```
 
 ### `semantic-link-labs` — extended automation (community/Microsoft-maintained)
@@ -151,6 +173,9 @@ labs.run_model_bpa(dataset="Sales Model", workspace="Finance")
 
 # Migrate an Import/DirectQuery model to Direct Lake
 labs.migrate_calc_tables_to_lakehouse(dataset="Sales Model", workspace="Finance")
+
+# Migrate a capacity from Premium (P SKU) to Fabric (F SKU)
+labs.migrate_capacities(source_capacity="MyPremiumCapacity", target_capacity="MyFabricCapacity")
 ```
 
 ---
@@ -189,6 +214,20 @@ requests.post(
     headers=headers,
     params={"jobType": "RunNotebook"},
 )
+
+# Poll a job instance for status
+job_status = requests.get(
+    f"https://api.fabric.microsoft.com/v1/workspaces/{workspace_id}/items/{item_id}/jobs/instances/{job_instance_id}",
+    headers=headers,
+).json()
+print(job_status["status"])
+
+# Scale a capacity programmatically (e.g., scale up before a heavy nightly batch)
+requests.patch(
+    f"https://management.azure.com/subscriptions/MY_SUB_ID/resourceGroups/my-rg/"
+    f"providers/Microsoft.Fabric/capacities/my-capacity?api-version=2023-11-01",
+    headers=headers, json={"sku": {"name": "F64"}},
+)
 ```
 
 ---
@@ -197,6 +236,7 @@ requests.post(
 
 - **Eventstream**: no-code canvas to route events from Event Hubs/Kafka/IoT sources into a Lakehouse, KQL Database, or Power BI in real time — replaces hand-wiring Event Hubs + Stream Analytics for many common cases.
 - **KQL Database**: a Kusto-based real-time analytics store, ideal for high-volume telemetry/log data with sub-second query latency.
+- **Data Activator**: watches a Power BI report, Eventstream, or KQL query result and fires an alert/action (email, Teams, Power Automate flow) when a threshold is crossed — no code required.
 
 ```kql
 // Sample KQL query against a Real-Time Intelligence KQL Database
@@ -204,6 +244,17 @@ Events
 | where Timestamp > ago(1h)
 | summarize EventCount = count() by EventType, bin(Timestamp, 5m)
 | order by Timestamp desc
+```
+
+```python
+# Querying a KQL Database from Python (outside a Fabric notebook)
+from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
+
+kcsb = KustoConnectionStringBuilder.with_aad_device_authentication("https://<cluster>.kusto.fabric.microsoft.com")
+client = KustoClient(kcsb)
+response = client.execute("MyKqlDatabase", "Events | take 10")
+for row in response.primary_results[0]:
+    print(row)
 ```
 
 ---
@@ -217,10 +268,29 @@ Fabric Data Factory pipelines add activities tailored to the Lakehouse pattern:
 | **Lakehouse Maintenance** | Automates Delta table upkeep — runs `OPTIMIZE`/`VACUUM` on a schedule |
 | **Refresh SQL analytics endpoint** | Forces the auto-generated SQL endpoint to resync after a Spark write |
 | **Dataflow Gen2 (as an activity)** | Chains a Power Query transformation into a broader pipeline |
+| **Copy Job** | Standalone, simpler bulk/incremental copy task outside a full pipeline |
 
 ---
 
-## 11. Pricing
+## 11. Git Integration & CI/CD
+
+Fabric workspaces can sync bidirectionally with a Git repo (Azure DevOps or GitHub), similar to Synapse's Git integration:
+
+- Each Fabric item (notebook, pipeline, semantic model definition) serializes to source-controllable files.
+- Supports branching workflows: feature branch workspace → PR → merge → deploy via **Deployment Pipelines** (Dev → Test → Prod), the same mechanism used by Power BI.
+
+```python
+# Trigger a deployment pipeline stage promotion via REST API
+requests.post(
+    "https://api.fabric.microsoft.com/v1/deploymentPipelines/{pipeline_id}/deploy",
+    headers=headers,
+    json={"sourceStageId": "dev-stage-id", "targetStageId": "test-stage-id"},
+)
+```
+
+---
+
+## 12. Pricing
 
 | Component | Billed by |
 |---|---|
@@ -232,17 +302,18 @@ Fabric Data Factory pipelines add activities tailored to the Lakehouse pattern:
 
 ---
 
-## 12. Common Gotchas
+## 13. Common Gotchas
 
 - A Fabric capacity is a **shared resource pool** — a runaway Spark job or huge Power BI refresh can throttle every other workload on that same capacity.
 - **OneLake mirroring** and Shortcuts avoid data duplication, but stale shortcuts (source deleted/moved) fail silently until queried.
 - Migrating Dedicated SQL Pool → Fabric Warehouse is the **highest-effort** migration step — plan and test thoroughly, unlike the relatively low-risk pipeline/notebook migrations.
 - Direct Lake mode can silently **fall back to DirectQuery** if a semantic model uses unsupported features (certain calculated columns/tables) — check compatibility after migrating.
+- Capacity throttling ("interactive delay"/"rejection" states) can be confusing the first time it's hit — monitor the Capacity Metrics app proactively rather than reactively.
 - Fabric is evolving quickly (new features ship frequently) — always check Microsoft Learn for the current state of a specific capability before committing to an architecture.
 
 ---
 
-## 13. Useful Links
+## 14. Useful Links
 
 - Docs: https://learn.microsoft.com/en-us/fabric/
 - OneLake overview: https://learn.microsoft.com/en-us/fabric/onelake/onelake-overview
