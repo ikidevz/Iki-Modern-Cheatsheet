@@ -232,17 +232,9 @@ export const DATA: Category[] = [
 				file: "Command_line_Data_Wrangling.md",
 				status: "planned",
 				tagline: "grep, awk, sed, jq for quick data checks outside pandas",
-				covers:
-					"Quick data checks and transformations from the command line, for when spinning up pandas is overkill — grep/awk/sed for text and CSV, and jq for JSON.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"grep for fast filtering and pattern search across large files",
-					"awk for column-based extraction and quick aggregations",
-					"sed for stream editing and find-and-replace at scale",
-					"jq for filtering, reshaping, and querying JSON from the shell",
-					"Combining tools with pipes for quick ad-hoc data checks",
-					"When to stop reaching for CLI tools and open pandas/Polars instead",
-				],
+				extend: [],
 			},
 		],
 	},
@@ -1045,14 +1037,9 @@ export const DATA: Category[] = [
 				status: "solid",
 				tagline:
 					"Requirements → scale estimation → high-level design → deep dive",
-				covers:
-					"The repeatable approach to any DE system design question — clarifying requirements, estimating scale, sketching a high-level design, then deep-diving on the parts the interviewer cares about.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Clarifying functional vs. non-functional requirements before designing anything",
-					"When to sketch high-level first vs. estimate scale first",
-					"Structuring a 45-minute answer so you don't run out of time mid-deep-dive",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-scale-estimation",
@@ -1062,14 +1049,9 @@ export const DATA: Category[] = [
 				status: "solid",
 				tagline:
 					"Back-of-envelope math: events/day → throughput, storage, cost",
-				covers:
-					"Converting a stated scale (events/day, users, retention) into concrete throughput, storage, and cost numbers — the estimation step interviewers use to see if your design actually holds up.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Events/day → events/sec, peak vs. average throughput",
-					"Storage estimation from record size × volume × retention",
-					"Rough cost estimation and when it should influence the design",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-storage-file-formats",
@@ -1079,14 +1061,9 @@ export const DATA: Category[] = [
 				status: "solid",
 				tagline:
 					"Parquet vs. ORC vs. Avro, partitioning, and the small-file problem",
-				covers:
-					"Choosing storage layouts and file formats for a given access pattern — columnar vs. row-based formats, partitioning/bucketing strategy, compaction, and how lakehouse vs. warehouse vs. lake sit on the same spectrum rather than being three separate boxes.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Columnar (Parquet/ORC) vs. row-based (Avro) — when each wins",
-					"Partitioning and bucketing strategy, and the small-files problem it causes if done wrong",
-					"Lakehouse vs. data warehouse vs. data lake as a spectrum, not three separate boxes",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-batch-streaming",
@@ -1095,14 +1072,9 @@ export const DATA: Category[] = [
 				file: "System Design/04-batch-streaming-hybrid.md",
 				status: "solid",
 				tagline: "Choosing an architecture shape once scale is known",
-				covers:
-					"Deciding between batch, streaming, and hybrid (Lambda/Kappa-style) architectures based on latency requirements and estimated scale, and defending that choice under questioning.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Latency requirements as the deciding factor between batch and streaming",
-					"Lambda vs. Kappa architecture tradeoffs",
-					"Hybrid designs: streaming for freshness, batch for correctness/backfill",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-cdc-idempotent-processing",
@@ -1112,14 +1084,9 @@ export const DATA: Category[] = [
 				status: "solid",
 				tagline:
 					"Capturing source-system changes without duplicating or losing data",
-				covers:
-					"Designing change-data-capture ingestion — log-based vs. query-based CDC, ordering/watermark guarantees across streams, and how idempotent upserts make replay and backfill safe.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Log-based CDC (e.g. Debezium/binlog tailing) vs. query-based/timestamp polling",
-					"Ordering guarantees and handling out-of-order events across CDC streams",
-					"Idempotent MERGE/upsert design so reprocessing a CDC stream never double-applies changes",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-fault-tolerance",
@@ -1128,14 +1095,9 @@ export const DATA: Category[] = [
 				file: "System Design/06-fault-tolerance.md",
 				status: "solid",
 				tagline: "Idempotency, exactly-once semantics, replay",
-				covers:
-					"Building failure recovery into the design from the start — idempotent writes, delivery guarantees, and replay strategies that let a pipeline recover cleanly instead of duplicating or losing data.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Idempotency keys and why they matter more than 'exactly-once' marketing claims",
-					"At-least-once + idempotent write = effectively-once in practice",
-					"Replay and backfill design as a first-class requirement, not an afterthought",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-data-quality-observability",
@@ -1145,14 +1107,9 @@ export const DATA: Category[] = [
 				status: "solid",
 				tagline:
 					"Schema contracts, freshness SLAs, and catching bad data before it spreads",
-				covers:
-					"Designing the quality and observability layer of a pipeline — data contracts between producer and consumer, schema evolution handling, and freshness/lineage monitoring that catches problems before they reach consumers.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Data contracts and schema evolution: breaking vs. non-breaking changes",
-					"Freshness SLAs/SLOs and how to alert on missed ones",
-					"Where to enforce quality checks: at ingestion, in-pipeline, or at the serving layer",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-security-governance-multitenancy",
@@ -1162,14 +1119,9 @@ export const DATA: Category[] = [
 				status: "solid",
 				tagline:
 					"Access control, PII handling, and isolating tenants on shared infrastructure",
-				covers:
-					"Designing access control and data governance for a platform shared across teams or tenants — row-level security, PII masking, and the isolation patterns that keep one tenant's data and workload from leaking into another's.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Row-level security and column-level masking for PII",
-					"Multi-tenant isolation patterns: shared schema vs. schema-per-tenant vs. database-per-tenant",
-					"Compliance-driven design constraints (retention, right-to-be-forgotten, audit trails)",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-metadata-catalog-design",
@@ -1178,14 +1130,9 @@ export const DATA: Category[] = [
 				file: "System Design/09-metadata-catalog-design.md",
 				status: "solid",
 				tagline: "Making a growing platform discoverable and auditable",
-				covers:
-					"Designing the metadata layer — data catalogs, schema registries, and lineage tracking — that keeps a growing platform discoverable, auditable, and safe to change.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Data catalog and schema registry design for discoverability",
-					"Lineage tracking: why it matters for impact analysis and incident response",
-					"Metadata as its own system: who writes it, who reads it, how it stays in sync",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-followups",
@@ -1194,14 +1141,9 @@ export const DATA: Category[] = [
 				file: "System Design/10-followups-tradeoffs.md",
 				status: "solid",
 				tagline: "How to reason out loud when the interviewer pushes back",
-				covers:
-					"The follow-up questions interviewers reliably ask after the initial design — 'what if traffic 10x's', 'what if this node dies', 'how would you cut the cost' — and talk tracks for reasoning through them live instead of freezing.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"'What if scale increases 10x/100x' — how to reason about it live",
-					"'What if a component fails mid-write' — talking through failure domains",
-					"'How would you cut the cost in half' — cost/performance trade-off scripts",
-				],
+				extend: [],
 			},
 			{
 				id: "sysdesign-case-studies",
@@ -1211,14 +1153,9 @@ export const DATA: Category[] = [
 				status: "solid",
 				tagline:
 					"Full prompts combining framework, scale, architecture, and fault tolerance",
-				covers:
-					"End-to-end worked prompts — e.g. 'design an analytics pipeline for X events/day', 'design a near-real-time fraud detection pipeline' — each walked through using the framework, estimation, architecture, and fault-tolerance concepts from the rest of this category.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"'Design an analytics pipeline for 1M events/sec' — full walkthrough",
-					"'Design a near-real-time fraud detection pipeline' — full walkthrough",
-					"'Design a multi-tenant data ingestion platform' — full walkthrough",
-				],
+				extend: [],
 			},
 		],
 	},
@@ -1382,8 +1319,7 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Architecture, micro-partitions, ingestion, governance, and cost control",
-				covers:
-					"A Snowflake-focused path from architecture and table internals through ingestion, sharing, security, performance, warehouse management, CI/CD, cost governance, and Snowpark.",
+				covers: "",
 				items: [
 					{
 						id: "snowflake",
@@ -1405,8 +1341,7 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "architecture-runtime",
 						tagline: "Micro-partitions, query compiler, caching layers",
-						covers:
-							"Snowflake architecture and runtime behavior, including micro-partitions, query compilation, and caching layers.",
+						covers: "",
 						fixes: [],
 						extend: [],
 					},
@@ -1418,8 +1353,7 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "table-micro-partitions-time-travel",
 						tagline: "Clustering keys, Time Travel, Streams, zero-copy cloning",
-						covers:
-							"Snowflake table storage and history features, including clustering keys, Time Travel, Streams, and zero-copy cloning.",
+						covers: "",
 						fixes: [],
 						extend: [],
 					},
@@ -1431,8 +1365,7 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "ingestion-cdc-orchestration",
 						tagline: "Snowpipe, Snowpipe Streaming, COPY INTO, Streams & Tasks",
-						covers:
-							"Snowflake ingestion and change-data-capture patterns using Snowpipe, Snowpipe Streaming, COPY INTO, Streams, Tasks, and DAGs.",
+						covers: "",
 						fixes: [],
 						extend: [],
 					},
@@ -1445,8 +1378,7 @@ export const DATA: Category[] = [
 						slug: "data-sharing-security-governance",
 						tagline:
 							"RBAC, masking and row-access policies, tags, Secure Data Sharing",
-						covers:
-							"Snowflake access control and governance, including RBAC, masking and row-access policies, tags, Secure Data Sharing, and Marketplace.",
+						covers: "",
 						fixes: [],
 						extend: [],
 					},
@@ -1459,8 +1391,7 @@ export const DATA: Category[] = [
 						slug: "performance-tuning-optimization",
 						tagline:
 							"Query profile, clustering strategy, caching, warehouse sizing",
-						covers:
-							"Snowflake performance tuning using query profiles, clustering strategy, caching behavior, and warehouse sizing.",
+						covers: "",
 						fixes: [],
 						extend: [],
 					},
@@ -1473,8 +1404,7 @@ export const DATA: Category[] = [
 						slug: "warehouse-compute-management",
 						tagline:
 							"Virtual warehouses, multi-cluster scaling, resource monitors",
-						covers:
-							"Snowflake virtual warehouse sizing, multi-cluster scaling, and resource monitor management.",
+						covers: "",
 						fixes: [],
 						extend: [],
 					},
@@ -1487,8 +1417,7 @@ export const DATA: Category[] = [
 						slug: "devops-cicd",
 						tagline:
 							"SnowSQL/CLI, schemachange, Terraform, dbt, Git integration",
-						covers:
-							"Snowflake development and deployment workflows with SnowSQL/CLI, schemachange, Terraform, dbt, and Git integration.",
+						covers: "",
 						fixes: [],
 						extend: [],
 					},
@@ -1500,8 +1429,7 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "cost-governance-troubleshooting",
 						tagline: "ACCOUNT_USAGE, query profile, credit consumption",
-						covers:
-							"Snowflake cost governance and troubleshooting using ACCOUNT_USAGE views, query profiles, and credit consumption analysis.",
+						covers: "",
 						fixes: [],
 						extend: [],
 					},
@@ -1513,8 +1441,7 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "snowpark-cortex-ml",
 						tagline: "Snowpark ML, Cortex functions, Model Registry",
-						covers:
-							"Snowpark ML, Cortex functions, and Snowflake Model Registry for machine learning workloads.",
+						covers: "",
 						fixes: [],
 						extend: [],
 					},
@@ -1652,8 +1579,7 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Google Cloud's data stack — BigQuery, Dataflow, Pub/Sub, Dataproc, Composer",
-				covers:
-					"The GCP-native equivalents to the AWS stack: BigQuery as the serverless warehouse, Dataflow for managed Beam pipelines, Pub/Sub for messaging, Dataproc for managed Spark/Hadoop, and Cloud Composer for managed Airflow.",
+				covers: "",
 				items: [
 					{
 						id: "gcp-bigquery",
@@ -1663,16 +1589,9 @@ export const DATA: Category[] = [
 						slug: "bigquery",
 						status: "planned",
 						tagline: "Serverless warehouse — partitioning, clustering, slots",
-						covers:
-							"The GCP-platform view of BigQuery: how it fits alongside Dataflow, Pub/Sub, and Dataproc in a GCP-native pipeline, with partitioning, clustering, and slot-based cost control.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Partitioning and clustering strategy for cost control",
-							"On-demand vs. flat-rate slot pricing and reservations",
-							"Loading data from Dataflow, Pub/Sub, and Cloud Storage",
-							"BigQuery as the sink for a Dataflow streaming pipeline",
-							"IAM and dataset-level access control",
-						],
+						extend: [],
 					},
 					{
 						id: "dataflow",
@@ -1682,17 +1601,9 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "dataflow",
 						tagline: "Managed Apache Beam — batch & streaming pipelines",
-						covers:
-							"Google's managed Apache Beam runner for unified batch and streaming pipelines — the Beam programming model, windowing for streaming aggregations, and where Dataflow fits versus Dataproc or a self-managed Spark cluster.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Beam programming model: PCollections, PTransforms, pipelines",
-							"Windowing and triggers for streaming aggregations",
-							"Batch vs. streaming pipelines from the same Beam code",
-							"Autoscaling and worker sizing",
-							"Dataflow vs. Dataproc — when managed Beam beats managed Spark",
-							"Templates for reusable, parameterized pipelines",
-						],
+						extend: [],
 					},
 					{
 						id: "pubsub",
@@ -1703,16 +1614,9 @@ export const DATA: Category[] = [
 						status: "planned",
 						tagline:
 							"Managed messaging for event-driven and streaming architectures",
-						covers:
-							"GCP's managed pub/sub messaging service — topics and subscriptions, delivery guarantees, and how it feeds Dataflow or BigQuery in an event-driven pipeline.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Topics, subscriptions, and push vs. pull delivery",
-							"At-least-once delivery and message ordering keys",
-							"Dead-letter topics and retry policies",
-							"Pub/Sub → Dataflow → BigQuery as a common streaming pattern",
-							"Schema validation for published messages",
-						],
+						extend: [],
 					},
 					{
 						id: "dataproc",
@@ -1722,16 +1626,9 @@ export const DATA: Category[] = [
 						slug: "dataproc",
 						status: "planned",
 						tagline: "Managed Hadoop/Spark clusters, GCP's answer to EMR",
-						covers:
-							"Managed Hadoop/Spark on GCP — ephemeral vs. long-running clusters, autoscaling policies, and when Dataproc is the better fit than Dataflow for an existing Spark codebase.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Ephemeral vs. long-running cluster patterns",
-							"Autoscaling policies and preemptible/spot VM usage for cost",
-							"Migrating an existing Spark/Hadoop job to Dataproc",
-							"Dataproc vs. Dataflow — decision factors",
-							"Initialization actions for custom cluster setup",
-						],
+						extend: [],
 					},
 					{
 						id: "cloud-composer",
@@ -1741,16 +1638,9 @@ export const DATA: Category[] = [
 						slug: "cloud-composer",
 						status: "planned",
 						tagline: "Managed Airflow on GCP",
-						covers:
-							"Cloud Composer as managed Airflow on GCP — environment sizing, GCP-specific operators, and how it differs operationally from self-hosted Airflow or MWAA on AWS.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Environment sizing and Composer 1 vs. Composer 2 (GKE-based) differences",
-							"GCP-specific operators: BigQueryOperator, DataflowTemplateOperator, GCSToBigQueryOperator",
-							"DAG deployment via Cloud Storage bucket sync",
-							"Cloud Composer vs. MWAA — operational differences",
-							"IAM and service account configuration for DAG tasks",
-						],
+						extend: [],
 					},
 				],
 			},
@@ -1761,8 +1651,7 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Microsoft's data stack — Data Factory, Synapse, Databricks on Azure",
-				covers:
-					"The Azure-native building blocks for a data platform: Data Factory for orchestration and ETL, Synapse Analytics as the unified warehouse and big-data engine, and Azure Databricks for managed Spark.",
+				covers: "",
 				items: [
 					{
 						id: "azure-data-factory",
@@ -1772,17 +1661,9 @@ export const DATA: Category[] = [
 						slug: "azure-data-factory",
 						status: "planned",
 						tagline: "Cloud ETL/orchestration, pipelines and data flows",
-						covers:
-							"Azure's ETL and orchestration service — pipelines built from activities, mapping data flows for no-code transformation, and integration runtimes for hybrid on-prem/cloud data movement.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Pipelines, activities, and triggers (schedule, tumbling window, event-based)",
-							"Mapping data flows for no-code/low-code transformation",
-							"Integration runtimes: Azure, self-hosted, and Azure-SSIS",
-							"Linked services and datasets — connecting to sources and sinks",
-							"Parameterization and dynamic content expressions",
-							"ADF vs. Synapse Pipelines — they're nearly the same engine, worth clarifying",
-						],
+						extend: [],
 					},
 					{
 						id: "azure-synapse",
@@ -1792,16 +1673,9 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "azure-synapse",
 						tagline: "Unified warehouse + big data analytics",
-						covers:
-							"Synapse as Microsoft's unified analytics platform — dedicated SQL pools for warehousing, serverless SQL for ad-hoc queries over the lake, and integrated Spark pools, all under one workspace.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Dedicated SQL pools: distribution types, resource classes",
-							"Serverless SQL pool for querying data lake files without loading",
-							"Spark pools integrated into the same workspace",
-							"Synapse Pipelines (ADF under the hood) for orchestration",
-							"Workspace security: managed VNet, private endpoints",
-						],
+						extend: [],
 					},
 					{
 						id: "azure-databricks",
@@ -1811,16 +1685,9 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "azure-databricks",
 						tagline: "Managed Spark/Databricks on Azure",
-						covers:
-							"Databricks as a first-party Azure service — how the Azure integration (AAD auth, VNet injection, native ADLS access) differs from running Databricks on AWS or GCP.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Azure AD-integrated authentication and access control",
-							"VNet injection and private cluster networking",
-							"Native ADLS Gen2 integration and credential passthrough",
-							"Azure-specific pricing (DBUs billed through Azure)",
-							"Differences from AWS/GCP Databricks worth knowing if you work across clouds",
-						],
+						extend: [],
 					},
 				],
 			},
@@ -1912,8 +1779,7 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Classical supervised & unsupervised learning — algorithms, sklearn, evaluation, tuning",
-				covers:
-					"The classical machine learning toolkit for tabular data — core algorithms and ensembles, the scikit-learn workflow around them, feature engineering, evaluation metrics, hyperparameter search, and interpreting what a model actually learned.",
+				covers: "",
 				items: [
 					{
 						id: "featureeng",
@@ -1936,17 +1802,9 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "ml-algorithms",
 						tagline: "Regression, decision trees, ensembles, SVMs",
-						covers:
-							"The core supervised learning algorithms from first principles — how regression, decision trees, ensembles, and SVMs actually work, their assumptions, and when each is the right (or wrong) choice for tabular data.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Linear and logistic regression: assumptions, regularization (L1/L2)",
-							"Decision trees: splitting criteria, pruning, overfitting behavior",
-							"Ensembles: bagging vs. boosting, random forests vs. gradient boosting",
-							"Support vector machines: kernels, margin intuition, when SVMs still win",
-							"Naive Bayes and k-nearest neighbors as fast baselines",
-							"Choosing an algorithm family based on data size, interpretability needs, and latency",
-						],
+						extend: [],
 					},
 					{
 						id: "sklearn-general",
@@ -1957,17 +1815,9 @@ export const DATA: Category[] = [
 						slug: "sklearn-general",
 						tagline:
 							"Pipelines, cross-validation, hyperparameter tuning — beyond clustering",
-						covers:
-							"The scikit-learn workflow beyond the clustering-specific sheet already in this index — Pipeline/ColumnTransformer for reproducible preprocessing, cross-validation strategies, and hyperparameter search.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Pipeline and ColumnTransformer for reproducible preprocessing",
-							"Cross-validation strategies: k-fold, stratified, time series split",
-							"GridSearchCV vs. RandomizedSearchCV vs. Bayesian search (optuna)",
-							"Custom transformers and estimators via BaseEstimator/TransformerMixin",
-							"Model persistence with joblib/pickle, and version compatibility gotchas",
-							"Common scikit-learn API patterns: fit/transform/predict consistency",
-						],
+						extend: [],
 					},
 					{
 						id: "model-evaluation",
@@ -1978,17 +1828,9 @@ export const DATA: Category[] = [
 						slug: "model-evaluation",
 						tagline:
 							"Precision/recall/ROC-AUC, confusion matrices, calibration",
-						covers:
-							"Choosing and interpreting the right evaluation metric for a model — classification metrics beyond accuracy, regression error metrics, and calibration checks that catch a model that's confidently wrong.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Classification metrics: precision, recall, F1, ROC-AUC, PR-AUC — and when accuracy is misleading",
-							"Confusion matrices and cost-sensitive threshold selection",
-							"Regression metrics: MAE, RMSE, MAPE, and their sensitivity to outliers",
-							"Calibration curves and Brier score for probability estimates",
-							"Cross-validated metric estimates vs. a single train/test split",
-							"Business-metric alignment: translating model metrics into decision impact",
-						],
+						extend: [],
 					},
 					{
 						id: "clustering",
@@ -2012,17 +1854,9 @@ export const DATA: Category[] = [
 						slug: "xgboost-lightgbm",
 						tagline:
 							"Gradient boosting — the most-used tabular ML approach in practice",
-						covers:
-							"Practical gradient boosting with XGBoost and LightGBM — the hyperparameters that actually matter, handling categorical features and imbalanced data, and the differences between the two libraries.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Key hyperparameters: learning rate, max depth, n_estimators, regularization terms",
-							"Early stopping and validation set usage",
-							"Handling categorical features (native support in LightGBM vs. encoding for XGBoost)",
-							"Imbalanced classification: scale_pos_weight, class weights",
-							"Feature importance: gain vs. split count vs. SHAP values",
-							"XGBoost vs. LightGBM vs. CatBoost — practical differences in speed and defaults",
-						],
+						extend: [],
 					},
 					{
 						id: "model-interpretability",
@@ -2033,17 +1867,9 @@ export const DATA: Category[] = [
 						slug: "model-interpretability",
 						tagline:
 							"SHAP, LIME, partial dependence — explaining what a model actually learned",
-						covers:
-							"Explaining model predictions to stakeholders and debugging models that are confidently wrong — SHAP and LIME for local explanations, partial dependence and permutation importance for global behavior, and the caveats that keep an explanation from being misleading.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"SHAP values: TreeSHAP vs. KernelSHAP, and reading a summary/force plot correctly",
-							"LIME: local surrogate models and where they break down",
-							"Partial dependence plots vs. permutation importance vs. built-in feature importance — what each actually measures",
-							"Counterfactual explanations for individual predictions",
-							"Interpretability caveats: correlated features distorting importance, and explanations vs. causation",
-							"Regulatory/compliance angle: when a model needs to be explainable by law (credit, hiring)",
-						],
+						extend: [],
 					},
 					{
 						id: "hyperparameter-optimization-automl",
@@ -2054,17 +1880,9 @@ export const DATA: Category[] = [
 						slug: "hyperparameter-optimization-automl",
 						tagline:
 							"Grid/random search, Bayesian optimization (Optuna), and when AutoML earns its keep",
-						covers:
-							"Systematic hyperparameter search beyond GridSearchCV — Bayesian optimization with Optuna, early-stopping search strategies, and a practical look at AutoML frameworks and where they save time versus where they hide bad decisions.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Grid search vs. random search vs. Bayesian optimization — when each pays off",
-							"Optuna: defining a search space, pruning trials early, and parallelizing a study",
-							"Multi-objective tuning: balancing accuracy against latency or model size",
-							"AutoML frameworks (Auto-sklearn, H2O AutoML, AutoGluon) — what they automate and what they can't",
-							"Search budget planning: how many trials is enough for a given search space",
-							"Avoiding hyperparameter overfitting to the validation set",
-						],
+						extend: [],
 					},
 				],
 			},
@@ -2074,8 +1892,7 @@ export const DATA: Category[] = [
 				slug: "deep-learning-nlp",
 				status: "planned",
 				tagline: "Neural networks, NLP, and computer vision fundamentals",
-				covers:
-					"The deep learning path beyond classical ML — neural network fundamentals and training mechanics, the NLP pipeline from tokenization to transformers, and computer vision basics built on pretrained backbones.",
+				covers: "",
 				items: [
 					{
 						id: "deep-learning-basics",
@@ -2085,17 +1902,9 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "deep-learning-basics",
 						tagline: "Neural nets, PyTorch/TensorFlow/Keras fundamentals",
-						covers:
-							"Neural network fundamentals and the practical mechanics of training one — architecture basics, backpropagation intuition, and getting a model trained end-to-end in PyTorch or Keras.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Neural network basics: layers, activation functions, backpropagation intuition",
-							"Loss functions and optimizers (SGD, Adam) and learning rate scheduling",
-							"PyTorch vs. TensorFlow/Keras: core API differences",
-							"Training loop mechanics: batching, epochs, validation, early stopping",
-							"Regularization: dropout, batch normalization, weight decay",
-							"Common architectures overview: CNNs for images, RNNs/transformers for sequences",
-						],
+						extend: [],
 					},
 					{
 						id: "nlp-fundamentals",
@@ -2105,17 +1914,9 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "nlp-fundamentals",
 						tagline: "Tokenization, embeddings, TF-IDF, transformers overview",
-						covers:
-							"The NLP pipeline from raw text to model input — tokenization and preprocessing choices, classical representations like TF-IDF, word/sentence embeddings, and a practical overview of transformer-based models.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Tokenization approaches: word, subword (BPE/WordPiece), and their tradeoffs",
-							"Text preprocessing: stopwords, stemming/lemmatization, and when to skip them",
-							"TF-IDF and bag-of-words as fast, interpretable baselines",
-							"Word embeddings (Word2Vec, GloVe) vs. contextual embeddings",
-							"Transformers overview: attention intuition, encoder vs. decoder models",
-							"Practical use of pretrained models via Hugging Face for classification/embedding tasks",
-						],
+						extend: [],
 					},
 					{
 						id: "computer-vision-fundamentals",
@@ -2126,17 +1927,9 @@ export const DATA: Category[] = [
 						slug: "computer-vision-fundamentals",
 						tagline:
 							"CNNs, image preprocessing, and transfer learning for image tasks",
-						covers:
-							"The computer vision pipeline from raw images to a trained classifier — preprocessing and augmentation, CNN architecture fundamentals, and transfer learning with pretrained backbones for tasks that don't need training from scratch.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Image preprocessing and augmentation: resizing, normalization, flips/rotations/color jitter",
-							"CNN fundamentals: convolutions, pooling, receptive fields — why they fit image data",
-							"Transfer learning: fine-tuning a pretrained backbone (ResNet, EfficientNet, ViT) vs. training from scratch",
-							"Object detection and segmentation overview: how they differ from plain classification",
-							"Common failure modes: dataset bias, class imbalance in image data, augmentation that changes the label",
-							"Practical tooling: torchvision/Keras applications, and when to reach for a pretrained model vs. training your own",
-						],
+						extend: [],
 					},
 				],
 			},
@@ -2147,8 +1940,7 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Beyond the basics — attention mechanisms, generative vision models, graphs, and self-supervision",
-				covers:
-					"The deep learning topics that sit past the fundamentals sheet — the attention mechanism that underlies modern architectures, generative models for images, learning on graph-structured data, and the self-supervised and multimodal training paradigms behind today's foundation models.",
+				covers: "",
 				items: [
 					{
 						id: "sequence-models-attention",
@@ -2159,17 +1951,9 @@ export const DATA: Category[] = [
 						slug: "sequence-models-attention",
 						tagline:
 							"RNNs, LSTMs, and the attention mechanism that replaced them",
-						covers:
-							"The evolution of sequence modeling — how RNNs and LSTMs handle order and their vanishing-gradient limits, and how the attention mechanism and self-attention solved the bottlenecks that made transformers possible.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"RNN and LSTM/GRU mechanics: hidden state, gating, and why vanishing gradients limited long-range dependencies",
-							"Sequence-to-sequence models and the encoder-decoder bottleneck that motivated attention",
-							"Attention mechanism from first principles: query/key/value, scaled dot-product attention",
-							"Self-attention vs. cross-attention, and multi-head attention's role",
-							"Positional encoding: why transformers need it and common schemes (sinusoidal, learned, rotary)",
-							"When an RNN is still the right, cheaper choice over a transformer",
-						],
+						extend: [],
 					},
 					{
 						id: "generative-vision-models",
@@ -2180,17 +1964,9 @@ export const DATA: Category[] = [
 						slug: "generative-vision-models",
 						tagline:
 							"GANs, VAEs, and diffusion models — how each generates images",
-						covers:
-							"The three major families of image-generation models — GANs and the adversarial training that makes them unstable, VAEs and their latent-space tradeoffs, and diffusion models, now the dominant approach, plus how to evaluate generated images.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"GANs: generator/discriminator setup, mode collapse, and training stabilization tricks",
-							"Variational autoencoders: the reparameterization trick and the reconstruction/KL tradeoff",
-							"Diffusion models: forward noising process, learned denoising, and why they overtook GANs",
-							"Conditioning generation: class labels, text prompts (cross-attention in text-to-image models)",
-							"Evaluation metrics for generated images: FID, Inception Score, and their limitations",
-							"Practical tooling: Stable Diffusion-style pipelines, LoRA fine-tuning for image models",
-						],
+						extend: [],
 					},
 					{
 						id: "graph-neural-networks",
@@ -2201,17 +1977,9 @@ export const DATA: Category[] = [
 						slug: "graph-neural-networks",
 						tagline:
 							"Learning on graph-structured data — GCNs, GraphSAGE, and graph embeddings",
-						covers:
-							"Machine learning on graph-structured data — message passing and convolution on graphs, node/edge/graph-level prediction tasks, and the sampling strategies that make GNNs scale to large graphs.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Graph representation: adjacency matrices, node/edge features, and when a problem is actually a graph problem",
-							"Message passing intuition: how GCN, GraphSAGE, and GAT aggregate neighbor information",
-							"Node classification, link prediction, and graph classification as distinct task types",
-							"Scaling to large graphs: neighbor sampling, mini-batching on graphs",
-							"Graph embeddings (Node2Vec, DeepWalk) as a simpler alternative to full GNNs",
-							"Common applications: fraud detection on transaction graphs, recommendation, molecule property prediction",
-						],
+						extend: [],
 					},
 					{
 						id: "self-supervised-multimodal-learning",
@@ -2222,17 +1990,9 @@ export const DATA: Category[] = [
 						slug: "self-supervised-multimodal-learning",
 						tagline:
 							"Learning from unlabeled data, and models that connect text, images, and audio",
-						covers:
-							"The training paradigms behind modern foundation models — self-supervised pretext tasks that learn from unlabeled data, contrastive learning, and multimodal architectures that align representations across text, image, and audio.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Self-supervised pretext tasks: masked language modeling, masked image modeling, next-token prediction",
-							"Contrastive learning: CLIP-style objectives and the role of negative sampling",
-							"Multimodal architectures: joint embedding spaces vs. cross-attention fusion",
-							"Fine-tuning a pretrained self-supervised backbone vs. training a supervised model from scratch",
-							"Evaluating representation quality: linear probing and downstream transfer performance",
-							"Practical use: zero-shot image classification, embedding-based multimodal search",
-						],
+						extend: [],
 					},
 				],
 			},
@@ -2243,8 +2003,7 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Large language models — prompting, fine-tuning, retrieval, and evaluation",
-				covers:
-					"The practical LLM stack for building on top of foundation models — how they work at inference time and how to prompt them effectively, parameter-efficient fine-tuning, retrieval-augmented generation for grounding outputs in real data, and the evaluation and safety practices specific to generative text systems.",
+				covers: "",
 				items: [
 					{
 						id: "llm-fundamentals-prompting",
@@ -2255,17 +2014,9 @@ export const DATA: Category[] = [
 						slug: "llm-fundamentals-prompting",
 						tagline:
 							"How LLMs generate text, and prompting patterns that reliably improve output",
-						covers:
-							"The mental model for what an LLM does at inference time — autoregressive next-token prediction, context windows, and sampling parameters — paired with prompting techniques (few-shot examples, chain-of-thought, structured output formats) that measurably change output quality.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Autoregressive generation: next-token prediction, context window limits, and why order matters",
-							"Sampling parameters: temperature, top-p/top-k, and their effect on output diversity vs. reliability",
-							"Zero-shot vs. few-shot prompting, and when examples help vs. just burn context",
-							"Chain-of-thought and other reasoning-eliciting prompt patterns",
-							"Structured output: getting reliable JSON/function-call-style responses from a prompt",
-							"System prompts vs. user prompts, and prompt injection as a practical failure mode",
-						],
+						extend: [],
 					},
 					{
 						id: "finetuning-peft",
@@ -2276,17 +2027,9 @@ export const DATA: Category[] = [
 						slug: "finetuning-peft",
 						tagline:
 							"LoRA, QLoRA, and adapters — adapting a pretrained model without retraining it",
-						covers:
-							"Parameter-efficient fine-tuning as the practical alternative to full fine-tuning — how LoRA and QLoRA work, when full fine-tuning is still worth the cost, and the data and evaluation practices that keep a fine-tune from overfitting or drifting.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Full fine-tuning vs. parameter-efficient fine-tuning (PEFT): cost/benefit tradeoffs",
-							"LoRA: low-rank adapter matrices and why they approximate full fine-tuning cheaply",
-							"QLoRA: combining quantization with LoRA to fine-tune large models on limited hardware",
-							"Instruction tuning and RLHF/DPO at a conceptual level: aligning a base model to follow instructions",
-							"Dataset construction for fine-tuning: quality over quantity, and avoiding catastrophic forgetting",
-							"Evaluating a fine-tune: held-out task performance vs. general capability regression",
-						],
+						extend: [],
 					},
 					{
 						id: "rag-vector-search",
@@ -2297,17 +2040,9 @@ export const DATA: Category[] = [
 						slug: "rag-vector-search",
 						tagline:
 							"Grounding LLM outputs in real data with retrieval and embeddings",
-						covers:
-							"Retrieval-augmented generation as the practical fix for hallucination and stale knowledge — chunking and embedding documents, vector search and indexing, and the retrieval-quality problems that determine whether a RAG system actually works.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Why RAG: grounding generation in retrieved documents instead of relying on parametric memory",
-							"Document chunking strategies and their effect on retrieval relevance",
-							"Embedding models and similarity search (cosine similarity, ANN indexes like HNSW)",
-							"Vector databases and when a plain index is enough vs. a dedicated store",
-							"Hybrid search: combining keyword (BM25) and vector retrieval",
-							"Common failure modes: irrelevant retrieval, context stuffing, and evaluating retrieval quality separately from generation quality",
-						],
+						extend: [],
 					},
 					{
 						id: "llm-evaluation-safety",
@@ -2318,17 +2053,9 @@ export const DATA: Category[] = [
 						slug: "llm-evaluation-safety",
 						tagline:
 							"Benchmarks, hallucination detection, and guardrails for generative systems",
-						covers:
-							"Evaluating and safeguarding LLM-based systems — the gap between benchmark scores and real task performance, hallucination detection strategies, and the guardrail patterns that catch unsafe or off-policy outputs before they reach a user.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Benchmark evaluation (MMLU, HellaSwag, etc.) vs. task-specific evaluation, and why benchmarks can mislead",
-							"LLM-as-judge evaluation: using a model to score another model's outputs, and its known biases",
-							"Hallucination: why it happens, and detection strategies (retrieval grounding, citation checking, uncertainty signals)",
-							"Guardrails: input/output content filtering, prompt injection defenses, and jailbreak-resistance testing",
-							"Human evaluation design: rubrics, inter-annotator agreement, and avoiding leading questions",
-							"Cost/latency tradeoffs: model size selection, caching, and batching for production LLM apps",
-						],
+						extend: [],
 					},
 				],
 			},
@@ -2339,8 +2066,7 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Sequential decision-making — from tabular Q-learning to deep policy-gradient methods",
-				covers:
-					"Reinforcement learning fundamentals and the deep RL methods built on top of them — Markov decision processes and value-based tabular methods, then the deep RL algorithms (DQN, policy gradients, actor-critic) that scale to complex state spaces.",
+				covers: "",
 				items: [
 					{
 						id: "rl-fundamentals",
@@ -2351,17 +2077,9 @@ export const DATA: Category[] = [
 						slug: "rl-fundamentals",
 						tagline:
 							"MDPs, Q-learning, and the exploration/exploitation tradeoff",
-						covers:
-							"The foundational concepts of reinforcement learning — Markov decision processes, value functions, and tabular Q-learning — plus the exploration/exploitation tradeoff that separates RL from supervised learning.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Markov decision processes: states, actions, rewards, transitions, and the Markov assumption",
-							"Value functions and Bellman equations: state-value vs. action-value (Q) functions",
-							"Tabular Q-learning and SARSA: on-policy vs. off-policy learning",
-							"Exploration vs. exploitation: epsilon-greedy, and why pure exploitation fails",
-							"Reward shaping and its pitfalls: reward hacking and unintended policies",
-							"When RL is (and isn't) the right framing for a problem, vs. supervised or bandit approaches",
-						],
+						extend: [],
 					},
 					{
 						id: "deep-rl",
@@ -2372,17 +2090,9 @@ export const DATA: Category[] = [
 						slug: "deep-rl",
 						tagline:
 							"DQN, policy gradients, and actor-critic methods for large state spaces",
-						covers:
-							"Scaling reinforcement learning past small tabular problems with deep function approximation — DQN and its stabilization tricks, policy gradient methods, and actor-critic algorithms like PPO that dominate modern applications.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Deep Q-Networks (DQN): function approximation, experience replay, and target networks",
-							"Policy gradient methods: REINFORCE and the variance problem it has",
-							"Actor-critic methods: combining value estimation with policy optimization",
-							"PPO and trust-region methods: why they became the practical default for stability",
-							"Continuous action spaces: DDPG/SAC vs. discrete-action methods",
-							"RLHF as an applied case: using RL to align a language model to human preference signals",
-						],
+						extend: [],
 					},
 				],
 			},
@@ -2393,8 +2103,7 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Recommenders, anomaly detection, time series, and causal inference — applied ML beyond generic classifiers",
-				covers:
-					"Machine learning applied to specific problem shapes that don't fit a generic classifier — recommendation engines, rare-event and anomaly detection on imbalanced data, forecasting time-ordered data, and estimating causal effects rather than just correlations.",
+				covers: "",
 				items: [
 					{
 						id: "recommender-systems",
@@ -2405,17 +2114,9 @@ export const DATA: Category[] = [
 						slug: "recommender-systems",
 						tagline:
 							"Collaborative filtering, matrix factorization, content-based approaches",
-						covers:
-							"The core approaches behind recommendation engines — collaborative filtering and matrix factorization for behavior-based recommendations, content-based filtering for cold-start items, and the hybrid approaches production systems actually use.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Collaborative filtering: user-based vs. item-based, and why item-based tends to scale better",
-							"Matrix factorization: SVD, ALS, and implicit feedback (clicks/views) vs. explicit ratings",
-							"Content-based filtering for the cold-start problem (new users, new items)",
-							"Hybrid approaches: blending collaborative and content signals",
-							"Evaluation: precision@k, recall@k, NDCG — why plain RMSE misleads for ranking tasks",
-							"Production concerns: candidate generation vs. ranking stages, and serving latency",
-						],
+						extend: [],
 					},
 					{
 						id: "anomaly-detection-imbalanced-learning",
@@ -2426,17 +2127,9 @@ export const DATA: Category[] = [
 						slug: "anomaly-detection-imbalanced-learning",
 						tagline:
 							"Isolation forests, autoencoders, and modeling rare-event data honestly",
-						covers:
-							"Detecting rare events and handling severely imbalanced data — unsupervised approaches like isolation forests and autoencoder reconstruction error, resampling strategies for imbalanced classification, and the evaluation traps that make a fraud/anomaly model look better than it is.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Unsupervised anomaly detection: isolation forests, one-class SVM, autoencoder reconstruction error",
-							"Resampling strategies: SMOTE and its variants vs. class weighting vs. undersampling",
-							"Why accuracy is meaningless on a 99:1 class split, and what to report instead",
-							"Threshold selection for anomaly scores when there's no labeled validation set",
-							"Time-aware anomaly detection: seasonality-aware baselines instead of a static threshold",
-							"Production concerns: alert fatigue, and tuning precision/recall trade-offs to what an on-call team can act on",
-						],
+						extend: [],
 					},
 					{
 						id: "time-series-forecasting",
@@ -2446,17 +2139,9 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "time-series-forecasting",
 						tagline: "ARIMA, Prophet, seasonality/decomposition",
-						covers:
-							"Classical and modern time series forecasting — decomposition into trend/seasonality/residual, ARIMA family models, and Prophet, plus the evaluation pitfalls specific to time-ordered data.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Decomposition: trend, seasonality, residual — additive vs. multiplicative",
-							"Stationarity, differencing, and the ADF test",
-							"ARIMA/SARIMA: parameter selection with ACF/PACF plots",
-							"Prophet: holiday effects, changepoints, and when it beats ARIMA",
-							"Cross-validation for time series (rolling-origin, not random splits)",
-							"Forecast evaluation: MAPE/MASE, and backtesting against a naive baseline",
-						],
+						extend: [],
 					},
 					{
 						id: "causal-inference-ml",
@@ -2467,17 +2152,9 @@ export const DATA: Category[] = [
 						slug: "causal-inference-ml",
 						tagline:
 							"Estimating treatment effects and uplift when correlation isn't enough",
-						covers:
-							"Moving from prediction to causal estimation — the assumptions that let you estimate a treatment effect from observational data, uplift modeling for targeting decisions, and the pitfalls that make causal claims from ML models unreliable.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Correlation vs. causation, and the core assumptions (no unmeasured confounding, positivity) needed to estimate a causal effect",
-							"Randomized experiments as the gold standard, and observational methods when randomization isn't possible",
-							"Propensity score matching and inverse propensity weighting",
-							"Uplift/treatment-effect modeling: estimating individual-level effects for targeting decisions",
-							"Difference-in-differences and instrumental variables at a conceptual level",
-							"Common pitfalls: confounding, selection bias, and mistaking a predictive model's feature importance for a causal effect",
-						],
+						extend: [],
 					},
 				],
 			},
@@ -2488,8 +2165,7 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Feature stores, serving, distributed training, and monitoring — keeping a model alive after it ships",
-				covers:
-					"The operational layer around a model once it leaves a notebook — feature stores bridging training and serving, deployment and serving patterns, scaling training itself, and the monitoring and retraining discipline that catches drift before it becomes a business problem.",
+				covers: "",
 				items: [
 					{
 						id: "mlops",
@@ -2500,17 +2176,9 @@ export const DATA: Category[] = [
 						slug: "mlops",
 						tagline:
 							"Model versioning, deployment, monitoring, drift detection",
-						covers:
-							"The operational layer that keeps a model working after it ships — versioning models and data, deployment patterns, and the monitoring that catches drift before it shows up as a business problem.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Model versioning and experiment tracking (MLflow, Weights & Biases)",
-							"Deployment patterns: batch scoring, real-time API, shadow deployment",
-							"Feature stores and training/serving skew",
-							"Monitoring: prediction drift, data drift, and performance decay over time",
-							"Retraining triggers and pipelines, and champion/challenger setups",
-							"Model governance: reproducibility, approval gates, rollback plans",
-						],
+						extend: [],
 					},
 					{
 						id: "feature-stores-ml-pipelines",
@@ -2521,17 +2189,9 @@ export const DATA: Category[] = [
 						slug: "feature-stores-ml-pipelines",
 						tagline:
 							"Feature stores, training/serving skew, and data pipelines built for ML",
-						covers:
-							"The data engineering layer purpose-built for ML — feature stores as the bridge between offline training data and online serving, batch vs. streaming feature computation, and the training/serving skew that breaks models in production despite passing every offline test.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Feature store concepts: offline store vs. online store, and why both exist",
-							"Point-in-time correctness: avoiding label leakage when joining features to historical training labels",
-							"Batch vs. streaming feature computation, and keeping the two consistent",
-							"Training/serving skew: when the same feature is computed differently in training vs. production",
-							"Popular tooling: Feast, Tecton, and cloud-native feature store offerings",
-							"Versioning features alongside models for reproducible retraining",
-						],
+						extend: [],
 					},
 					{
 						id: "model-serving-deployment",
@@ -2541,17 +2201,9 @@ export const DATA: Category[] = [
 						status: "planned",
 						slug: "model-serving-deployment",
 						tagline: "Turning a trained model into a fast, reliable API",
-						covers:
-							"The engineering layer between a trained model and a production endpoint — serving frameworks and API design, latency-focused optimizations like quantization and batching, and the deployment patterns that keep an inference service reliable under load.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Serving frameworks: TorchServe, TensorFlow Serving, Triton, and simple FastAPI-based serving",
-							"Latency optimization: quantization, ONNX export, batching requests, and model distillation for inference speed",
-							"Deployment patterns: blue/green, canary releases, and rollback for model updates",
-							"Autoscaling for inference workloads, and GPU vs. CPU serving cost tradeoffs",
-							"Caching strategies for repeated or similar inputs",
-							"Observability for serving: latency percentiles, throughput, and error-rate monitoring specific to model endpoints",
-						],
+						extend: [],
 					},
 					{
 						id: "distributed-training-scaling",
@@ -2562,17 +2214,9 @@ export const DATA: Category[] = [
 						slug: "distributed-training-scaling",
 						tagline:
 							"Data parallelism, model parallelism, and mixed precision for training at scale",
-						covers:
-							"Training models too large or too slow for a single GPU — data and model parallelism strategies, mixed-precision training for speed, and the practical bottlenecks (communication overhead, checkpointing) that show up at scale.",
+						covers: "",
 						fixes: [],
-						extend: [
-							"Data parallelism: synchronous SGD across GPUs, and gradient synchronization overhead",
-							"Model parallelism and pipeline parallelism for models too large for one device",
-							"Mixed-precision training (FP16/BF16) and gradient scaling to avoid underflow",
-							"Distributed training frameworks: PyTorch DDP/FSDP, DeepSpeed, Horovod",
-							"Checkpointing strategies for long-running training jobs, and resuming after failure",
-							"Communication bottlenecks: when scaling stops paying off, and gradient accumulation as an alternative",
-						],
+						extend: [],
 					},
 				],
 			},
@@ -2589,17 +2233,9 @@ export const DATA: Category[] = [
 				file: "Excel_Google_Sheets_Advanced.md",
 				status: "planned",
 				tagline: "Pivot tables, Power Query, array formulas, VBA basics",
-				covers:
-					"The advanced spreadsheet skills that still show up constantly in analyst work — pivot tables, Power Query for repeatable cleaning, array formulas, and just enough VBA/Apps Script to automate a recurring task.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Pivot tables and pivot charts for fast aggregation",
-					"Power Query (Excel) for repeatable, auditable data cleaning steps",
-					"Array formulas and modern dynamic-array functions (FILTER, XLOOKUP, LET)",
-					"VBA basics for Excel automation, Apps Script basics for Sheets",
-					"Data validation, conditional formatting, and named ranges for maintainable sheets",
-					"Google Sheets-specific: IMPORTRANGE, QUERY function, connected sheets to BigQuery",
-				],
+				extend: [],
 			},
 			{
 				id: "tableau",
@@ -2608,17 +2244,9 @@ export const DATA: Category[] = [
 				file: "Tableau_Cheatsheet.md",
 				status: "planned",
 				tagline: "Calculated fields, LOD expressions, dashboard actions",
-				covers:
-					"Building real Tableau dashboards, not just charts — calculated fields, Level of Detail expressions for aggregation at a different grain than the view, and dashboard actions for interactivity.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Calculated fields: table calcs vs. LOD expressions",
-					"LOD expressions: FIXED, INCLUDE, EXCLUDE and when each is needed",
-					"Dashboard actions: filter, highlight, and URL actions for interactivity",
-					"Parameters for user-driven what-if analysis",
-					"Extracts vs. live connections, and refresh scheduling",
-					"Performance tuning: reducing marks, optimizing calculated fields",
-				],
+				extend: [],
 			},
 			{
 				id: "powerbi-dax",
@@ -2627,17 +2255,9 @@ export const DATA: Category[] = [
 				file: "Power_BI_DAX_Cheatsheet.md",
 				status: "planned",
 				tagline: "Data model relationships, measures vs calculated columns",
-				covers:
-					"Power BI's data modeling layer and DAX — star-schema relationships, the difference between a measure and a calculated column (and why it matters for performance), and common DAX patterns.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Data model relationships: cardinality, cross-filter direction, star schema in Power BI",
-					"Measures vs. calculated columns — when each is the right choice",
-					"Core DAX functions: CALCULATE, FILTER, ALL, time intelligence functions",
-					"Row context vs. filter context — the concept most DAX confusion comes from",
-					"Power Query (M) for data shaping before it hits the model",
-					"Performance tuning: VertiPaq engine basics, avoiding bidirectional relationships",
-				],
+				extend: [],
 			},
 			{
 				id: "looker-lookml",
@@ -2646,16 +2266,9 @@ export const DATA: Category[] = [
 				file: "Looker_LookML_Cheatsheet.md",
 				status: "planned",
 				tagline: "Modeling layer for BI, explores, views",
-				covers:
-					"Looker's semantic modeling layer — views and explores in LookML, how joins are defined once and reused everywhere, and the governance benefits of a single modeled metrics layer versus ad-hoc BI queries.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"LookML basics: views, explores, and joins",
-					"Dimensions vs. measures in LookML",
-					"Derived tables for pre-aggregating expensive queries",
-					"Access filters and row-level permissions",
-					"Looker vs. dbt's semantic layer — overlapping goals, different tools",
-				],
+				extend: [],
 			},
 			{
 				id: "ga4",
@@ -2664,16 +2277,9 @@ export const DATA: Category[] = [
 				file: "Google_Analytics_4_Cheatsheet.md",
 				status: "planned",
 				tagline: "Events, funnels, attribution models",
-				covers:
-					"GA4's event-based data model versus Universal Analytics' sessions-based one — custom event and conversion setup, funnel and path exploration, and the attribution model choices that change how credit gets assigned.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Event-based data model vs. Universal Analytics sessions model",
-					"Custom events, conversions, and parameters",
-					"Funnel exploration and path analysis in GA4's interface",
-					"Attribution models: data-driven, last-click, and how GA4 differs from UA",
-					"BigQuery export for raw event-level analysis beyond the UI",
-				],
+				extend: [],
 			},
 			{
 				id: "dashboard-storytelling",
@@ -2683,17 +2289,9 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Chart choice, pre-attentive attributes, avoiding misleading visuals",
-				covers:
-					"The design principles behind a dashboard people actually understand at a glance — choosing the right chart for the question, using pre-attentive attributes deliberately, and the common ways a chart ends up misleading even when the numbers are correct.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Chart choice by question type: comparison, trend, distribution, relationship, part-to-whole",
-					"Pre-attentive attributes: color, size, position — using them deliberately, not decoratively",
-					"Common misleading-chart patterns: truncated axes, dual axes, 3D effects",
-					"Dashboard layout: F-pattern scanning, grouping related metrics",
-					"Color palette choices: sequential/diverging/categorical, colorblind-safe defaults",
-					"Telling a story with a sequence of views vs. one dense dashboard",
-				],
+				extend: [],
 			},
 		],
 	},
@@ -2709,16 +2307,9 @@ export const DATA: Category[] = [
 				file: "dbt_Semantic_Layer_MetricFlow.md",
 				status: "planned",
 				tagline: "Define metrics once, query consistently across BI tools",
-				covers:
-					"dbt's semantic layer built on MetricFlow — defining metrics once against the modeled data and querying them consistently from any connected BI tool, instead of every dashboard reimplementing its own logic.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Semantic models and metric definitions in MetricFlow",
-					"Metric types: simple, ratio, cumulative, derived",
-					"Querying the semantic layer from dbt Cloud, or via the API from BI tools",
-					"How this solves the 'every dashboard defines revenue differently' problem",
-					"Relationship to dbt's existing models and marts layer",
-				],
+				extend: [],
 			},
 			{
 				id: "cubejs",
@@ -2727,16 +2318,9 @@ export const DATA: Category[] = [
 				file: "CubeJS_Cheatsheet.md",
 				status: "planned",
 				tagline: "Headless BI / semantic layer alternative to dbt's",
-				covers:
-					"Cube as a headless BI semantic layer — data schema/cube definitions, pre-aggregations for fast dashboard queries, and how it compares to dbt's own semantic layer for serving consistent metrics to multiple front ends.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Cube schema: cubes, dimensions, measures, joins",
-					"Pre-aggregations for sub-second dashboard queries",
-					"APIs: REST, GraphQL, and SQL API for connecting BI tools",
-					"Cube vs. dbt Semantic Layer — overlapping goals, different architecture",
-					"Caching and refresh strategies for pre-aggregated data",
-				],
+				extend: [],
 			},
 			{
 				id: "cicd-analytics-code",
@@ -2745,16 +2329,9 @@ export const DATA: Category[] = [
 				file: "CICD_for_Analytics_Code.md",
 				status: "planned",
 				tagline: "Testing and deploying dbt models safely through PRs",
-				covers:
-					"CI/CD specifically for analytics code — running dbt tests and slim CI (state-based, only-changed-models) on every PR, and safely promoting model changes without breaking downstream dashboards.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"dbt slim CI: --state comparisons to test only changed models",
-					"PR-based review workflow for SQL model changes",
-					"Automated deployment of docs and exposures",
-					"Testing against a PR-specific schema before merging",
-					"Coordinating a breaking model change with downstream BI tool owners",
-				],
+				extend: [],
 			},
 			{
 				id: "sql-version-control",
@@ -2763,16 +2340,9 @@ export const DATA: Category[] = [
 				file: "SQL_Version_Control_Workflows.md",
 				status: "planned",
 				tagline: "Branching, code review, and environments for analytics repos",
-				covers:
-					"Git workflows adapted specifically for SQL-heavy analytics repos — branching strategy for a dbt project, review conventions for SQL diffs, and managing dev/staging/prod environments cleanly.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Branching strategy suited to a dbt/analytics repo",
-					"Reviewing SQL diffs effectively — what reviewers should actually check",
-					"Environment separation: dev/staging/prod schemas and target configs",
-					"Handling migrations for models with existing downstream dependents",
-					"Feature-branch schemas for isolated testing",
-				],
+				extend: [],
 			},
 			{
 				id: "data-contracts",
@@ -2782,16 +2352,9 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Formal agreements between producers and consumers of a dataset",
-				covers:
-					"Data contracts as a formal agreement between the team producing a dataset and the teams consuming it — schema guarantees, change-notification processes, and how contracts reduce the 'someone changed a column and broke my dashboard' problem.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"What a data contract actually specifies: schema, SLAs, semantics",
-					"Enforcing contracts at the pipeline level vs. just documenting them",
-					"Change management: deprecation windows, versioning breaking changes",
-					"Tooling landscape for contract enforcement",
-					"Where contracts overlap with dbt exposures and data quality tests",
-				],
+				extend: [],
 			},
 		],
 	},
@@ -2807,16 +2370,9 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Domain-oriented, decentralized data ownership and architecture",
-				covers:
-					"The Data Mesh paradigm — domain-oriented ownership of data as a product, decentralized pipelines instead of one central team, and the federated governance model that keeps it from becoming chaos.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"The four Data Mesh principles: domain ownership, data as a product, self-serve platform, federated governance",
-					"Data products: discoverability, addressability, and quality guarantees",
-					"When Data Mesh makes sense vs. when it's organizational overkill for a smaller company",
-					"Federated governance in practice — how it avoids becoming pure chaos",
-					"Common failure modes when adopting Data Mesh without the organizational maturity for it",
-				],
+				extend: [],
 			},
 			{
 				id: "data-fabric",
@@ -2825,16 +2381,9 @@ export const DATA: Category[] = [
 				file: "Data_Fabric.md",
 				status: "planned",
 				tagline: "Unified data access layer across distributed sources",
-				covers:
-					"Data Fabric as a unified metadata-driven access layer across distributed data sources — how it differs conceptually from Data Mesh, and where the two approaches actually complement each other.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Core concept: a metadata-driven layer unifying access across distributed sources",
-					"Data Fabric vs. Data Mesh — technology-first vs. organization-first approaches",
-					"Active metadata and automated data discovery",
-					"Virtualization: querying across sources without physically moving data",
-					"Where vendors overload the term — separating substance from marketing",
-				],
+				extend: [],
 			},
 			{
 				id: "medallion-architecture",
@@ -2843,17 +2392,9 @@ export const DATA: Category[] = [
 				file: "Medallion_Architecture.md",
 				status: "planned",
 				tagline: "Bronze/Silver/Gold layering for lakehouse pipelines",
-				covers:
-					"The bronze/silver/gold layering pattern for structuring a lakehouse — what belongs in each layer, how data moves between them, and the governance and quality gates that typically sit at each transition.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Bronze: raw, untransformed ingestion — what to preserve and why",
-					"Silver: cleaned, conformed, deduplicated data",
-					"Gold: business-level aggregates ready for consumption",
-					"Quality gates and testing at each layer transition",
-					"How this maps onto staging/core/mart naming used in warehouse-centric shops",
-					"Common anti-patterns: skipping layers, putting business logic in bronze",
-				],
+				extend: [],
 			},
 			{
 				id: "data-governance-frameworks",
@@ -2862,16 +2403,9 @@ export const DATA: Category[] = [
 				file: "Data_Governance_Frameworks.md",
 				status: "planned",
 				tagline: "Policies, stewardship, and data cataloging at scale",
-				covers:
-					"Data governance at an organizational level — ownership and stewardship models, cataloging so people can find and trust data, and the policy layer that keeps sensitive data handled consistently across teams.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Ownership and stewardship models: who is accountable for a dataset",
-					"Data cataloging: metadata, lineage, and searchability at scale",
-					"Classification and policy enforcement (PII, sensitivity tiers)",
-					"Governance councils and change-approval processes",
-					"Balancing governance rigor against team velocity",
-				],
+				extend: [],
 			},
 			{
 				id: "mdm",
@@ -2880,16 +2414,9 @@ export const DATA: Category[] = [
 				file: "Master_Data_Management.md",
 				status: "planned",
 				tagline: "Single source of truth for core business entities",
-				covers:
-					"MDM as the discipline of maintaining one authoritative record for core entities like customer or product — matching and merging records across systems, and the golden-record patterns that keep it consistent over time.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Core entities typically mastered: customer, product, employee, location",
-					"Matching and merging (deduplication) across source systems",
-					"Golden record creation and survivorship rules",
-					"MDM architecture styles: registry, consolidation, centralized",
-					"Ongoing stewardship: handling conflicting updates from multiple sources",
-				],
+				extend: [],
 			},
 			{
 				id: "enterprise-architecture-patterns",
@@ -2898,16 +2425,9 @@ export const DATA: Category[] = [
 				file: "Enterprise_Architecture_Patterns.md",
 				status: "planned",
 				tagline: "How data platforms fit into the broader org/tech landscape",
-				covers:
-					"Where the data platform sits within the broader enterprise architecture — integration with operational systems, architecture review processes, and the tradeoffs of build-vs-buy at an organizational scale.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"How a data platform integrates with operational/transactional systems",
-					"Enterprise architecture review and approval processes",
-					"Build vs. buy decisions at organizational scale",
-					"Technology radar / standards processes for tool adoption",
-					"Aligning the data platform roadmap with broader IT strategy",
-				],
+				extend: [],
 			},
 		],
 	},
@@ -2922,16 +2442,9 @@ export const DATA: Category[] = [
 				file: "Backup_and_Recovery.md",
 				status: "planned",
 				tagline: "Full/incremental backups, point-in-time recovery strategies",
-				covers:
-					"Backup strategy fundamentals for production databases — full vs. incremental backups, point-in-time recovery using transaction logs, and testing restores so a backup plan actually works when it's needed.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Full, incremental, and differential backup strategies",
-					"Point-in-time recovery using WAL/transaction logs",
-					"Backup retention policies and storage cost tradeoffs",
-					"Testing restores regularly — a backup you haven't restored isn't verified",
-					"Logical (pg_dump/mysqldump) vs. physical backups, and when each is appropriate",
-				],
+				extend: [],
 			},
 			{
 				id: "replication-failover",
@@ -2940,16 +2453,9 @@ export const DATA: Category[] = [
 				file: "Replication_and_Failover.md",
 				status: "planned",
 				tagline: "Master-replica setups, high availability, automatic failover",
-				covers:
-					"Replication topologies for read scaling and high availability — synchronous vs. asynchronous replication, and the automatic failover mechanisms that keep an outage from becoming a full incident.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Synchronous vs. asynchronous replication tradeoffs",
-					"Master-replica and multi-master topologies",
-					"Automatic failover mechanisms and split-brain risks",
-					"Replication lag monitoring and its impact on read-replica correctness",
-					"Tooling: Patroni, pg_auto_failover, native cloud-managed failover",
-				],
+				extend: [],
 			},
 			{
 				id: "query-plan-performance-tuning",
@@ -2958,16 +2464,9 @@ export const DATA: Category[] = [
 				file: "Query_Plan_and_Performance_Tuning.md",
 				status: "planned",
 				tagline: "Reading execution plans, index internals, query optimization",
-				covers:
-					"Reading and acting on a query execution plan — how the planner chooses join and scan strategies, index internals that explain why a query isn't using the index you expect, and systematic query optimization.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Reading EXPLAIN/EXPLAIN ANALYZE output across major engines",
-					"Index internals: B-tree vs. hash vs. covering indexes, and when the planner ignores an index",
-					"Join strategies: nested loop, hash join, merge join — and when each is chosen",
-					"Statistics and why stale statistics cause bad plans",
-					"Systematic tuning workflow: identify, isolate, hypothesize, verify",
-				],
+				extend: [],
 			},
 			{
 				id: "postgres-vacuuming-maintenance",
@@ -2976,16 +2475,9 @@ export const DATA: Category[] = [
 				file: "PostgreSQL_Vacuuming_and_Maintenance.md",
 				status: "planned",
 				tagline: "Autovacuum tuning, bloat management, routine upkeep",
-				covers:
-					"PostgreSQL-specific maintenance that other warehouses handle automatically — how MVCC creates bloat, tuning autovacuum so it keeps up with write volume, and the routine upkeep tasks that prevent a slow degradation over time.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"MVCC and how dead tuples accumulate into bloat",
-					"Autovacuum tuning: thresholds, cost limits, per-table overrides",
-					"Detecting and remediating bloat (pg_repack, VACUUM FULL tradeoffs)",
-					"Transaction ID wraparound — what it is and why it's an emergency if ignored",
-					"Routine maintenance: ANALYZE, REINDEX, and monitoring table/index bloat",
-				],
+				extend: [],
 			},
 			{
 				id: "ha-dr",
@@ -2994,16 +2486,9 @@ export const DATA: Category[] = [
 				file: "High_Availability_and_Disaster_Recovery.md",
 				status: "planned",
 				tagline: "RTO/RPO planning, multi-region setups",
-				covers:
-					"Planning for availability and disaster recovery at the database layer — defining RTO/RPO targets, multi-region architecture options, and the runbook discipline that determines whether a disaster recovery plan actually works when invoked.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Defining RTO (recovery time objective) and RPO (recovery point objective)",
-					"Multi-region architecture: active-passive vs. active-active tradeoffs",
-					"Disaster recovery runbooks and regular failover drills",
-					"Cost vs. availability tradeoffs at each HA tier",
-					"Cloud-managed HA options vs. self-managed multi-region setups",
-				],
+				extend: [],
 			},
 			{
 				id: "db-user-access-management",
@@ -3012,16 +2497,9 @@ export const DATA: Category[] = [
 				file: "User_and_Access_Management.md",
 				status: "planned",
 				tagline: "Roles, permissions, auditing at the database engine level",
-				covers:
-					"Access control at the database engine level — role and permission design, least-privilege patterns, and the auditing needed to know who accessed or changed what.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Role-based access control: roles vs. users, permission inheritance",
-					"Least-privilege patterns: read-only roles, row-level security, column masking",
-					"Auditing: query logs, pgAudit-style extensions, tracking schema changes",
-					"Service accounts vs. human accounts, and credential rotation",
-					"Separating DDL privileges from DML privileges for safer change management",
-				],
+				extend: [],
 			},
 		],
 	},
@@ -3036,16 +2514,9 @@ export const DATA: Category[] = [
 				file: "Dashboard_Architecture.md",
 				status: "planned",
 				tagline: "Structuring reports/dashboards for performance and reuse",
-				covers:
-					"Structuring dashboards and reports so they stay fast and maintainable as they grow — reusable components, aggregation strategy, and avoiding the sprawl of dozens of near-duplicate dashboards.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Reusable components: shared filters, templated dashboards, parameterized reports",
-					"Aggregation strategy: pre-aggregating vs. querying live for dashboard-scale performance",
-					"Folder/workspace organization to avoid dashboard sprawl",
-					"Versioning and deprecating old dashboards",
-					"Balancing a single 'source of truth' dashboard against team-specific views",
-				],
+				extend: [],
 			},
 			{
 				id: "row-level-security-bi",
@@ -3055,16 +2526,9 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Restricting data visibility by user/role within Power BI, Tableau, etc.",
-				covers:
-					"Implementing row-level security inside BI tools so the same dashboard shows different data to different users — role-based filters, dynamic security based on the logged-in user, and testing that it actually holds.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Static vs. dynamic row-level security",
-					"Implementation in Power BI: RLS roles and DAX filter expressions",
-					"Implementation in Tableau: user filters and entitlement tables",
-					"Testing RLS: impersonating a role/user to verify restrictions hold",
-					"Performance implications of row-level security at scale",
-				],
+				extend: [],
 			},
 			{
 				id: "powerbi-deep-dive",
@@ -3073,16 +2537,9 @@ export const DATA: Category[] = [
 				file: "Power_BI_Deep_Dive.md",
 				status: "planned",
 				tagline: "Data model design, DAX patterns, deployment pipelines",
-				covers:
-					"Beyond Power BI basics — data model design for performance at scale, advanced DAX patterns, and deployment pipelines for promoting reports through dev/test/prod workspaces.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Star schema design specifically for Power BI's VertiPaq engine",
-					"Advanced DAX patterns: time intelligence, what-if parameters, dynamic titles",
-					"Deployment pipelines: dev/test/prod workspace promotion",
-					"Composite models and DirectQuery vs. Import mode tradeoffs",
-					"Dataset refresh optimization and incremental refresh",
-				],
+				extend: [],
 			},
 			{
 				id: "tableau-deep-dive",
@@ -3092,16 +2549,9 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"LOD expressions, extracts vs live connections, server administration",
-				covers:
-					"Beyond Tableau basics — deeper LOD expression patterns, choosing extracts versus live connections for performance, and the server/cloud administration tasks a BI developer ends up owning.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Advanced LOD expression patterns for nested aggregation problems",
-					"Extracts vs. live connections: performance and freshness tradeoffs",
-					"Extract refresh scheduling and incremental extracts",
-					"Tableau Server/Cloud administration: permissions, projects, content management",
-					"Performance recording and optimizing slow workbooks",
-				],
+				extend: [],
 			},
 			{
 				id: "semantic-modeling-bi",
@@ -3111,16 +2561,9 @@ export const DATA: Category[] = [
 				status: "planned",
 				tagline:
 					"Building the reusable metrics/dimensions layer BI tools sit on",
-				covers:
-					"Designing the semantic layer that sits between raw modeled data and every BI tool consuming it — consistent metric and dimension definitions, so 'revenue' means the same thing in every dashboard regardless of tool.",
+				covers: "",
 				fixes: [],
-				extend: [
-					"Defining dimensions and measures once, consistently, across BI tools",
-					"Relationship to dbt's semantic layer, Looker's LookML, and Cube",
-					"Handling metric definition changes without breaking every downstream dashboard",
-					"Documentation practices so business users understand what a metric actually means",
-					"Where a semantic layer stops and tool-specific customization begins",
-				],
+				extend: [],
 			},
 		],
 	},

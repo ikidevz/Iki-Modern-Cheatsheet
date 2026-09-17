@@ -26,9 +26,7 @@ export function SubcategoryView({
 			<h1 className='text-2xl md:text-[27px] font-semibold tracking-tight mb-1.5'>
 				{sub.label}
 			</h1>
-			<div className='font-mono text-xs text-foreground-faint mb-4'>
-				/{slug}/{sub.slug}
-			</div>
+
 			<div className='inline-flex items-center gap-2 rounded-full border border-input px-2.5 py-1 text-xs text-muted-foreground mb-6'>
 				<span
 					className={`w-1.5 h-1.5 rounded-full ${statusDotClass(sub.status)}`}

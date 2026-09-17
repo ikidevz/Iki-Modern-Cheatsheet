@@ -27,9 +27,6 @@ export async function ItemView({
 }) {
 	const cat = CAT_CLASS[category.key] ?? CAT_CLASS.db;
 	const isPlanned = item.status === "planned";
-	const pathLine = item.slug
-		? `/${"slug" in category ? category.slug : category.key}${sub ? `/${sub.slug}` : ""}/${item.slug}`
-		: item.file;
 	const categorySlug = "slug" in category ? category.slug : category.key;
 	const CustomizedComponent = item.customizedComponent
 		? CUSTOMIZED_COMPONENTS[item.id]
@@ -67,13 +64,6 @@ export async function ItemView({
 			<h1 className='text-2xl md:text-[27px] font-semibold tracking-tight mb-1.5'>
 				{item.name}
 			</h1>
-
-			{pathLine && (
-				<div className='font-mono text-xs text-foreground-faint mb-4'>
-					{pathLine}
-					{isPlanned && <span className='italic'> — not written yet</span>}
-				</div>
-			)}
 
 			<div className='inline-flex items-center gap-2 rounded-full border border-input px-2.5 py-1 text-xs text-muted-foreground mb-6'>
 				<span
