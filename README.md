@@ -27,18 +27,20 @@ Category
 
 Current catalog categories:
 
-| Category                     | Contents                                                                                                    |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Data warehouses & databases  | Snowflake, PostgreSQL, MySQL, SQLAlchemy                                                                    |
-| Python data libraries        | Pandas, Polars, PySpark                                                                                     |
-| Infrastructure               | dbt, Kafka, Redis, Terraform, Docker                                                                        |
-| Data science & statistics    | A/B Testing, Clustering, Python One-Liners, Data Visualization, Math & Statistics, EDA, Feature Engineering |
-| Data Structures & Algorithms | 11 algorithm and data-structure references                                                                  |
-| Engineering fundamentals     | Data Engineering Patterns, FastAPI, Regex                                                                   |
-| ETL / ELT                    | 13 reference topics plus Worked Examples                                                                    |
-| Data Modeling                | 10 core modeling topics plus Examples                                                                       |
-| Design Patterns              | 20 patterns across Creational, Structural, and Behavioural                                                  |
-| AWS for data engineering     | 9 AWS services and supporting patterns                                                                      |
+| Category                     | Contents                                                                                                                                        |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Data warehouses & databases  | Snowflake, PostgreSQL, MySQL, SQLAlchemy                                                                                                        |
+| Python data libraries        | Pandas, Polars, PySpark                                                                                                                         |
+| Infrastructure               | dbt, Kafka, Redis, Terraform, Docker                                                                                                            |
+| Data science & statistics    | A/B Testing, Clustering, Python One-Liners, Data Visualization, Math & Statistics, Feature Engineering                                          |
+| Exploratory Data Analysis    | Data Overview, Missing Values, Descriptive Statistics, Univariate and Bivariate Analysis, Correlation, Outliers, Feature Distribution, Insights |
+| Data Structures & Algorithms | 11 algorithm and data-structure references                                                                                                      |
+| Engineering fundamentals     | FastAPI, Regex                                                                                                                                  |
+| Data Engineering Patterns    | Data Warehouse, CDC, Data Lakehouse, Streaming, Batch, Cataloging, Quality, Idempotency, SCD, DAGs, Schema Evolution                            |
+| ETL / ELT                    | 13 reference topics plus Worked Examples                                                                                                        |
+| Data Modeling                | 10 core modeling topics plus Examples                                                                                                           |
+| Design Patterns              | 20 patterns across Creational, Structural, and Behavioural                                                                                      |
+| AWS for data engineering     | 9 AWS services and supporting patterns                                                                                                          |
 
 Every leaf is a `Sheet`:
 
@@ -67,7 +69,7 @@ Flat-category item ids sometimes carry a redundant category prefix so they read 
 
 The repository currently contains 114 Markdown files. They are organized into root sheets and nested collections for AWS, ETL/ELT, Data Modeling, Data Structures and Algorithms, Design Patterns, and Data Visualization. The ETL/ELT collection includes 13 reference sheets, an index, and 10 worked examples; Data Modeling includes 10 core sheets and 20 domain examples.
 
-Entries with `customizedComponent: true` use a component registered in [`content/customize/index.ts`](content/customize/index.ts). The customized pages currently cover A/B Testing, Clustering, Data Engineering Patterns, EDA, Feature Engineering, Math & Statistics, and Data Modeling Examples.
+Entries with `customizedComponent: true` use a component registered in [`content/customize/index.ts`](content/customize/index.ts). The customized pages currently cover A/B Testing, Clustering, Feature Engineering, Math & Statistics, and Data Modeling Examples.
 
 ## Project structure
 

@@ -3,8 +3,6 @@ import type { Sheet } from "@/lib/types";
 import { AbTesting } from "./abtesting";
 import { Clustering } from "./clustering";
 import { DataModelingExamples } from "./data-modeling-examples";
-import { DataEngineeringPatterns } from "./depatterns";
-import { ExploratoryDataAnalysis } from "./eda";
 import { ETLWorkedExamples } from "./etl-worked-examples";
 import { FeatureEngineering } from "./featureeng";
 import { MathStats } from "./mathstats";
@@ -25,8 +23,6 @@ export type AsyncCustomizedComponent = (
 export const CUSTOMIZED_COMPONENTS: Record<string, CustomizedComponent> = {
 	abtesting: AbTesting,
 	clustering: Clustering,
-	depatterns: DataEngineeringPatterns,
-	eda: ExploratoryDataAnalysis,
 	featureeng: FeatureEngineering,
 	mathstats: MathStats,
 };

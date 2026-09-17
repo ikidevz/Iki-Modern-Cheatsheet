@@ -948,6 +948,8 @@
 	--color-cat-aws: var(--cat-aws);
 	--color-cat-dsa: var(--cat-dsa);
 	--color-cat-etl: oklch(from var(--cat-eng) l c calc(h + 45));
+	--color-cat-depatterns: oklch(from var(--cat-eng) l c calc(h + 90));
+	--color-cat-eda: oklch(from var(--cat-eng) l c calc(h + 135));
 	--color-cat-modeling: oklch(from var(--cat-eng) l c calc(h + 100));
 	--color-cat-cloud: oklch(from var(--cat-infra) l c calc(h + 55));
 	--color-cat-designpatterns: oklch(from var(--cat-eng) l c calc(h + 155));
