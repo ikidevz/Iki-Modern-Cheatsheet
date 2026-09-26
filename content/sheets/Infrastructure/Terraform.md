@@ -768,6 +768,55 @@ resource "aws_sfn_state_machine" "etl_orchestrator" {
 }
 ```
 
+### Step Functions — Choice State (Pass/Fail Branching for a Data Quality Gate)
+
+Ties directly into an event-driven DQ pipeline: run a DQ check, then branch to promote-or-quarantine instead of always proceeding to the next step.
+
+```hcl
+resource "aws_sfn_state_machine" "dq_gated_pipeline" {
+  name     = "${var.project_name}-dq-gated-pipeline"
+  role_arn = aws_iam_role.step_functions_role.arn
+
+  definition = jsonencode({
+    Comment = "Runs a DQ check Lambda, then branches: promote on pass, quarantine + alert on fail"
+    StartAt = "RunDQCheck"
+    States = {
+      RunDQCheck = {
+        Type     = "Task"
+        Resource = aws_lambda_function.dq_check.arn   # e.g. wraps Iki_DQ_Check
+        Next     = "EvaluateResult"
+      }
+      EvaluateResult = {
+        Type = "Choice"
+        Choices = [
+          {
+            Variable     = "$.dq_status"
+            StringEquals = "PASS"
+            Next         = "PromoteToCurated"
+          }
+        ]
+        Default = "QuarantineAndAlert"
+      }
+      PromoteToCurated = {
+        Type     = "Task"
+        Resource = "arn:aws:states:::glue:startJobRun.sync"
+        Parameters = { JobName = aws_glue_job.etl_job.name }
+        End      = true
+      }
+      QuarantineAndAlert = {
+        Type     = "Task"
+        Resource = "arn:aws:states:::sns:publish"
+        Parameters = {
+          TopicArn = aws_sns_topic.data_alerts.arn
+          Message  = "Data quality check failed — file quarantined"
+        }
+        End = true
+      }
+    }
+  })
+}
+```
+
 ---
 
 ## 9. 📡 Streaming Infrastructure
@@ -1443,6 +1492,181 @@ resource "azurerm_storage_account" "data_lake" {
   is_hns_enabled           = true   # enables hierarchical namespace (ADLS Gen2)
 }
 ```
+
+### Azure Resources for Your Floci AZ-Testable Pipelines
+
+Synapse, Data Factory, and Databricks (in the table above) aren't emulated by Floci AZ today. The resources below map to what Floci AZ **does** emulate, matched to the three Azure pipelines in your blueprint (batch ELT, Event Hubs streaming, event-driven DQ).
+
+**Pipeline 1 — Batch ELT: Storage Account + Function App + Azure SQL**
+
+```hcl
+resource "azurerm_resource_group" "data_platform" {
+  name     = "${var.project_name}-rg-${var.environment}"
+  location = var.azure_region
+}
+
+resource "azurerm_storage_account" "data_lake" {
+  name                     = "${var.project_name}dl${var.environment}"
+  resource_group_name      = azurerm_resource_group.data_platform.name
+  location                 = azurerm_resource_group.data_platform.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  is_hns_enabled           = true   # ADLS Gen2 hierarchical namespace
+
+  blob_properties {
+    versioning_enabled = true
+  }
+}
+
+resource "azurerm_storage_container" "zones" {
+  for_each              = toset(["raw", "silver", "gold"])
+  name                  = each.key
+  storage_account_name  = azurerm_storage_account.data_lake.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_table" "pipeline_runs" {
+  name                 = "pipelineruns"
+  storage_account_name = azurerm_storage_account.data_lake.name
+}
+
+resource "azurerm_service_plan" "functions" {
+  name                = "${var.project_name}-asp"
+  resource_group_name = azurerm_resource_group.data_platform.name
+  location            = azurerm_resource_group.data_platform.location
+  os_type             = "Linux"
+  sku_name            = "Y1"   # Consumption plan
+}
+
+resource "azurerm_linux_function_app" "batch_etl" {
+  name                       = "${var.project_name}-batch-etl-fn"
+  resource_group_name        = azurerm_resource_group.data_platform.name
+  location                   = azurerm_resource_group.data_platform.location
+  service_plan_id            = azurerm_service_plan.functions.id
+  storage_account_name       = azurerm_storage_account.data_lake.name
+  storage_account_access_key = azurerm_storage_account.data_lake.primary_access_key
+
+  site_config {
+    application_stack {
+      python_version = "3.11"
+    }
+  }
+
+  app_settings = {
+    "AzureWebJobsFeatureFlags" = "EnableWorkerIndexing"   # required for Durable Functions Python v2 model
+  }
+}
+
+resource "azurerm_mssql_server" "serving" {
+  name                         = "${var.project_name}-sql-${var.environment}"
+  resource_group_name          = azurerm_resource_group.data_platform.name
+  location                     = azurerm_resource_group.data_platform.location
+  version                      = "12.0"
+  administrator_login          = var.sql_admin_username
+  administrator_login_password = var.sql_admin_password   # reference Key Vault in prod
+}
+
+resource "azurerm_mssql_database" "serving" {
+  name      = "${var.project_name}-serving"
+  server_id = azurerm_mssql_server.serving.id
+  sku_name  = "Basic"   # fine for a portfolio-scale serving layer
+}
+```
+
+**Pipeline 2 — Streaming: Event Hubs + Cosmos DB**
+
+```hcl
+resource "azurerm_eventhub_namespace" "streaming" {
+  name                = "${var.project_name}-ehns-${var.environment}"
+  resource_group_name = azurerm_resource_group.data_platform.name
+  location            = azurerm_resource_group.data_platform.location
+  sku                 = "Standard"
+  capacity            = 1
+}
+
+resource "azurerm_eventhub" "telemetry" {
+  name                = "telemetry-events"
+  namespace_name      = azurerm_eventhub_namespace.streaming.name
+  resource_group_name = azurerm_resource_group.data_platform.name
+  partition_count     = 4
+  message_retention   = 1
+}
+
+resource "azurerm_cosmosdb_account" "hot_store" {
+  name                = "${var.project_name}-cosmos-${var.environment}"
+  resource_group_name = azurerm_resource_group.data_platform.name
+  location            = azurerm_resource_group.data_platform.location
+  offer_type          = "Standard"
+  kind                = "GlobalDocumentDB"
+
+  consistency_policy {
+    consistency_level = "Session"
+  }
+
+  geo_location {
+    location          = azurerm_resource_group.data_platform.location
+    failover_priority = 0
+  }
+}
+
+resource "azurerm_cosmosdb_sql_database" "streaming" {
+  name                = "streaming"
+  resource_group_name = azurerm_resource_group.data_platform.name
+  account_name        = azurerm_cosmosdb_account.hot_store.name
+}
+```
+
+**Pipeline 3 — Event-Driven DQ: Event Grid + Service Bus**
+
+```hcl
+resource "azurerm_servicebus_namespace" "dq_bus" {
+  name                = "${var.project_name}-sbns-${var.environment}"
+  resource_group_name = azurerm_resource_group.data_platform.name
+  location            = azurerm_resource_group.data_platform.location
+  sku                 = "Standard"
+}
+
+resource "azurerm_servicebus_topic" "dq_results" {
+  name         = "dq-results"
+  namespace_id = azurerm_servicebus_namespace.dq_bus.id
+}
+
+resource "azurerm_eventgrid_system_topic" "blob_events" {
+  name                   = "${var.project_name}-blob-events"
+  resource_group_name    = azurerm_resource_group.data_platform.name
+  location               = azurerm_resource_group.data_platform.location
+  source_arm_resource_id = azurerm_storage_account.data_lake.id
+  topic_type             = "Microsoft.Storage.StorageAccounts"
+}
+
+resource "azurerm_eventgrid_event_subscription" "on_blob_created" {
+  name  = "on-raw-file-landed"
+  scope = azurerm_storage_account.data_lake.id
+
+  azure_function_endpoint {
+    function_id = "${azurerm_linux_function_app.batch_etl.id}/functions/run_dq_check"
+  }
+
+  included_event_types = ["Microsoft.Storage.BlobCreated"]
+  subject_filter {
+    subject_begins_with = "/blobServices/default/containers/raw/"
+  }
+}
+```
+
+**Key Vault — secrets for all three pipelines**
+
+```hcl
+resource "azurerm_key_vault" "secrets" {
+  name                = "${var.project_name}-kv-${var.environment}"
+  resource_group_name = azurerm_resource_group.data_platform.name
+  location            = azurerm_resource_group.data_platform.location
+  tenant_id           = var.azure_tenant_id
+  sku_name            = "standard"
+}
+```
+
+> To develop these against Floci AZ before touching real Azure: point the `azurerm` provider's per-service endpoints at your local Floci AZ container (check Floci's docs for the current endpoint-override syntax per service), then swap in real subscription/tenant IDs only when you deploy the small free-tier demo.
 
 ---
 
